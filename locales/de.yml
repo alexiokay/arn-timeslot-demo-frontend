@@ -1,0 +1,25 @@
+components:
+  navbar:
+    contact: kontakt
+    login: anmeldung
+    register: registrieren
+    safe: cliphoard
+    cart: wagen
+    products: produkte
+  footer:
+    example: beispiel
+  language_switcher:
+    change_language: sprache ändern
+  theme_switcher:
+    theme: thema
+    change_theme: thema wechseln
+pages:
+  '404':
+    title: seite nicht gefunden
+  index:
+    title: nuxt 3[]super[]starter
+  blank:
+    nav: leer
+    title: leere seite
+    description: das ist eine leere seite
+    just_blank_page_with_title: nur leere seite mit titel

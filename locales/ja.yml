@@ -1,0 +1,25 @@
+components:
+  navbar:
+    contact: コンタクト
+    login: ログイン
+    register: 登録
+    safe: クリップボード
+    cart: カート
+    products: 製品
+  footer:
+    example: 例
+  language_switcher:
+    change_language: 言語を変えてください
+  theme_switcher:
+    theme: テーマ
+    change_theme: テーマを変更
+pages:
+  '404':
+    title: ページが見つかりません
+  index:
+    title: nuxt 3[]素晴らしい[]スターター
+  blank:
+    nav: 空欄
+    title: 空白ページ
+    description: これは空白のページです
+    just_blank_page_with_title: タイトルのある空白のページ

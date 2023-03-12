@@ -1,0 +1,25 @@
+components:
+  navbar:
+    contact: 接触
+    login: 登录
+    register: 登记
+    safe: 剪贴板
+    cart: 大车
+    products: 产品
+  footer:
+    example: 例子
+  language_switcher:
+    change_language: 改变语言
+  theme_switcher:
+    theme: 主题
+    change_theme: 改变主题
+pages:
+  '404':
+    title: 找不到网页
+  index:
+    title: nuxt 3[]awesome[]starter
+  blank:
+    nav: 空白的
+    title: 空白页
+    description: 这是一个空白页
+    just_blank_page_with_title: 只是带有标题的空白页
