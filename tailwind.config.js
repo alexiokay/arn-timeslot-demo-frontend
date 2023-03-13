@@ -32,12 +32,22 @@ module.exports = {
           '0%': { transform: 'translateY(0rem)' },
           '100%': { transform: 'translateY(25rem)' },
         },
+        spin: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(180deg)' },
+        },
+        spinBack: {
+          '0%': { transform: 'rotate(180deg)' },
+          '100%': { transform: 'rotate(0deg)' },
+        }
+
       },
       animation: {
         showUp: 'showUp 0.2s linear',
         hideDownNavbar: 'hideDownNavbar 0.4s linear',
         showUpNavbar: 'hideDownNavbar 0.4s linear',
         spinOnce: 'spin 1s forwards',
+        spinOnceBack: 'spinBack 1s forwards',
       }
     },
     fontFamily: {

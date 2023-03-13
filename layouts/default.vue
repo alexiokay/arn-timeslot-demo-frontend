@@ -1,14 +1,14 @@
 script
 <template lang="pug">
-div(id="default" style="" class="h-auto flex flex-row bg-[#FAF9FC] justify-center items-center w-full  ")
+div(id="default" style="" class="h-auto flex flex-row bg-[#FAF9FC] justify-center items-start w-full  ")
     div#overlay(class="absolute overlaying top-0 left-0 w-full h-screen bg-black opacity-40 z-10 hidden-overlay")
-   
+    Sidebar(v-if="route.path!=='/'")
     
-
-    <slot class="" />
+    div(class="py-1 w-full")
+      <slot class="" />
     Footer(v-if="route.path!=='/'" class="mt-12")
 div(class="cursor cursor--small")
-canvas(class="cursor cursor--canvas" resize)
+
 </template>
 
 <script setup lang="ts">

@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class=" w-full md:h-screen  flex flex-col lg:flex-row -mt-20 ")
+div(class=" w-full md:h-screen  flex flex-col lg:flex-row  ")
   div(class="lg:w-[45%] w-full h-screen flex flex-col px-8 items-center ")
     div.login-header(class="w-full h-auto")
       nuxt-img(src="images/arrow-logo.png" class=" object-cover" width="190" format="webp")

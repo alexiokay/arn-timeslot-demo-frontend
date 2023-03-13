@@ -1,5 +1,5 @@
 <template lang="pug">
-NuxtLink(class="relative flex w-full group justify-between rounded-md  hover:bg-slate-100 h-[2.7rem] px-4 py-2 items-center hover:cursor-pointer")
+NuxtLink(:to="props.to" :class="isActive? 'bg-slate-100': ''" class="relative flex w-full group justify-between rounded-md  hover:bg-slate-100 h-[2.7rem] px-4 py-2 items-center hover:cursor-pointer")
     div(class="flex space-x-2")
         slot(name="icon")
         p {{ props.text }}
@@ -15,6 +15,10 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  to: {
+    type: String,
+    required: false,
+  },
 
   notifications_count: {
     type: Number,
@@ -26,7 +30,10 @@ const route = useRoute();
 const isActive = computed(() => {
   console.log("route");
   console.log(route.path);
-  return route.path.split("/")[1] === props.text.toLowerCase() ? true : false;
+  const path = route.path.split("/");
+  return route.path.split("/")[path.length - 1] === props.text.toLowerCase()
+    ? true
+    : false;
 });
 </script>
 
