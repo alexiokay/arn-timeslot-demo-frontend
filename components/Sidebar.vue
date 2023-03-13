@@ -1,5 +1,5 @@
 <template lang="pug">
-div#sidebar(class="w-[20rem] h-screen bg-white px-2 py-4  text-black items-center flex flex-col")
+div#sidebar(class="w-[20rem] h-screen bg-white px-2 py-4 rounded-r-lg text-black items-center flex flex-col")
     div#sidebar-header(class="relative w-full px-3 flex flex-col h-full justify-between items-start")
         nuxt-img(src="images/arrow-logo-2.png" width="150" height="30" format="webp" class="")
         h1(class="text-lg ") Carrier's  Workspace
@@ -20,15 +20,18 @@ div#sidebar(class="w-[20rem] h-screen bg-white px-2 py-4  text-black items-cente
                 ButtonSidebar(text="Dashboard" to="/dashboard" :notifications_count="2" )
                     template(v-slot:icon)
                         DashboardIcon(class="w-6 h-6")
+                ButtonSidebar(text="Timeslots" to="/dashboard/timeslots" )
+                    template(v-slot:icon)
+                        TimeslotsIcon(class="w-6 h-6")
                 ButtonSidebar(text="Shipments" )
                     template(v-slot:icon)
                         ShippingIcon(class="w-6 h-6")
-                ButtonSidebar(text="Accounts"  )
+                ButtonSidebar(text="Accounts" to="/dashboard/accounts" )
                     template(v-slot:icon)
                         AccountsIcon(class="w-6 h-6")
             
             button(class="w-full h-[5rem] px-4 py-2 bg-violet-600 text-white rounded-md hover:bg-violet-700")
-                p + Create Shipments
+                p + Reserve Timeslot
             hr(class="w-[17rem] border-gray-300 -mx-5 " )
             UserInfo
 </template>
@@ -36,6 +39,7 @@ div#sidebar(class="w-[20rem] h-screen bg-white px-2 py-4  text-black items-cente
 <script setup lang="ts">
 import InfoIcon from "~icons/material-symbols/info-outline";
 import ShippingIcon from "~icons/material-symbols/local-shipping-outline-rounded";
+import TimeslotsIcon from "~icons/ic/round-access-time";
 import AccountsIcon from "~icons/line-md/account";
 import NotificationIcon from "~icons/basil/notification-outline";
 import ArrowIcon from "~icons/material-symbols/chevron-left-rounded";

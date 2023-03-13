@@ -31,8 +31,9 @@ div(class=" w-full md:h-screen  flex flex-col lg:flex-row  ")
           p(class="font-roboto") Remember me
         p(class="font-roboto hover:cursor-pointer") Forgot password?
       button.login-button(class="w-full h-10 bg-black text-white rounded-lg") Login
-      p(class="absolute bottom-6 text-lg") Dont have an account? 
-        NuxtLink(to="/signup" class="font-semibold hover:cursor-pointer") Sign up
+      p(class="absolute bottom-6 text-lg ") already have an account? 
+        
+        NuxtLink(to="/" class="font-semibold hover:cursor-pointer") Sign In
   nuxt-img(src="https://www.arrow.com/company/wp-content/uploads/2022/08/Venlo-5.png" class="xl:w-[55%] lg:w-[50%] w-full h-[100vh] object-cover" format="webp")
 </template>
 
