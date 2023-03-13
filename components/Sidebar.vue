@@ -1,5 +1,5 @@
 <template lang="pug">
-div#sidebar(class="w-[20rem] h-screen bg-white px-2 py-4 rounded-r-lg text-black items-center flex flex-col")
+div#sidebar(class="w-[20rem] fixed top-0 left-0 h-screen bg-white px-2 py-4 rounded-r-lg text-black items-center flex flex-col")
     div#sidebar-header(class="relative w-full px-3 flex flex-col h-full justify-between items-start")
         nuxt-img(src="images/arrow-logo-2.png" width="150" height="30" format="webp" class="")
         h1(class="text-lg ") Carrier's  Workspace

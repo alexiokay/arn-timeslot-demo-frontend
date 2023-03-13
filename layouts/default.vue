@@ -4,7 +4,7 @@ div(id="default" style="" class="h-auto flex flex-row bg-[#FAF9FC] justify-cente
     div#overlay(class="absolute overlaying top-0 left-0 w-full h-screen bg-black opacity-40 z-10 hidden-overlay")
     Sidebar(v-if="route.path!=='/' && route.path!=='/signup'")
     
-    div(class=" w-full " :class="route.path!=='/' && route.path!=='/signup' ? 'p-10' : ''")
+    div(class=" w-full ml-[20rem]" :class="route.path!=='/' && route.path!=='/signup' ? 'px-16 py-10' : ''")
       <slot class="" />
     Footer(v-if="route.path!=='/' && route.path!=='/signup'" class="mt-12")
 div(class="cursor cursor--small")

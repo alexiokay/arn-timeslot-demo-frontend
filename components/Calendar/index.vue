@@ -1,6 +1,6 @@
 <template lang="pug">
 div.calendar(class="flex flex-col w-full h-auto")
-    .calendar-days(class="flex w-full h-[4rem] justify-between text-center")
+    .calendar-days(class="flex w-full h-[4rem] justify-between text-center items-start")
         CalendarDayTitle(title="MON")
         CalendarDayTitle(title="TUE")
         CalendarDayTitle(title="WED")
@@ -10,54 +10,26 @@ div.calendar(class="flex flex-col w-full h-auto")
         CalendarDayTitle(title="SUN")
     hr(class="w-full h-[2px] bg-black")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-        CalendarDay(day="1")
-        CalendarDay(day="2")
-        CalendarDay(day="3")
-        CalendarDay(day="4")
-        CalendarDay(day="5")
-        CalendarDay(day="6")
-        CalendarDay(day="7")
-       
+      CalendarDay(@selectDate="selectDate(day)" v-for="day in firstWeek"  :day="day.toString()" :class="{'text-gray-400': day > 7, }" :is_selected="checkDate(day)")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-        CalendarDay(day="8")
-        CalendarDay(day="9")
-        CalendarDay(day="10")
-        CalendarDay(day="11")
-        CalendarDay(day="12")
-        CalendarDay(day="13")
-        CalendarDay(day="14")
+      CalendarDay(@selectDate="selectDate(day)" v-for="day in secondWeek" :day="day.toString()" :class="{  } " :is_selected="checkDate(day)" :is_avalible="true")
+        
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-        CalendarDay(day="15")
-        CalendarDay(day="16")
-        CalendarDay(day="17")
-        CalendarDay(day="18")
-        CalendarDay(day="19")
-        CalendarDay(day="20")
-        CalendarDay(day="21")
+      CalendarDay(@selectDate="selectDate(day)" v-for="day in thirdWeek" :day="day.toString()" :class="{  } " :is_selected="checkDate(day)" :is_avalible="false")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-        CalendarDay(day="22")
-        CalendarDay(day="23")
-        CalendarDay(day="24")
-        CalendarDay(day="25")
-        CalendarDay(day="26")
-        CalendarDay(day="27")
-        CalendarDay(day="28")
+      CalendarDay(@selectDate="selectDate(day)" v-for="day in fourthWeek" :day="day.toString()" :class="{  } " :is_selected="checkDate(day)")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-        CalendarDay(day="29")
-        CalendarDay(day="30")
-        CalendarDay(day="31")
-        CalendarDay(day="32")
-        CalendarDay(day="33")
-        CalendarDay(day="34")
-        CalendarDay(day="35")
+      CalendarDay(@selectDate="selectDate(day)" v-for="day in fifthWeek" :day="day.toString()" :class="{ 'text-gray-400': day < 20,  } " :is_selected="checkDate(day)")
+    .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
+      CalendarDay(@selectDate="selectDate(day)" v-for="day in sixthWeek" :day="day.toString()" :class="{ 'text-gray-400': day < 30,  } ")
 
 
 </template>
 
 <script setup lang="ts">
 const date = new Date();
-const selectedYear = date.getFullYear();
-const selectedMonth = date.getMonth();
+let selectedYear = date.getFullYear();
+let selectedMonth = date.getMonth();
 
 const firstDay = ref(new Date(selectedYear, selectedMonth).getDay());
 
@@ -68,17 +40,100 @@ const daysInMonth = (iMonth: any, iYear: any) => {
 console.log(firstDay.value);
 console.log(daysInMonth(selectedMonth, selectedYear));
 
-const populateCalendar = () => {
-  const days: Array<string> = [];
-  for (let i = 0; i < firstDay.value; i++) {
-    days.push("");
-  }
-  for (let i = 1; i <= daysInMonth(selectedMonth, selectedYear); i++) {
-    days.push(i.toString());
-  }
-  return days;
+const populateCalendar = (currentDate: any) => {
+  // Get the current year and month
+
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  console.log(year, month);
+
+  // Get the number of days in the previous month
+  const numDaysPrevMonth = new Date(year, month, 0).getDate();
+
+  // Get the number of days in the current month
+  const numDaysCurrMonth = new Date(year, month + 1, 0).getDate();
+
+  // Get the day of the week for the first day of the current month
+  const firstDayOfMonth = new Date(year, month, 1).getDay();
+
+  // Calculate the number of empty days needed to align with the correct day of the week
+  const numEmptyDays = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
+
+  // Create an array of days for the current month
+  const currMonthDays = Array.from(
+    { length: numDaysCurrMonth },
+    (_, i) => i + 1
+  );
+
+  // Create an array of days for the previous month
+  const prevMonthDays = Array.from(
+    { length: numEmptyDays },
+    (_, i) => numDaysPrevMonth - numEmptyDays + i + 1
+  );
+
+  // Get the day of the week for the last day of the current month
+  const lastDayOfMonth = new Date(year, month + 1, 0).getDay();
+
+  // Calculate the number of empty days needed at the end of the current month
+  const numEmptyDaysEnd = lastDayOfMonth === 0 ? 0 : 7 - lastDayOfMonth;
+
+  // Create an array of days for the next month
+  const nextMonthDays = Array.from(
+    { length: numEmptyDaysEnd },
+    (_, i) => i + 1
+  );
+
+  // Combine the arrays and return the result
+  return [...prevMonthDays, ...currMonthDays, ...nextMonthDays];
 };
-const days = ref(populateCalendar());
+const currentDate = new Date();
+const days = ref(populateCalendar(currentDate));
+const firstWeek = computed(() => days.value.slice(0, 7));
+const secondWeek = computed(() => days.value.slice(7, 14));
+const thirdWeek = computed(() => days.value.slice(14, 21));
+const fourthWeek = computed(() => days.value.slice(21, 28));
+const fifthWeek = computed(() => days.value.slice(28, 35));
+const sixthWeek = computed(() => days.value.slice(35, 42));
+
+const nextMonth = () => {
+  selectedMonth = selectedMonth + 1;
+  days.value = populateCalendar(new Date(selectedYear, selectedMonth));
+  console.log("next month");
+  console.log(days.value);
+};
+const previousMonth = () => {
+  selectedMonth = selectedMonth - 1;
+  days.value = populateCalendar(new Date(selectedYear, selectedMonth));
+  console.log("previous month");
+  console.log(days.value);
+};
+
+const checkDate = (day: number) => {
+  if (
+    selectedMonth === date.getMonth() &&
+    selectedYear === date.getFullYear() &&
+    day === date.getDate()
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+// parsing day to date format and emitting it to timeslots page to select schedule timeslots
+const emit = defineEmits(["selectDate"]);
+const selectDate = (day: string) => {
+  const clickedDate = new Date(selectedYear, selectedMonth, Number(day));
+  emit("selectDate", clickedDate);
+  //TODO! map day to month date format to get timeslots from fetched data
+};
+
+defineExpose({
+  nextMonth,
+  previousMonth,
+  selectedYear,
+  selectedMonth,
+});
 </script>
 
 <style lang="scss"></style>
