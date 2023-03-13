@@ -10,7 +10,7 @@ div.calendar(class="flex flex-col w-full h-auto")
         CalendarDayTitle(title="SUN")
     hr(class="w-full h-[2px] bg-black")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day)" v-for="day in firstWeek"  :day="day.toString()" :class="{'text-gray-400': day > 7, }" :is_selected="checkDate(day)")
+      CalendarDay(@selectDate="selectDate(day, day > 7?'prev': 'none')" v-for="day in firstWeek"  :day="day.toString()" :class="{'text-gray-400': day > 7, }" :is_selected="checkDate(day)")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
       CalendarDay(@selectDate="selectDate(day)" v-for="day in secondWeek" :day="day.toString()" :class="{  } " :is_selected="checkDate(day)" :is_avalible="true")
         
@@ -19,9 +19,9 @@ div.calendar(class="flex flex-col w-full h-auto")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
       CalendarDay(@selectDate="selectDate(day)" v-for="day in fourthWeek" :day="day.toString()" :class="{  } " :is_selected="checkDate(day)")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day)" v-for="day in fifthWeek" :day="day.toString()" :class="{ 'text-gray-400': day < 20,  } " :is_selected="checkDate(day)")
+      CalendarDay(@selectDate="selectDate(day, day < 20?'next': 'none')" v-for="day in fifthWeek" :day="day.toString()" :class="{ 'text-gray-400': day < 20,  } " :is_selected="checkDate(day)")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day)" v-for="day in sixthWeek" :day="day.toString()" :class="{ 'text-gray-400': day < 30,  } ")
+      CalendarDay(@selectDate="selectDate(day, day < 30?'next': 'none')" v-for="day in sixthWeek" :day="day.toString()" :class="{ 'text-gray-400': day < 30,  } ")
 
 
 </template>
@@ -94,7 +94,7 @@ const thirdWeek = computed(() => days.value.slice(14, 21));
 const fourthWeek = computed(() => days.value.slice(21, 28));
 const fifthWeek = computed(() => days.value.slice(28, 35));
 const sixthWeek = computed(() => days.value.slice(35, 42));
-
+const clickedDate: any = ref(null);
 const nextMonth = () => {
   selectedMonth = selectedMonth + 1;
   days.value = populateCalendar(new Date(selectedYear, selectedMonth));
@@ -109,23 +109,32 @@ const previousMonth = () => {
 };
 
 const checkDate = (day: number) => {
+  // set temporart _date to clickedDate if it is not null else set it to current date
+  let _date: any = clickedDate.value === null ? date : clickedDate.value;
+  console.log("date:" + _date);
   if (
     selectedMonth === date.getMonth() &&
     selectedYear === date.getFullYear() &&
-    day === date.getDate()
+    day === _date.getDate()
   ) {
     return true;
   } else {
     return false;
   }
 };
-
+const checkDates = computed(checkDate);
 // parsing day to date format and emitting it to timeslots page to select schedule timeslots
 const emit = defineEmits(["selectDate"]);
-const selectDate = (day: string) => {
-  const clickedDate = new Date(selectedYear, selectedMonth, Number(day));
-  emit("selectDate", clickedDate);
-  //TODO! map day to month date format to get timeslots from fetched data
+const selectDate = (day: string, mode: string = "none") => {
+  if (mode === "prev") {
+    clickedDate.value = new Date(selectedYear, selectedMonth - 1, Number(day));
+  } else if (mode === "next") {
+    clickedDate.value = new Date(selectedYear, selectedMonth + 1, Number(day));
+  } else if (mode === "none") {
+    clickedDate.value = new Date(selectedYear, selectedMonth, Number(day));
+  }
+  console.log(mode);
+  emit("selectDate", clickedDate.value);
 };
 
 defineExpose({
