@@ -113,8 +113,8 @@ const checkDate = (day: number) => {
   let _date: any = clickedDate.value === null ? date : clickedDate.value;
   console.log("date:" + _date);
   if (
-    selectedMonth === date.getMonth() &&
-    selectedYear === date.getFullYear() &&
+    selectedMonth === _date.getMonth() &&
+    selectedYear === _date.getFullYear() &&
     day === _date.getDate()
   ) {
     return true;
@@ -122,7 +122,6 @@ const checkDate = (day: number) => {
     return false;
   }
 };
-const checkDates = computed(checkDate);
 // parsing day to date format and emitting it to timeslots page to select schedule timeslots
 const emit = defineEmits(["selectDate"]);
 const selectDate = (day: string, mode: string = "none") => {
