@@ -49,6 +49,12 @@ export const useMainStore = defineStore("mainStore", {
     getDates(state) {
       return state.dates;
     },
+    getDatesByDate: (state) => {
+      return (date: string) => {
+        return state.dates.find((_date) => _date.date === date);
+      };
+    },
+
     getDefaulSettings(state) {
       return state.default_settings;
     },

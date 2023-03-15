@@ -31,6 +31,15 @@ const date = new Date();
 let selectedYear = date.getFullYear();
 let selectedMonth = date.getMonth();
 
+const props = defineProps({
+  dates: {
+    type: Array<Date>,
+    required: true,
+  },
+});
+
+console.log("dates: ");
+console.log(props.dates);
 const firstDay = ref(new Date(selectedYear, selectedMonth).getDay());
 
 const daysInMonth = (iMonth: any, iYear: any) => {
@@ -95,6 +104,7 @@ const fourthWeek = computed(() => days.value.slice(21, 28));
 const fifthWeek = computed(() => days.value.slice(28, 35));
 const sixthWeek = computed(() => days.value.slice(35, 42));
 const clickedDate: any = ref(null);
+
 const nextMonth = () => {
   selectedMonth = selectedMonth + 1;
   days.value = populateCalendar(new Date(selectedYear, selectedMonth));
@@ -111,6 +121,7 @@ const previousMonth = () => {
 const checkDate = (day: number) => {
   // set temporart _date to clickedDate if it is not null else set it to current date
   let _date: any = clickedDate.value === null ? date : clickedDate.value;
+  console.log("test:" + clickedDate.value);
   console.log("date:" + _date);
   if (
     selectedMonth === _date.getMonth() &&
@@ -133,6 +144,7 @@ const selectDate = (day: number, mode: string = "none") => {
     clickedDate.value = new Date(selectedYear, selectedMonth, Number(day));
   }
   console.log(mode);
+  console.log("clicked date: " + clickedDate.value);
   emit("selectDate", clickedDate.value);
 };
 

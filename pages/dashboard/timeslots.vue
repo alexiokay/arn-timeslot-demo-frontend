@@ -14,7 +14,7 @@ div(class="flex gap-x-[5rem]")
     div#timeslot-left-panel(class="flex w-2/4 flex-col")
 
         
-        Calendar(ref="calendar" class="mt-8" @selectDate="selectDate")
+        Calendar(ref="calendar" class="mt-8" @selectDate="selectDate" :dates="dates")
     div#timeslot-right-panel(class="flex w-2/4 flex-col")
         CalendarScheduleSidebar(:class="isScheduleSidebarOpen? '': 'hidden'" class="mt-8")
         CalendarSchedule(:selectedTimeslot="formatedScheduleDate" class="mt-8" :date="formatUTCDate(selectedDate)")
@@ -23,8 +23,14 @@ div(class="flex gap-x-[5rem]")
 <script setup lang="ts">
 import ArrowIcon from "~icons/material-symbols/chevron-left-rounded";
 
+import { useMainStore } from "@/stores/Main";
+const mainStore = useMainStore();
+
 const selectedDate = ref(new Date()); // for calendar and schedule logic
 const isScheduleSidebarOpen = ref(false);
+const dates = computed(() =>
+  mainStore.getDatesByDate(formatUTCDate(selectedDate.value))
+);
 
 const calendar = ref();
 const formatCalendarDate = (date: any) => {
@@ -79,14 +85,14 @@ const currentDate = ref(formatCalendarDate(new Date()));
 
 const nextMonth = () => {
   calendar.value.nextMonth();
-  selectedDate.value.setMonth(selectedDate.value.getMonth() + 1);
+
   formatedCalendarDate.value = formatCalendarDate(selectedDate.value);
   currentDate.value = formatCalendarDate(currentDate);
 };
 
 const previousMonth = () => {
   calendar.value.previousMonth();
-  selectedDate.value.setMonth(selectedDate.value.getMonth() - 1);
+
   formatedCalendarDate.value = formatCalendarDate(selectedDate.value);
   currentDate.value = formatCalendarDate(currentDate);
 };
