@@ -1,12 +1,10 @@
 import { defineStore } from "pinia";
 import Cookies from "js-cookie";
 import { createPinia } from "pinia";
-import piniaPersist from "pinia-plugin-persist";
 import uniqid from "uniqid";
 import { useStorage } from "@vueuse/core";
-
+import { Timeslot } from "@/types/timeslot";
 const pinia = createPinia();
-pinia.use(piniaPersist);
 
 export const useMainStore = defineStore("mainStore", {
   state: () => {
@@ -16,6 +14,25 @@ export const useMainStore = defineStore("mainStore", {
       isMobileNavbarOpen: useStorage("isMobileNavbarOpen", false),
       isLocaleSet: useStorage("isLocaleSet", false),
       isOverlaying: useStorage("isOverlaying", false),
+      default_settings: useStorage("settings", {
+        workable_times: "9-21",
+        max_amount_of_trucks_per_hour: 4,
+      }),
+      dates: useStorage("dates", [
+        {
+          id: 24,
+          date: "2023-03-15", //ISO 8601 format - YYYY-MM-DD
+          timeslots: [
+            {
+              id: 52,
+              start: "9:00",
+              end: "10:00",
+              amount_of_trucks: 0,
+              is_avalible: true,
+            } as Timeslot,
+          ],
+        },
+      ]),
     };
   },
   getters: {
@@ -28,6 +45,17 @@ export const useMainStore = defineStore("mainStore", {
 
     isInitiated(state) {
       return state.initialized;
+    },
+    getDates(state) {
+      return state.dates;
+    },
+    getDefaulSettings(state) {
+      return state.default_settings;
+    },
+    getTimeslotsByDate: (state) => {
+      return (date: string) => {
+        return state.dates.find((_date) => _date.date === date)?.timeslots;
+      };
     },
   },
   actions: {
@@ -48,8 +76,25 @@ export const useMainStore = defineStore("mainStore", {
     setOverlaying(bool: boolean) {
       this.isOverlaying = bool;
     },
-  },
+    setTimeslot(dateId: number, timeslotId: number) {
+      // find specified date and timeslot
+      const dateIndex = this.dates.findIndex((date) => date.id === dateId);
 
+      const timeslotIndex = this.dates[dateIndex].timeslots.findIndex(
+        (timeslot) => timeslot.id === timeslotId
+      );
+      const timeslot = this.dates[dateIndex].timeslots[timeslotIndex];
+
+      // search for timeslot in date and sets ...
+      if (timeslot) {
+        timeslot.amount_of_trucks = timeslot.amount_of_trucks + 1;
+        console.log(timeslot.amount_of_trucks);
+      }
+
+      // TODO! call composable or function to save to database
+    },
+  },
+  persist: true,
   // other options...
 });
 

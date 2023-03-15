@@ -18,6 +18,7 @@ export default defineNuxtConfig({
         autoImports: ["defineStore", "acceptHMRUpdate", "useStore"],
       },
     ],
+    "@pinia-plugin-persistedstate/nuxt",
     "@intlify/nuxt3",
     "@nuxt/image-edge",
   ],

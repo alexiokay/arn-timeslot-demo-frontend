@@ -124,7 +124,7 @@ const checkDate = (day: number) => {
 };
 // parsing day to date format and emitting it to timeslots page to select schedule timeslots
 const emit = defineEmits(["selectDate"]);
-const selectDate = (day: string, mode: string = "none") => {
+const selectDate = (day: number, mode: string = "none") => {
   if (mode === "prev") {
     clickedDate.value = new Date(selectedYear, selectedMonth - 1, Number(day));
   } else if (mode === "next") {

@@ -1,10 +1,8 @@
 import { defineStore } from "pinia";
 import { createPinia } from "pinia";
 import { useStorage } from "@vueuse/core";
-import piniaPersist from "pinia-plugin-persist";
 
 const pinia = createPinia();
-pinia.use(piniaPersist);
 
 // @ts-ignore: Unreachable code error
 export const useUserStore = defineStore("User", {
@@ -14,7 +12,7 @@ export const useUserStore = defineStore("User", {
       email: useStorage("email", ""),
       token: useStorage("token", ""),
       isLogged: useStorage("isLogged", false),
-      favourites: useStorage("favourites", [] as Array<number>),
+      accountType: useStorage("accountType", "carrier"),
     };
   },
   getters: {
@@ -30,8 +28,8 @@ export const useUserStore = defineStore("User", {
     getIsLogged(state) {
       return state.isLogged;
     },
-    getFavourites(state) {
-      return state.favourites;
+    getAccountType(state) {
+      return state.accountType;
     },
   },
   actions: {
@@ -52,16 +50,14 @@ export const useUserStore = defineStore("User", {
       this.email = "";
       this.token = "";
       this.isLogged = false;
-      this.favourites = [];
+      this.accountType = "";
     },
-    setFavourites(favourites: Array<number>) {
-      this.favourites = favourites;
+    setAccountType(accountType: string) {
+      this.accountType = accountType;
     },
   },
 
-  persist: {
-    enabled: true,
-  },
+  persist: true,
 });
 
 export default pinia;

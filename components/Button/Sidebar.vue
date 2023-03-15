@@ -1,11 +1,11 @@
 <template lang="pug">
-NuxtLink(:to="props.to" :class="isActive? 'bg-slate-100': ''" class="relative flex w-full group justify-between rounded-md  hover:bg-slate-100 h-[2.7rem] px-4 py-2 items-center hover:cursor-pointer")
+NuxtLink.menu-button(:to="props.to" :class="isActive? 'bg-slate-100': ''" class="relative whitespace-nowrap text-ellipsis flex w-full group justify-between rounded-md  hover:bg-slate-100 h-[1.9rem] md:h-[2.7rem] px-4 py-2 items-center hover:cursor-pointer")
     div(class="flex space-x-2")
         slot(name="icon")
         p {{ props.text }}
     div(v-if="props.notifications_count" class="h-full w-[2rem] bg-slate-50 flex items-center justify-center rounded-md")
         p() {{props.notifications_count}}
-    .active-pointer(v-if="isActive" class="absolute -left-6 w-[0.65rem] h-11 bg-violet-600 rounded-r-md")
+    .active-pointer(v-if="isActive" class="absolute -left-[0.6rem]  w-[0.65rem] h-11 bg-violet-600 rounded-r-md")
 
 </template>
 
@@ -37,4 +37,18 @@ const isActive = computed(() => {
 });
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.menu-button {
+  .active-pointer {
+    animation: slideIn 0.6s forwards;
+  }
+}
+@keyframes slideIn {
+  0% {
+    transform: translateX(-2rem);
+  }
+  100% {
+    transform: translateX(-0.6rem);
+  }
+}
+</style>

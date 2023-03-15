@@ -16,14 +16,15 @@ div(class="flex gap-x-[5rem]")
         
         Calendar(ref="calendar" class="mt-8" @selectDate="selectDate")
     div#timeslot-right-panel(class="flex w-2/4 flex-col")
-        
-        CalendarSchedule(:selectedTimeslot="formatedScheduleDate" class="mt-8")
+        CalendarScheduleSidebar(:class="isScheduleSidebarOpen? '': 'hidden'" class="mt-8")
+        CalendarSchedule(:selectedTimeslot="formatedScheduleDate" class="mt-8" :date="formatUTCDate(selectedDate)")
 </template>
 
 <script setup lang="ts">
 import ArrowIcon from "~icons/material-symbols/chevron-left-rounded";
 
 const selectedDate = ref(new Date()); // for calendar and schedule logic
+const isScheduleSidebarOpen = ref(false);
 
 const calendar = ref();
 const formatCalendarDate = (date: any) => {
@@ -33,6 +34,13 @@ const formatCalendarDate = (date: any) => {
   return formattedDate;
 };
 
+const formatUTCDate = (date: any) => {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // add leading zero if needed
+  const day = date.getDate().toString().padStart(2, "0"); // add leading zero if needed
+  const formattedDate = `${year}-${month}-${day}`;
+  return formattedDate;
+};
 const formatScheduleDate = (date: any) => {
   let daysOfWeek = [
     "Sunday",
@@ -84,8 +92,11 @@ const previousMonth = () => {
 };
 
 const selectDate = (date: any) => {
+  selectedDate.value = date;
   formatedScheduleDate.value = formatScheduleDate(date);
   console.log(date);
+
+  console.log(formatUTCDate(date));
 };
 </script>
 

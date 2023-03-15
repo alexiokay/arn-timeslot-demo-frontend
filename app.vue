@@ -9,6 +9,12 @@
 
 <script lang="ts" setup>
 import { AppSetup } from "./utils/app";
+import { useMainStore } from "@/stores/Main";
+const mainStore = useMainStore();
+
+onMounted(() => {
+  mainStore.initialize();
+});
 AppSetup();
 const locale = useState<string>("locale.setting");
 const app = useAppConfig();
