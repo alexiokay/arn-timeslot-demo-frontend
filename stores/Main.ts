@@ -25,10 +25,10 @@ export const useMainStore = defineStore("mainStore", {
           timeslots: [
             {
               id: 52,
-              start: "9:00",
-              end: "10:00",
+              start_time: "9:00",
+              end_time: "10:00",
               amount_of_trucks: 0,
-              is_avalible: true,
+              is_open: true,
             } as Timeslot,
           ],
         },

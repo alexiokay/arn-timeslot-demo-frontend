@@ -1,9 +1,9 @@
 type Timeslot = {
   id: number;
-  start: string;
-  end: string;
+  start_time: string;
+  end_time: string;
   amount_of_trucks: number;
-  is_avalible: boolean;
+  is_open: boolean;
 };
 
 export { Timeslot };

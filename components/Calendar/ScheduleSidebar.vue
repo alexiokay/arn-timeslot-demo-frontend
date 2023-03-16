@@ -7,7 +7,7 @@ div#schedule-sidebar(class="w-[25rem] h-full fixed top-0 right-0 bg-white rounde
         div(class="flex w-full h-auto justify-between ")
             p Timeslot
             select(class="w-[10rem] border-2 border-black")
-                option(v-for="timeslot in props.timeslots" :value="timeslot.start") {{timeslot.start}} - {{timeslot.end}}
+                option(v-for="timeslot in props.timeslots" :value="timeslot.start_time") {{timeslot.start_time}} - {{timeslot.end_time}}
         div(class="flex w-full h-auto justify-between ")
             p Delivery Addr.
             input(class="w-[10rem] border-2 border-black")

@@ -12,8 +12,10 @@ import { AppSetup } from "./utils/app";
 import { useMainStore } from "@/stores/Main";
 const mainStore = useMainStore();
 
+const dates = getDates();
 onMounted(() => {
   mainStore.initialize();
+  console.log(dates);
 });
 AppSetup();
 const locale = useState<string>("locale.setting");

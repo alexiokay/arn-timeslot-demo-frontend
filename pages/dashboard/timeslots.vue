@@ -1,20 +1,20 @@
 <template lang="pug">
 div#timeslot-top-panel(class="flex w-full h-auto")
-    div(class="flex flex-col space-y-4")
-        div(class="flex items-center ")
-            h1(class="text-3xl font-bold mr-8 w-[10rem]") {{formatedCalendarDate}}
-            div(class="p-[2px] rounded-full hover:bg-gray-100 hover:cursor-pointer")
-      
-                ArrowIcon(@click="previousMonth()"  class="h-7 w-7") &lt
-            div(class="p-[2px] rounded-full hover:bg-gray-100 hover:cursor-pointer")
-                ArrowIcon(@click="nextMonth()" class="rotate-180 h-7 w-7") >
-        p(class="text-gray-500 w-2/4") Here all your planned timeslots. You will find information for each timeslot as well you can planned new one
+    
 div(class="flex gap-x-[5rem]")
     
     div#timeslot-left-panel(class="flex w-2/4 flex-col")
 
+        div(class="flex flex-col space-y-4 sticky top-[2.5rem]")
+          div(class="flex items-center ")
+              h1(class="text-3xl font-bold mr-8 w-[10rem]") {{formatedCalendarDate}}
+              div(class="p-[2px] rounded-full hover:bg-gray-100 hover:cursor-pointer")
         
-        Calendar(ref="calendar" class="mt-8" @selectDate="selectDate" :dates="dates")
+                  ArrowIcon(@click="previousMonth()"  class="h-7 w-7") &lt
+              div(class="p-[2px] rounded-full hover:bg-gray-100 hover:cursor-pointer")
+                  ArrowIcon(@click="nextMonth()" class="rotate-180 h-7 w-7") >
+          p(class="text-gray-500 w-full") Here all your planned timeslots. You will find information for each timeslot as well you can planned new one
+          Calendar(ref="calendar" class="mt-8 " @selectDate="selectDate" :dates="dates")
     div#timeslot-right-panel(class="flex w-2/4 flex-col")
         CalendarScheduleSidebar(:class="isScheduleSidebarOpen? '': 'hidden'" class="mt-8")
         CalendarSchedule(:selectedTimeslot="formatedScheduleDate" class="mt-8" :date="formatUTCDate(selectedDate)")

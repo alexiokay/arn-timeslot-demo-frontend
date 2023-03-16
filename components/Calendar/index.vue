@@ -12,10 +12,10 @@ div.calendar(class="flex flex-col w-full h-auto")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
       CalendarDay(@selectDate="selectDate(day, day > 7?'prev': 'none')" v-for="day in firstWeek"  :day="day.toString()" :class="{'text-gray-400': day > 7, }" :is_selected="checkDate(day)")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day)" v-for="day in secondWeek" :day="day.toString()" :class="{  } " :is_selected="checkDate(day)" :is_avalible="true")
+      CalendarDay(@selectDate="selectDate(day)" v-for="day in secondWeek" :day="day.toString()" :class="{  } " :is_selected="checkDate(day)" :is_open="true")
         
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day)" v-for="day in thirdWeek" :day="day.toString()" :class="{  } " :is_selected="checkDate(day)" :is_avalible="false")
+      CalendarDay(@selectDate="selectDate(day)" v-for="day in thirdWeek" :day="day.toString()" :class="{  } " :is_selected="checkDate(day)" :is_open="false")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
       CalendarDay(@selectDate="selectDate(day)" v-for="day in fourthWeek" :day="day.toString()" :class="{  } " :is_selected="checkDate(day)")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
@@ -33,7 +33,7 @@ let selectedMonth = date.getMonth();
 
 const props = defineProps({
   dates: {
-    type: Array<Date>,
+    type: Array<any>,
     required: true,
   },
 });
