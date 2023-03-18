@@ -51,6 +51,7 @@ export const useMainStore = defineStore("mainStore", {
     },
     getDatesByDate: (state) => {
       return (date: string) => {
+        console.log(state.dates);
         return state.dates.find((_date) => _date.date === date);
       };
     },
@@ -98,6 +99,10 @@ export const useMainStore = defineStore("mainStore", {
       }
 
       // TODO! call composable or function to save to database
+    },
+    setDates(dates: any) {
+      this.dates = dates;
+      console.log(this.dates);
     },
   },
   persist: true,

@@ -10,12 +10,12 @@ div(class="flex gap-x-[5rem]")
               h1(class="text-3xl font-bold mr-8 w-[10rem]") {{formatedCalendarDate}}
               div(class="p-[2px] rounded-full hover:bg-gray-100 hover:cursor-pointer")
         
-                  ArrowIcon(@click="previousMonth()"  class="h-7 w-7") &lt
+                  ArrowIcon(@click="previousMonth()"  class="h-7 w-7")
               div(class="p-[2px] rounded-full hover:bg-gray-100 hover:cursor-pointer")
-                  ArrowIcon(@click="nextMonth()" class="rotate-180 h-7 w-7") >
+                  ArrowIcon(@click="nextMonth()" class="rotate-180 h-7 w-7")
           p(class="text-gray-500 w-full") Here all your planned timeslots. You will find information for each timeslot as well you can planned new one
-          Calendar(ref="calendar" class="mt-8 " @selectDate="selectDate" :dates="dates")
-    div#timeslot-right-panel(class="flex w-2/4 flex-col")
+          Calendar(ref="calendar" class="mt-8 " @selectDate="selectDate" :dates="date_objs")
+    div#timeslot-right-panel(class="flex w-2/4 flex-col mt-[6rem]")
         CalendarScheduleSidebar(:class="isScheduleSidebarOpen? '': 'hidden'" class="mt-8")
         CalendarSchedule(:selectedTimeslot="formatedScheduleDate" class="mt-8" :date="formatUTCDate(selectedDate)")
 </template>
@@ -28,9 +28,10 @@ const mainStore = useMainStore();
 
 const selectedDate = ref(new Date()); // for calendar and schedule logic
 const isScheduleSidebarOpen = ref(false);
-const dates = computed(() =>
-  mainStore.getDatesByDate(formatUTCDate(selectedDate.value))
-);
+
+const date_objs = computed(() => {
+  return mainStore.getDates;
+});
 
 const calendar = ref();
 const formatCalendarDate = (date: any) => {
@@ -47,7 +48,7 @@ const formatUTCDate = (date: any) => {
   const formattedDate = `${year}-${month}-${day}`;
   return formattedDate;
 };
-const formatScheduleDate = (date: any) => {
+const formatScheduleDate = (date: Date) => {
   let daysOfWeek = [
     "Sunday",
     "Monday",
@@ -71,6 +72,7 @@ const formatScheduleDate = (date: any) => {
     "Nov",
     "Dec",
   ];
+
   let dayOfMonth = date.getDate();
   let dayOfWeek = daysOfWeek[date.getDay()];
   let month = monthsOfYear[date.getMonth()];
@@ -85,19 +87,30 @@ const currentDate = ref(formatCalendarDate(new Date()));
 
 const nextMonth = () => {
   calendar.value.nextMonth();
-
+  selectedDate.value = new Date( // for calendar and schedule logic
+    selectedDate.value.getFullYear(),
+    selectedDate.value.getMonth() + 1,
+    selectedDate.value.getDate()
+  );
   formatedCalendarDate.value = formatCalendarDate(selectedDate.value);
   currentDate.value = formatCalendarDate(currentDate);
 };
 
 const previousMonth = () => {
   calendar.value.previousMonth();
+  selectedDate.value = new Date( // for calendar and schedule logic
+    selectedDate.value.getFullYear(),
+    selectedDate.value.getMonth() - 1,
+    selectedDate.value.getDate()
+  );
 
   formatedCalendarDate.value = formatCalendarDate(selectedDate.value);
   currentDate.value = formatCalendarDate(currentDate);
 };
 
 const selectDate = (date: any) => {
+  console.log("selectDate:");
+  console.log(date);
   selectedDate.value = date;
   formatedScheduleDate.value = formatScheduleDate(date);
   console.log(date);

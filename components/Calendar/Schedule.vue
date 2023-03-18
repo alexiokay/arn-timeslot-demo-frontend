@@ -3,7 +3,7 @@ div.schedule(class="flex flex-col w-full h-auto ")
     CalendarScheduleSidebar(:class="isScheduleSidebarOpen? '': 'hidden'" class="" :date="props.date" :timeslots="timeslots")
     p.schedule-title(class="flex w-full h-[4rem] justify-between text-center items-start")
         span(class="text-lg text-center rounded-lg flex items-center justify-center") {{props.date}}
-    hr(class="w-full h-[2px] bg-black")
+    hr(class="w-full h-[2.5px] bg-black")
     div(class="overflow-auto ")
         div(class="flex  w-auto items-center py-5 " v-for="timeslot in timeslots")
             div(class="flex flex-col w-4/5" )

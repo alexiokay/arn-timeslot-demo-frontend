@@ -12,7 +12,7 @@ export const useUserStore = defineStore("User", {
       email: useStorage("email", ""),
       token: useStorage("token", ""),
       isLogged: useStorage("isLogged", false),
-      accountType: useStorage("accountType", "carrier"),
+      accountType: useStorage("accountType", "arrow-employee"), //arrow_employee, carrier
     };
   },
   getters: {
