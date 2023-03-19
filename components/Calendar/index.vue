@@ -10,7 +10,7 @@ div.calendar(class="flex flex-col w-full h-auto")
         CalendarDayTitle(title="SUN")
     hr(class="w-full h-[2px] bg-black")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day.date)" v-for="day in firstWeek"  :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open")
+      CalendarDay(@selectDate="selectDate(day.date)" v-for="day in firstWeek"  :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open" :is_actual_month='day.day > 10? true: false')
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
       CalendarDay(@selectDate="selectDate(day.date)" v-for="day in secondWeek" :day="day.day.toString()" :is_selected="checkDate(day.date)" :is_open="day.is_open")
         
@@ -19,9 +19,9 @@ div.calendar(class="flex flex-col w-full h-auto")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
       CalendarDay(@selectDate="selectDate(day.date)" v-for="day in fourthWeek" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day.date)" v-for="day in fifthWeek" :day="day.day.toString()"  :is_selected="checkDate(day.date)"  :is_open="day.is_open")
+      CalendarDay(@selectDate="selectDate(day.date)" v-for="day in fifthWeek" :day="day.day.toString()"  :is_selected="checkDate(day.date)"  :is_open="day.is_open"  :is_actual_month='day.day < 22? true: false')
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day.date)" v-for="day in sixthWeek" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open")
+      CalendarDay(@selectDate="selectDate(day.date)" v-for="day in sixthWeek" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open"  :is_actual_month='day.day < 22? true: false')
 
 
 </template>
@@ -186,6 +186,7 @@ const selectDate = (day: Date) => {
 };
 
 defineExpose({
+  clickedDate,
   nextMonth,
   previousMonth,
   selectedYear,

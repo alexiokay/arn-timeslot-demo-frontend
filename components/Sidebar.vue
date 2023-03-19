@@ -29,7 +29,7 @@ div#sidebar(class="w-[20rem] fixed top-0 left-0 h-screen max-h-screen bg-white p
             ButtonSidebar(text="Accounts" to="/dashboard/accounts" )
                 template(v-slot:icon)
                     AccountsIcon(class="w-6 h-6")
-            ButtonSidebar(v-if="userStore.getAccountType === 'carrier'" text="Settings" to="/dashboard/settings" )
+            ButtonSidebar( text="Settings" to="/dashboard/settings" )
                 template(v-slot:icon)
                     SettingsIcon(class="w-6 h-6")
         

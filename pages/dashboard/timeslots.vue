@@ -6,13 +6,18 @@ div(class="flex gap-x-[5rem]")
     div#timeslot-left-panel(class="flex w-2/4 flex-col")
 
         div(class="flex flex-col space-y-4 sticky top-[2.5rem]")
-          div(class="flex items-center ")
-              h1(class="text-3xl font-bold mr-8 w-[10rem]") {{formatedCalendarDate}}
+          div(class="flex items-center relative ")
+              h1(class="text-3xl font-bold mr-6 w-[10rem]") {{formatedCalendarDate}}
               div(class="p-[2px] rounded-full hover:bg-gray-100 hover:cursor-pointer")
         
-                  ArrowIcon(@click="previousMonth()"  class="h-7 w-7")
+                  ArrowIcon(@click="previousMonth()"  class="h-7 w-7 text-gray-600")
+              p(class="absolute -top-[1.45rem] left-[13.2rem] w-[2px] h-[2px] text-5xl") .
               div(class="p-[2px] rounded-full hover:bg-gray-100 hover:cursor-pointer")
-                  ArrowIcon(@click="nextMonth()" class="rotate-180 h-7 w-7")
+                  ArrowIcon(@click="nextMonth()" class="rotate-180 h-7 w-7 text-gray-600")
+              div(class="absolute flex w-auto right-0 items-center justify-end ")
+                CalendarIcon(class="hover:cursor-pointer")
+                hr(class="absolute top-[1.7rem] right-0 w-[1.3rem] h-[0.5px] border-gray-300 border-[1px]")
+                
           p(class="text-gray-500 w-full") Here all your planned timeslots. You will find information for each timeslot as well you can planned new one
           Calendar(ref="calendar" class="mt-8 " @selectDate="selectDate" :dates="date_objs")
     div#timeslot-right-panel(class="flex w-2/4 flex-col mt-[6rem]")
@@ -23,6 +28,7 @@ div(class="flex gap-x-[5rem]")
 <script setup lang="ts">
 import ArrowIcon from "~icons/material-symbols/chevron-left-rounded";
 
+import CalendarIcon from "~icons/mdi/calendar-week";
 import { useMainStore } from "@/stores/Main";
 const mainStore = useMainStore();
 
@@ -87,12 +93,8 @@ const currentDate = ref(formatCalendarDate(new Date()));
 
 const nextMonth = () => {
   calendar.value.nextMonth();
-  selectedDate.value = new Date( // for calendar and schedule logic
-    selectedDate.value.getFullYear(),
-    selectedDate.value.getMonth() + 1,
-    selectedDate.value.getDate()
-  );
-  formatedCalendarDate.value = formatCalendarDate(selectedDate.value);
+
+  formatedCalendarDate.value = formatCalendarDate(calendar.value.currentDate);
   currentDate.value = formatCalendarDate(currentDate);
 };
 
