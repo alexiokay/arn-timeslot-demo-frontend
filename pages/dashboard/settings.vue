@@ -16,10 +16,10 @@ div.settings(class="w-full h-full flex flex-col space-y-4")
 <script setup lang="ts">
 import ArrowIcon from "~icons/material-symbols/arrow-right-alt-rounded";
 import { useUserStore } from "@/stores/User";
-// definePageMeta({
-//   middleware: ["auth-arrow-employee"],
-//   // or middleware: 'auth'
-// });
+definePageMeta({
+  middleware: ["redirect-if-not-logged"],
+  // or middleware: 'auth'
+});
 
 const userStore = useUserStore();
 

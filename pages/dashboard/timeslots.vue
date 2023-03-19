@@ -9,7 +9,7 @@ div(class="flex gap-x-[5rem]")
           div(class="flex items-center relative ")
               h1(class="text-3xl font-bold mr-6 w-[10rem]") {{formatedCalendarDate}}
               div(class="p-[2px] rounded-full hover:bg-gray-100 hover:cursor-pointer")
-        
+             
                   ArrowIcon(@click="previousMonth()"  class="h-7 w-7 text-gray-600")
               p(class="absolute -top-[1.45rem] left-[13.2rem] w-[2px] h-[2px] text-5xl") .
               div(class="p-[2px] rounded-full hover:bg-gray-100 hover:cursor-pointer")
@@ -17,7 +17,9 @@ div(class="flex gap-x-[5rem]")
               div(class="absolute flex w-auto right-0 items-center justify-end ")
                 CalendarIcon(class="hover:cursor-pointer")
                 hr(class="absolute top-[1.7rem] right-0 w-[1.3rem] h-[0.5px] border-gray-300 border-[1px]")
-                
+              div(@click="editMode = !editMode" v-if="userStore.getAccountType === 'arrow-employee'" class="absolute flex w-auto right-8 items-center justify-end ")
+                EditIcon(class="hover:cursor-pointer")
+                hr(class="absolute top-[1.7rem] right-0 w-[1.3rem] h-[0.5px] border-gray-300 border-[1px]")  
           p(class="text-gray-500 w-full") Here all your planned timeslots. You will find information for each timeslot as well you can planned new one
           Calendar(ref="calendar" class="mt-8 " @selectDate="selectDate" :dates="date_objs")
     div#timeslot-right-panel(class="flex w-2/4 flex-col mt-[6rem]")
@@ -27,12 +29,21 @@ div(class="flex gap-x-[5rem]")
 
 <script setup lang="ts">
 import ArrowIcon from "~icons/material-symbols/chevron-left-rounded";
-
+import EditIcon from "~icons/ph/pencil";
 import CalendarIcon from "~icons/mdi/calendar-week";
 import { useMainStore } from "@/stores/Main";
+import { useUserStore } from "@/stores/User";
+import type { DateObject } from "@/types/DateObject";
+definePageMeta({
+  middleware: ["redirect-if-not-logged"],
+});
+
+const userStore = useUserStore();
 const mainStore = useMainStore();
 
 const selectedDate = ref(new Date()); // for calendar and schedule logic
+// find corresponding date in mainStore dates and check if date is open
+
 const isScheduleSidebarOpen = ref(false);
 
 const date_objs = computed(() => {
@@ -40,6 +51,8 @@ const date_objs = computed(() => {
 });
 
 const calendar = ref();
+const editMode = ref(false);
+
 const formatCalendarDate = (date: any) => {
   const month = date.toLocaleString("default", { month: "short" });
   const year = date.getFullYear();
@@ -92,32 +105,35 @@ const formatedCalendarDate = ref(formatCalendarDate(selectedDate.value));
 const currentDate = ref(formatCalendarDate(new Date()));
 
 const nextMonth = () => {
-  calendar.value.nextMonth();
+  calendar.value.nextMonth(); //populates calendar with dates
 
-  formatedCalendarDate.value = formatCalendarDate(calendar.value.currentDate);
+  const _selectedDate = new Date( // for calendar navigation logic
+    selectedDate.value.getFullYear(),
+    selectedDate.value.getMonth() + 1,
+    selectedDate.value.getDate()
+  );
+
+  formatedCalendarDate.value = formatCalendarDate(_selectedDate);
   currentDate.value = formatCalendarDate(currentDate);
 };
 
 const previousMonth = () => {
-  calendar.value.previousMonth();
-  selectedDate.value = new Date( // for calendar and schedule logic
+  calendar.value.previousMonth(); //populates calendar with dates
+  const _selectedDate = new Date( // for calendar navigation logic
     selectedDate.value.getFullYear(),
     selectedDate.value.getMonth() - 1,
     selectedDate.value.getDate()
   );
 
-  formatedCalendarDate.value = formatCalendarDate(selectedDate.value);
+  formatedCalendarDate.value = formatCalendarDate(_selectedDate);
   currentDate.value = formatCalendarDate(currentDate);
 };
 
-const selectDate = (date: any) => {
+const selectDate = (date: Date) => {
   console.log("selectDate:");
   console.log(date);
   selectedDate.value = date;
   formatedScheduleDate.value = formatScheduleDate(date);
-  console.log(date);
-
-  console.log(formatUTCDate(date));
 };
 </script>
 

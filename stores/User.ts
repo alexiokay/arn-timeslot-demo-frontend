@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import { createPinia } from "pinia";
-import { useStorage } from "@vueuse/core";
 
 const pinia = createPinia();
 
@@ -8,14 +7,24 @@ const pinia = createPinia();
 export const useUserStore = defineStore("User", {
   state: () => {
     return {
-      username: useStorage("username", ""),
-      email: useStorage("email", ""),
-      token: useStorage("token", ""),
-      isLogged: useStorage("isLogged", false),
-      accountType: useStorage("accountType", "arrow-employee"), //arrow_employee, carrier
+      default_login_mode: "carrier",
+      username: "",
+      email: "",
+      token: "",
+      isLogged: false,
+      accountType: "arrow-employee", //arrow_employee, carrier
     };
   },
   getters: {
+    getUser(state) {
+      return {
+        username: state.username,
+        email: state.email,
+        token: state.token,
+        isLogged: state.isLogged,
+        accountType: state.accountType,
+      };
+    },
     getUsername(state) {
       return state.username;
     },
@@ -52,12 +61,24 @@ export const useUserStore = defineStore("User", {
       this.isLogged = false;
       this.accountType = "";
     },
-    setAccountType(accountType: string) {
-      this.accountType = accountType;
+
+    setUser(data: any) {
+      const user = data.user;
+      const account_type =
+        user.is_ArrowEmployee === false && user.is_carrier === true
+          ? "carrier"
+          : "arrow-employee";
+      this.accountType = account_type;
+      this.username = user.username;
+      this.email = user.email;
+      this.token = data.token;
+      this.isLogged = true;
     },
   },
 
-  persist: true,
+  persist: {
+    storage: persistedState.cookies,
+  },
 });
 
 export default pinia;

@@ -10,18 +10,18 @@ div.calendar(class="flex flex-col w-full h-auto")
         CalendarDayTitle(title="SUN")
     hr(class="w-full h-[2px] bg-black")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day.date)" v-for="day in firstWeek"  :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open" :is_actual_month='day.day > 10? true: false')
+      CalendarDay(@selectDate="selectDate(day)" v-for="day in firstWeek"  :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open" :is_actual_month='day.day > 10? true: false')
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day.date)" v-for="day in secondWeek" :day="day.day.toString()" :is_selected="checkDate(day.date)" :is_open="day.is_open")
+      CalendarDay(@selectDate="selectDate(day)" v-for="day in secondWeek" :day="day.day.toString()" :is_selected="checkDate(day.date)" :is_open="day.is_open")
         
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day.date)" v-for="day in thirdWeek" :day="day.day.toString()" :is_selected="checkDate(day.date)" :is_open="day.is_open")
+      CalendarDay(@selectDate="selectDate(day)" v-for="day in thirdWeek" :day="day.day.toString()" :is_selected="checkDate(day.date)" :is_open="day.is_open")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day.date)" v-for="day in fourthWeek" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open")
+      CalendarDay(@selectDate="selectDate(day)" v-for="day in fourthWeek" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day.date)" v-for="day in fifthWeek" :day="day.day.toString()"  :is_selected="checkDate(day.date)"  :is_open="day.is_open"  :is_actual_month='day.day < 22? true: false')
+      CalendarDay(@selectDate="selectDate(day)" v-for="day in fifthWeek" :day="day.day.toString()"  :is_selected="checkDate(day.date)"  :is_open="day.is_open"  :is_actual_month='day.day < 22? true: false')
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day.date)" v-for="day in sixthWeek" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open"  :is_actual_month='day.day < 22? true: false')
+      CalendarDay(@selectDate="selectDate(day)" v-for="day in sixthWeek" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open"  :is_actual_month='day.day < 22? true: false')
 
 
 </template>
@@ -57,6 +57,19 @@ interface DateObject {
   workable_times: Array<string>;
 }
 
+function findNextOpenDate(dates: DateObject[]) {
+  let currentDate = new Date();
+
+  // iterate trought next dates in calendar and find first open date
+  for (let i = 0; i < dates.length; i++) {
+    let date: Date = new Date(dates[i].date);
+    if (date >= currentDate && dates[i].is_open) {
+      emit("selectDate", date);
+      return date;
+    }
+  }
+}
+
 const populateCalendar = (
   dates: Array<DateObject>,
   currentDate: Date
@@ -88,14 +101,14 @@ const populateCalendar = (
   const startOfMonth = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth(),
-    1 - firstDayOfWeek
+    2 - firstDayOfWeek
   );
 
   // Calculate the date of the last day in the calendar
   const endOfMonth = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth(),
-    lastDayOfMonth.getDate() + (6 - lastDayOfWeek)
+    lastDayOfMonth.getDate() + (7 - lastDayOfWeek)
   );
 
   // Loop through each day in the calendar and add it to the allDays array
@@ -142,7 +155,7 @@ const sixthWeek = computed(() => {
   return days.value.slice(35, 42);
 });
 
-const clickedDate: any = ref(null);
+const clickedDate: any = ref(findNextOpenDate(props.dates));
 
 const nextMonth = () => {
   selectedMonth = selectedMonth + 1;
@@ -179,8 +192,8 @@ const checkDate = (day: Date) => {
 };
 // parsing day to date format and emitting it to timeslots page to select schedule timeslots
 const emit = defineEmits(["selectDate"]);
-const selectDate = (day: Date) => {
-  clickedDate.value = day;
+const selectDate = (day: DateObject) => {
+  clickedDate.value = day.date;
   //console.log("clicked date: " + clickedDate.value);
   emit("selectDate", clickedDate.value);
 };

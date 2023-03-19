@@ -14,14 +14,11 @@ export const useMainStore = defineStore("mainStore", {
       isMobileNavbarOpen: useStorage("isMobileNavbarOpen", false),
       isLocaleSet: useStorage("isLocaleSet", false),
       isOverlaying: useStorage("isOverlaying", false),
-      default_settings: useStorage("settings", {
-        workable_times: "9-21",
-        max_amount_of_trucks_per_hour: 4,
-      }),
+
       dates: useStorage("dates", [
         {
           id: 24,
-          date: "2023-03-15", //ISO 8601 format - YYYY-MM-DD
+          date: "2023-03-20", //ISO 8601 format - YYYY-MM-DD
           timeslots: [
             {
               id: 52,
@@ -56,12 +53,16 @@ export const useMainStore = defineStore("mainStore", {
       };
     },
 
-    getDefaulSettings(state) {
-      return state.default_settings;
-    },
     getTimeslotsByDate: (state) => {
       return (date: string) => {
-        return state.dates.find((_date) => _date.date === date)?.timeslots;
+        console.log("getting timeslots by date: " + date);
+        const new_date = new Date(date).setHours(0, 0, 0, 0);
+
+        return state.dates.find((_date) => {
+          const date = new Date(_date.date).setHours(0, 0, 0, 0);
+
+          return date === new_date;
+        })?.timeslots;
       };
     },
   },
@@ -105,7 +106,9 @@ export const useMainStore = defineStore("mainStore", {
       console.log(this.dates);
     },
   },
-  persist: true,
+  persist: {
+    storage: persistedState.sessionStorage,
+  },
   // other options...
 });
 

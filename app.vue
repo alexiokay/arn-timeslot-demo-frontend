@@ -13,6 +13,7 @@ import { useMainStore } from "@/stores/Main";
 const mainStore = useMainStore();
 
 const dates = await getDates();
+
 mainStore.setDates(dates);
 onMounted(() => {
   mainStore.initialize();

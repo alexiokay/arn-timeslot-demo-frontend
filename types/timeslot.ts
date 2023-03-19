@@ -2,7 +2,7 @@ type Timeslot = {
   id: number;
   start_time: string;
   end_time: string;
-  amount_of_trucks: number;
+  trucks_left: number;
   is_open: boolean;
 };
 

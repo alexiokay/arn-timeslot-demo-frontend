@@ -1,3 +1,4 @@
+import { Timeslot } from "@/types/timeslot";
 export const getDates = async () => {
   const config = useRuntimeConfig();
   const options = {
@@ -15,6 +16,7 @@ export const getDates = async () => {
         date: new Date(obj.date),
         is_open: obj.is_open,
         workable_times: obj.workable_times,
+        timeslots: obj.timeslots,
       }));
       const error = res.error.value;
       if (error) {

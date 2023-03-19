@@ -1,13 +1,12 @@
 <template lang="pug">
-div#schedule-sidebar(class="w-[25rem] h-full fixed top-0 right-0 bg-white rounded-l-xl px-4 py-4")
+div#schedule-sidebar(class="w-[30rem] h-full fixed top-0 right-0 bg-white rounded-l-xl px-4 py-4")
     button.close-button(class="w-[2rem] h-[2rem] rounded-full bg-gray-100 flex items-center justify-center")
         CloseIcon(class="w-6 h-6 text-gray-600")
     p(@click="mainStore.setTimeslot(24,52)") {{$props.date}}
     div(class="flex flex-col w-full h-auto space-y-2 mt-8 ")
         div(class="flex w-full h-auto justify-between ")
             p Timeslot
-            select(class="w-[10rem] border-2 border-black")
-                option(v-for="timeslot in props.timeslots" :value="timeslot.start_time") {{timeslot.start_time}} - {{timeslot.end_time}}
+      
         div(class="flex w-full h-auto justify-between ")
             p Delivery Addr.
             input(class="w-[10rem] border-2 border-black")
@@ -56,6 +55,11 @@ const props = defineProps({
     required: false,
   },
 });
+
+const book = (timeslotId: number) => {
+  mainStore.setTimeslot(timeslotId, 52);
+  // TODO!: Fetch apito book timeslot and mar it as not_confirmed and sent notification to admin to confirm. When confirmed sent confirmation email to carrier
+};
 </script>
 
 <style lang="sass"></style>
