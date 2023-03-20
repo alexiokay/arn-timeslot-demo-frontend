@@ -10,31 +10,37 @@ div.calendar(class="flex flex-col w-full h-auto")
         CalendarDayTitle(title="SUN")
     hr(class="w-full h-[2px] bg-black")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day)" v-for="day in firstWeek"  :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open" :is_actual_month='day.day > 10? true: false')
+      CalendarDay(@click="lockUnlockDate(day)" @selectDate="selectDate(day)" v-for="day in firstWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched  &&  editMode ),}" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open" :editMode="editMode" :is_actual_month='day.day > 10? true: false')
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day)" v-for="day in secondWeek" :day="day.day.toString()" :is_selected="checkDate(day.date)" :is_open="day.is_open")
+      CalendarDay(@click="lockUnlockDate(day)"  @selectDate="selectDate(day)" v-for="day in secondWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched  &&   editMode ),}" :day="day.day.toString()" :is_selected="checkDate(day.date)" :is_open="day.is_open " :editMode="editMode")
         
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day)" v-for="day in thirdWeek" :day="day.day.toString()" :is_selected="checkDate(day.date)" :is_open="day.is_open")
+      CalendarDay(@click="lockUnlockDate(day)" @selectDate="selectDate(day)" v-for="day in thirdWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched && editMode),}" :day="day.day.toString()" :is_selected="checkDate(day.date)" :is_open="day.is_open " :editMode="editMode")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day)" v-for="day in fourthWeek" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open")
+      CalendarDay(@click="lockUnlockDate(day)" @selectDate="selectDate(day)" v-for="day in fourthWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched  && editMode),}" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open " :editMode="editMode")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day)" v-for="day in fifthWeek" :day="day.day.toString()"  :is_selected="checkDate(day.date)"  :is_open="day.is_open"  :is_actual_month='day.day < 22? true: false')
+      CalendarDay(@click="lockUnlockDate(day)" @selectDate="selectDate(day)" v-for="day in fifthWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched   && editMode ),}" :day="day.day.toString()"  :is_selected="checkDate(day.date)"  :is_open="day.is_open " :editMode="editMode"  :is_actual_month='day.day < 22? true: false')
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@selectDate="selectDate(day)" v-for="day in sixthWeek" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open"  :is_actual_month='day.day < 22? true: false')
+      CalendarDay(@click="lockUnlockDate(day)" @selectDate="selectDate(day)" v-for="day in sixthWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched  &&  editMode ),}" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open " :editMode="editMode" :is_actual_month='day.day < 22? true: false')
 
 
 </template>
 
 <script setup lang="ts">
+import { useUserStore } from "@/stores/User";
+const userStore = useUserStore();
 const date = new Date();
 let selectedYear = date.getFullYear();
 let selectedMonth = date.getMonth();
-
+const config = useRuntimeConfig();
 const props = defineProps({
   dates: {
     type: Array<any>,
     required: true,
+  },
+  editMode: {
+    type: Boolean,
+    required: false,
   },
 });
 
@@ -55,6 +61,7 @@ interface DateObject {
   date: Date;
   is_open: boolean;
   workable_times: Array<string>;
+  is_fetched: boolean;
 }
 
 function findNextOpenDate(dates: DateObject[]) {
@@ -63,7 +70,7 @@ function findNextOpenDate(dates: DateObject[]) {
   // iterate trought next dates in calendar and find first open date
   for (let i = 0; i < dates.length; i++) {
     let date: Date = new Date(dates[i].date);
-    if (date >= currentDate && dates[i].is_open) {
+    if (dates[i].is_open) {
       emit("selectDate", date);
       return date;
     }
@@ -120,12 +127,14 @@ const populateCalendar = (
       id: 0,
       is_open: false,
       workable_times: [],
+      is_fetched: false,
     };
     dates.forEach((date) => {
       if (date.date.toDateString() === dateIterator.toDateString()) {
         day.id = date.id;
         day.is_open = date.is_open;
         day.workable_times = date.workable_times;
+        day.is_fetched = true;
       }
     });
     allDays.push(day);
@@ -179,12 +188,14 @@ const previousMonth = () => {
 const checkDate = (day: Date) => {
   if (
     clickedDate.value &&
-    clickedDate.value.toDateString() === day.toDateString()
+    clickedDate.value.toDateString() === day.toDateString() &&
+    props.editMode === false // allow for selection only if edit mode is false
   ) {
     return true;
   } else if (
     !clickedDate.value &&
-    day.toDateString() === new Date().toDateString()
+    day.toDateString() === new Date().toDateString() &&
+    props.editMode === false // allow for selection only if edit mode is false
   ) {
     return true;
   }
@@ -193,9 +204,41 @@ const checkDate = (day: Date) => {
 // parsing day to date format and emitting it to timeslots page to select schedule timeslots
 const emit = defineEmits(["selectDate"]);
 const selectDate = (day: DateObject) => {
-  clickedDate.value = day.date;
-  //console.log("clicked date: " + clickedDate.value);
-  emit("selectDate", clickedDate.value);
+  if (props.editMode === false) {
+    // allow for selection only if edit mode is false
+    clickedDate.value = day.date;
+    //console.log("clicked date: " + clickedDate.value);
+    emit("selectDate", clickedDate.value);
+  }
+};
+
+const lockUnlockDate = (day: DateObject) => {
+  if (props.editMode === true) {
+    // allow for selection only if edit mode is true
+    fetch(`${config.API_URL}api/v1/lock_unlock_day`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Host: `${config.HOST}`,
+        Authorization: `Token ${userStore.getToken}`,
+      },
+      body: JSON.stringify({
+        date: day.date.toISOString().slice(0, 10),
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.message);
+        if (data.message === "Day Unlocked.") {
+          day.is_open = true;
+        } else if (data.message === "Day locked.") {
+          day.is_open = false;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 };
 
 defineExpose({

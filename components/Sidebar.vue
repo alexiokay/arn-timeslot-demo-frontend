@@ -37,6 +37,7 @@ div#sidebar(class="w-[20rem] fixed top-0 left-0 h-screen max-h-screen bg-white p
             p + Reserve Timeslot
         hr(class="w-full border-gray-300 " )
         UserInfo
+            
 </template>
 
 <script setup lang="ts">

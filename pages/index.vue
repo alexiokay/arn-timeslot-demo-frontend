@@ -114,7 +114,7 @@ const login = async () => {
     .then((data) => {
       console.log(data);
       userStore.setUser(data);
-      console.log("saved: ", userStore.getUser);
+      //console.log("saved: ", userStore.getUser);
       router.push("/dashboard");
     })
     .catch((err) => {

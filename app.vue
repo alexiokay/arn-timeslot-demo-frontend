@@ -10,14 +10,17 @@
 <script lang="ts" setup>
 import { AppSetup } from "./utils/app";
 import { useMainStore } from "@/stores/Main";
+import { useUserStore } from "@/stores/User";
+const userStore = useUserStore();
 const mainStore = useMainStore();
 
-const dates = await getDates();
+if (userStore.getIsLogged) {
+  const dates = await getDates();
+  mainStore.setDates(dates);
+}
 
-mainStore.setDates(dates);
 onMounted(() => {
   mainStore.initialize();
-  console.log(dates);
 });
 AppSetup();
 const locale = useState<string>("locale.setting");

@@ -3,7 +3,7 @@ div#timeslot-top-panel(class="flex w-full h-auto")
     
 div(class="flex gap-x-[5rem]")
     
-    div#timeslot-left-panel(class="flex w-2/4 flex-col")
+    div#timeslot-left-panel(class="flex w-2/4 flex-col " :class="{'mt-[0.8rem] pr-[2.9rem] ': editMode}" )
 
         div(class="flex flex-col space-y-4 sticky top-[2.5rem]")
           div(class="flex items-center relative ")
@@ -17,19 +17,21 @@ div(class="flex gap-x-[5rem]")
               div(class="absolute flex w-auto right-0 items-center justify-end ")
                 CalendarIcon(class="hover:cursor-pointer")
                 hr(class="absolute top-[1.7rem] right-0 w-[1.3rem] h-[0.5px] border-gray-300 border-[1px]")
-              div(@click="editMode = !editMode" v-if="userStore.getAccountType === 'arrow-employee'" class="absolute flex w-auto right-8 items-center justify-end ")
+              div(@click="editMode = !editMode" v-if="userStore.getAccountType === 'arrow-employee'" :class="{'text-blue-600': editMode}" class="absolute flex w-auto right-8 items-center justify-end ")
                 EditIcon(class="hover:cursor-pointer")
                 hr(class="absolute top-[1.7rem] right-0 w-[1.3rem] h-[0.5px] border-gray-300 border-[1px]")  
-          p(class="text-gray-500 w-full") Here all your planned timeslots. You will find information for each timeslot as well you can planned new one
-          Calendar(ref="calendar" class="mt-8 " @selectDate="selectDate" :dates="date_objs")
-    div#timeslot-right-panel(class="flex w-2/4 flex-col mt-[6rem]")
+          p(v-if="editMode" class="text-gray-500 w-full") Here you can edit your timeslots. You can open or close timeslots for a specific date.
+          p(v-if="!editMode" class="text-gray-500 w-full") Here all your planned timeslots. You will find information for each timeslot as well you can planned new one
+          Calendar(ref="calendar" class="mt-8 " @selectDate="selectDate" :dates="date_objs" :editMode="editMode")
+    div#timeslot-right-panel(v-show="!editMode" class="flex w-2/4 flex-col mt-[6rem]")
         CalendarScheduleSidebar(:class="isScheduleSidebarOpen? '': 'hidden'" class="mt-8")
-        CalendarSchedule(:selectedTimeslot="formatedScheduleDate" class="mt-8" :date="formatUTCDate(selectedDate)")
+        CalendarSchedule( :selectedTimeslot="formatedScheduleDate" class="mt-8" :date="formatUTCDate(selectedDate)")
 </template>
 
 <script setup lang="ts">
 import ArrowIcon from "~icons/material-symbols/chevron-left-rounded";
 import EditIcon from "~icons/ph/pencil";
+
 import CalendarIcon from "~icons/mdi/calendar-week";
 import { useMainStore } from "@/stores/Main";
 import { useUserStore } from "@/stores/User";
@@ -52,6 +54,9 @@ const date_objs = computed(() => {
 
 const calendar = ref();
 const editMode = ref(false);
+if (userStore.getAccountType === "arrow-employee") {
+  editMode.value = true;
+}
 
 const formatCalendarDate = (date: any) => {
   const month = date.toLocaleString("default", { month: "short" });
@@ -102,31 +107,30 @@ const formatScheduleDate = (date: Date) => {
 };
 const formatedScheduleDate = ref(formatScheduleDate(selectedDate.value));
 const formatedCalendarDate = ref(formatCalendarDate(selectedDate.value));
-const currentDate = ref(formatCalendarDate(new Date()));
+const currentDate = ref(new Date());
 
 const nextMonth = () => {
   calendar.value.nextMonth(); //populates calendar with dates
 
-  const _selectedDate = new Date( // for calendar navigation logic
-    selectedDate.value.getFullYear(),
-    selectedDate.value.getMonth() + 1,
-    selectedDate.value.getDate()
+  currentDate.value = new Date( // for calendar navigation logic
+    currentDate.value.getFullYear(),
+    currentDate.value.getMonth() + 1,
+    currentDate.value.getDate()
   );
 
-  formatedCalendarDate.value = formatCalendarDate(_selectedDate);
-  currentDate.value = formatCalendarDate(currentDate);
+  formatedCalendarDate.value = formatCalendarDate(currentDate.value);
+  currentDate;
 };
 
 const previousMonth = () => {
   calendar.value.previousMonth(); //populates calendar with dates
-  const _selectedDate = new Date( // for calendar navigation logic
-    selectedDate.value.getFullYear(),
-    selectedDate.value.getMonth() - 1,
-    selectedDate.value.getDate()
+  currentDate.value = new Date( // for calendar navigation logic
+    currentDate.value.getFullYear(),
+    currentDate.value.getMonth() - 1,
+    currentDate.value.getDate()
   );
 
-  formatedCalendarDate.value = formatCalendarDate(_selectedDate);
-  currentDate.value = formatCalendarDate(currentDate);
+  formatedCalendarDate.value = formatCalendarDate(currentDate.value);
 };
 
 const selectDate = (date: Date) => {

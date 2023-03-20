@@ -71,7 +71,7 @@ export const useUserStore = defineStore("User", {
       this.accountType = account_type;
       this.username = user.username;
       this.email = user.email;
-      this.token = data.token;
+      this.token = data.key;
       this.isLogged = true;
     },
   },
