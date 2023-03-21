@@ -3,7 +3,7 @@ NuxtLink.menu-button(:to="props.to" :class="isActive? 'bg-slate-100': ''" class=
     div(class="flex space-x-2")
         slot(name="icon")
         p {{ props.text }}
-    div(v-if="props.notifications_count" class="h-full w-[2rem] bg-slate-50 flex items-center justify-center rounded-md")
+    div(v-if="props.notifications_count >= 0" class="h-full w-[2rem] bg-slate-50 flex items-center justify-center rounded-md")
         p() {{props.notifications_count}}
     .active-pointer(v-if="isActive" class="absolute -left-[0.6rem]  w-[0.65rem] h-11 bg-violet-600 rounded-r-md")
 

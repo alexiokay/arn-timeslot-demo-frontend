@@ -8,8 +8,6 @@ div#content(class="text-black w-full h-full px-6 py-[0.4rem] flex flex-col justi
 </template>
 
 <script setup lang="ts">
-onMounted(() => {});
-
 definePageMeta({
   middleware: ["redirect-if-not-logged"],
 });

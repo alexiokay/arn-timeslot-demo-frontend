@@ -15,24 +15,22 @@ export const useMainStore = defineStore("mainStore", {
       isLocaleSet: useStorage("isLocaleSet", false),
       isOverlaying: useStorage("isOverlaying", false),
 
-      dates: useStorage("dates", [
-        {
-          id: 24,
-          date: "2023-03-20", //ISO 8601 format - YYYY-MM-DD
-          timeslots: [
-            {
-              id: 52,
-              start_time: "9:00",
-              end_time: "10:00",
-              amount_of_trucks: 0,
-              is_open: true,
-            } as Timeslot,
-          ],
-        },
-      ]),
+      dates: useStorage("dates", []),
+      reservations: [] as any[],
     };
   },
   getters: {
+    getReservations(state) {
+      return state.reservations;
+    },
+    getNewReservations(state) {
+      return state.reservations.filter((reservation) => {
+        return reservation.status === "New";
+      });
+    },
+    getReservation: (state) => (id: number) =>
+      state.reservations.find((reservation) => reservation.id === id),
+
     getIsLocaleSet(state) {
       return state.isLocaleSet;
     },
@@ -89,7 +87,7 @@ export const useMainStore = defineStore("mainStore", {
       const dateIndex = this.dates.findIndex((date) => date.id === dateId);
 
       const timeslotIndex = this.dates[dateIndex].timeslots.findIndex(
-        (timeslot) => timeslot.id === timeslotId
+        (timeslot: Timeslot) => timeslot.id === timeslotId
       );
       const timeslot = this.dates[dateIndex].timeslots[timeslotIndex];
 
@@ -104,6 +102,28 @@ export const useMainStore = defineStore("mainStore", {
     setDates(dates: any) {
       this.dates = dates;
       console.log(this.dates);
+    },
+    setReservations(reservations: any) {
+      this.reservations = reservations;
+    },
+    addReservation(reservation: any) {
+      console.log("adding reservation ");
+      this.reservations.push(reservation);
+    },
+    removeReservation(reservationId: any) {
+      console.log("removing reservation ");
+      const index = this.reservations.findIndex(
+        (reservation) => reservation.id === reservationId
+      );
+      this.reservations.splice(index, 1);
+    },
+    updateReservation(reservation: any) {
+      console.log("updating reservation ");
+      const index = this.reservations.findIndex(
+        (reservation) => reservation.id === reservation.id
+      );
+      this.reservations[index] = reservation;
+      console.log(this.reservations[index]);
     },
   },
   persist: {

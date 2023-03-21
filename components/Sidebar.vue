@@ -9,7 +9,7 @@ div#sidebar(class="w-[20rem] fixed top-0 left-0 h-screen max-h-screen bg-white p
     div#sidebar-content(class="relative w-full h-full flex flex-col justify-between items-start mt-4 space-y-5 rounded-md ")
         
         div(class="w-full h-auto flex flex-col  items-start  space-y-3 px-2")
-            ButtonSidebar(to="/dashboard/requests" text="Requests" :notifications_count="2" )
+            ButtonSidebar(to="/dashboard/requests" text="Requests" :notifications_count="mainStore.getNewReservations?.length" )
                 template(v-slot:icon)
                     InfoIcon(class="w-6 h-6")
             ButtonSidebar(to="/dashboard/notifications" text="Notifications" :notifications_count="1" :is_active="false")
@@ -50,8 +50,10 @@ import ArrowIcon from "~icons/material-symbols/chevron-left-rounded";
 import DashboardIcon from "~icons/ant-design/home-outlined";
 import SettingsIcon from "~icons/material-symbols/settings";
 
+import { useMainStore } from "@/stores/Main";
 import { useUserStore } from "@/stores/User";
 const userStore = useUserStore();
+const mainStore = useMainStore();
 // ------ is's ------ //
 const is_sidebar_open = ref(false);
 </script>

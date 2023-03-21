@@ -7,7 +7,7 @@ div.menu-button(class="w-auto px-2   items-center flex justify-center   h-full  
 const props = defineProps({
   text: {
     type: String,
-    required: true,
+    required: false,
   },
   to: {
     type: String,
