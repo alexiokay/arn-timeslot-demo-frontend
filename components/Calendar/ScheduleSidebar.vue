@@ -15,7 +15,7 @@ Transition(name="slide")
                 p Supplier classification
                 input(class="w-[10rem] border-2 border-black")
             div(class="flex w-full h-auto justify-between ")
-                p Sub contract
+                p Sub contract 
                 input(class="w-[10rem] border-2 border-black")
         div(class="flex flex-col w-full h-auto space-y-2 mt-8 ")
             p ARN supplier
