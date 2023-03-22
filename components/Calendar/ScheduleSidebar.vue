@@ -1,6 +1,6 @@
 <template lang="pug">
 Transition(name="slide")
-    div#schedule-sidebar(v-show="props.isOpen" class="w-[30rem] border-2 border-black h-full fixed top-0 right-0 bg-white rounded-l-xl px-4 py-4")
+    div#schedule-sidebar(v-show="props.isOpen" class="w-[30rem] shadow-md h-full fixed top-0 right-0 bg-white rounded-l-xl px-4 py-4")
         button.close-button(class="w-[2rem] h-[2rem] rounded-full bg-gray-100 flex items-center justify-center")
             CloseIcon(class="w-6 h-6 text-gray-600")
         p(@click="mainStore.setTimeslot(24,52)") {{$props.date}}

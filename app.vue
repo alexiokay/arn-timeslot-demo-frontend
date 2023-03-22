@@ -15,7 +15,10 @@ import { useUserStore } from "@/stores/User";
 const userStore = useUserStore();
 const mainStore = useMainStore();
 const route = useRoute();
-if (userStore.getIsLogged && route.path !== "/") {
+
+// if user is logged in and route is not login
+// TODO: if dates alraedy exists in mainStore, dont fetch them again (data must be se)
+if (userStore.getIsLogged && route.path !== "/" && route.path !== "/register") {
   const dates = await getDates();
   mainStore.setDates(dates);
   if (userStore.getAccountType === "arrow-employee") {

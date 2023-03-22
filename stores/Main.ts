@@ -111,19 +111,30 @@ export const useMainStore = defineStore("mainStore", {
       this.reservations.push(reservation);
     },
     removeReservation(reservationId: any) {
-      console.log("removing reservation ");
-      const index = this.reservations.findIndex(
-        (reservation) => reservation.id === reservationId
-      );
-      this.reservations.splice(index, 1);
+      try {
+        const index = this.reservations.findIndex(
+          (reservation) => reservation.id === reservationId
+        );
+        this.reservations.splice(index, 1);
+        console.log("removed reservation ");
+      } catch (error) {
+        console.log(error);
+        console.log("couldn't remove reservation ");
+      }
     },
     updateReservation(reservation: any) {
       console.log("updating reservation ");
-      const index = this.reservations.findIndex(
-        (reservation) => reservation.id === reservation.id
-      );
-      this.reservations[index] = reservation;
-      console.log(this.reservations[index]);
+      try {
+        const index = this.reservations.findIndex(
+          (reservation) => reservation.id === reservation.id
+        );
+        this.reservations[index] = reservation;
+        console.log(this.reservations[index]);
+        console.log("updated reservation ");
+      } catch (error) {
+        console.log(error);
+        console.log("couldn't update reservation ");
+      }
     },
   },
   persist: {

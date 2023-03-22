@@ -11,7 +11,7 @@ export const getNewReservations = async () => {
     },
   } as any;
   const reservations = await useFetch(
-    `${config.API_URL}api/v1/get_all_new_reservations`,
+    `${config.API_URL}api/v1/get_all_reservations`,
     options
   ).then((res) => {
     const data: any = res.data.value;

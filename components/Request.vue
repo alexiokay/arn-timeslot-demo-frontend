@@ -15,17 +15,52 @@ div.request(class=" h-[15rem] bg-white rounded-lg  flex flex-col justify-start p
                 p(class="text-base  text-gray-800") boxes count
                 p(class="text-lg font-semibold") {{ props.reservation.cartons_count }}
             div.request-reservation-parameter(class="w-full  items-start justify-start flex flex-col")
-                p(class="text-base  text-gray-800") boxes count
-                p(class="text-lg font-semibold") {{ props.reservation.cartons_count }}
+                p(class="text-base  text-gray-800") pallets count
+                p(class="text-lg font-semibold") {{ props.reservation.pallets_count }}
+        div(class="relative flex w-4/6 select-none")
+            nuxt-img(src="/images/truck3.png" format="webp" class="w-full pointer-events-none ")
+            div.truck-loading(:style="'width:'+CalculateTruckFillingPercent(props.reservation)*0.6+'%'" :class="{ 'bg-[#45C070]': isLowCap(), 'bg-[#F7B500]': isMediumCap() , 'bg-[#D84E5F]':isHighCap()}" class=" absolute  z-20 top-[4.8%] left-[37.3%]  h-[61.5%] overflow-hidden")
+                
+            div(class="absolute top-[4.8%] left-[37.3%] w-[60%] h-[61.5%] overflow-hidden bg-white")
+                nuxt-img(src="/images/truck-lines.png" class="absolute invert z-20 opacity-20 -top-[45%] -left-[1.5%] w-[100%] h-[200%] rotate-[28deg] pointer-events-none")
 </template>
 
 <script setup lang="ts">
+import { is } from "@babel/types";
+
 const props = defineProps({
   reservation: {
     type: Object,
     required: true,
   },
 });
+
+const isHighCap = () => {
+  if (CalculateTruckFillingPercent(props.reservation) >= 66) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const isMediumCap = () => {
+  if (
+    CalculateTruckFillingPercent(props.reservation) >= 34 &&
+    CalculateTruckFillingPercent(props.reservation) <= 65
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const isLowCap = () => {
+  if (CalculateTruckFillingPercent(props.reservation) <= 33) {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 const CalculateTruckFillingPercent = (reservation: any) => {
   const pallets_count = reservation.pallets_count;
@@ -43,9 +78,9 @@ const CalculateTruckFillingPercent = (reservation: any) => {
 
   // check if the percentage is NaN
   if (isNaN(truck_percentage)) {
-    return 0;
+    return 100;
   } else {
-    return truck_percentage;
+    return truck_percentage * 100;
   }
 };
 </script>
