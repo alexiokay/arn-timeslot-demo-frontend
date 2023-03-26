@@ -15,7 +15,10 @@ div(class=" w-full md:h-screen  flex flex-col lg:flex-row  ")
             p(class="font-roboto text-center") Arrow's Employee
           
     div(class="flex lg:w-5/6 xl:w-3/4 flex-col md:px-8 items-center space-y-6 w-full h-full justify-start mb-32 mt-4")
-      
+      div.carrier( v-if="!isArrowEmployee" class="w-full")
+        p(class="font-roboto") Carrier
+        select(v-model="carrier" class="w-full h-10 border-2 border-gray-300 rounded-lg px-2")
+          option(v-for="carrier in carriers.carriers" :value="carrier.name" :class="carrier.is_activated? '': 'hidden'") {{carrier.name}}
       div.email(class=" w-full")
         p(class="font-roboto") Email
         input(@keydown.enter="login" type="text" v-model="email" class="w-full h-10 border-2 border-gray-300 rounded-lg px-2")
@@ -32,7 +35,8 @@ div(class=" w-full md:h-screen  flex flex-col lg:flex-row  ")
         p(class="font-roboto hover:cursor-pointer") Forgot password?
       button.login-button(@click="login" class="w-full h-10 bg-black text-white rounded-lg") Login
       p(class="absolute bottom-6 text-lg") Dont have an account? 
-        NuxtLink(to="/signup" class="font-semibold hover:cursor-pointer") Sign up
+        span(@click="router.push(`/signup/${isArrowEmployee? 'arrow': 'carrier'}`)" class="font-semibold hover:cursor-pointer") Sign up as 
+          span(class=" underline") {{ isArrowEmployee? "Arrow's Employee": "Carrier" }}
   nuxt-img(src="https://www.arrow.com/company/wp-content/uploads/2022/08/Venlo-5.png" class="xl:w-[55%] lg:w-[50%] w-full h-[100vh] object-cover" format="webp")
 </template>
 
@@ -65,23 +69,7 @@ const message = ref();
 const { data: messageData } = await useFetch("api/test");
 message.value = messageData.value;
 
-//x-nf-client-connection-ip
-//
-//const locationModal = resolveComponent("ModalLocation");
-//mainStore.value = useMainStore();
-//mainStore.value.initialize(); //
-
-// console.log(mainStore.value.getIsLocaleSet);
-
-// if (mainStore.value.getIsLocaleSet === false) {
-//   // opening location modal if user hasn't set locale yet
-//   islocationModal.value = true;
-// } else {
-//   islocationModal.value = false;
-// }
-
-//const localeSetting = useState<string>("locale.setting");
-
+const carriers = await getCarriers();
 // ------------------ is's ------------------ //
 const is_password_visible = ref(false);
 const islocationModal = ref();
@@ -90,29 +78,39 @@ const isArrowEmployee = ref(
 );
 const email = ref();
 const password = ref();
+const carrier = ref();
 console.log(islocationModal.value);
 
 const login = async () => {
-  await fetch(`${config.API_URL}auth/login/`, {
+  const body = isArrowEmployee.value
+    ? {
+        email: `${email.value}`,
+        password: `${password.value}`,
+      }
+    : {
+        email: `${email.value}`,
+        password: `${password.value}`,
+        carrier: `${carrier.value}`,
+      };
+
+  const url = isArrowEmployee.value
+    ? `${config.API_URL}auth/login/arrow`
+    : `${config.API_URL}auth/login/carrier`;
+  await fetch(url, {
     method: "POST",
     headers: {
       "content-Type": "application/json",
       Host: `${config.HOST}`,
     },
-    body: JSON.stringify({
-      email: `${email.value}`,
-      password: `${password.value}`,
-    }),
+    body: JSON.stringify(body),
   })
-    .then((res) => {
-      if (res.status === 200) {
-        return res.json();
-      } else {
-        throw new Error("Something went wrong");
-      }
-    })
+    .then((res) => res.json())
     .then((data) => {
       console.log(data);
+      if (data.non_field_errors) {
+        alert(data.non_field_errors[0]);
+        return;
+      }
       userStore.setUser(data);
       //console.log("saved: ", userStore.getUser);
       router.push("/dashboard");

@@ -19,7 +19,7 @@ div(class="flex gap-x-[5rem]")
                 hr(class="absolute top-[1.7rem] right-0 w-[1.3rem] h-[0.5px] border-gray-300 border-[1px]")
               div(@click="editMode = !editMode" v-if="userStore.getAccountType === 'arrow-employee'" :class="{'text-blue-600': editMode}" class="absolute flex w-auto right-8 items-center justify-end ")
                 EditIcon(class="hover:cursor-pointer")
-                hr(class="absolute top-[1.7rem] right-0 w-[1.3rem] h-[0.5px] border-gray-300 border-[1px]")  
+                hr(class="absolute top-[1.7rem] right-0 w-[1.3rem] h-[0.5px] border-gray-300 border-[1px]")
           p(v-if="editMode" class="text-gray-500 w-full") Here you can edit your timeslots. You can open or close timeslots for a specific date.
           p(v-if="!editMode" class="text-gray-500 w-full") Here all your planned timeslots. You will find information for each timeslot as well you can planned new one
           Calendar(ref="calendar" class="mt-8 " @selectDate="selectDate" :dates="date_objs" :editMode="editMode")

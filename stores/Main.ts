@@ -15,7 +15,7 @@ export const useMainStore = defineStore("mainStore", {
       isLocaleSet: useStorage("isLocaleSet", false),
       isOverlaying: useStorage("isOverlaying", false),
 
-      dates: useStorage("dates", []),
+      dates: useStorage("dates", [] as any[]),
       reservations: [] as any[],
     };
   },
@@ -135,6 +135,14 @@ export const useMainStore = defineStore("mainStore", {
         console.log(error);
         console.log("couldn't update reservation ");
       }
+    },
+    openDay(id: number) {
+      const index = this.dates.findIndex((date) => date.id === id);
+      this.dates[index].is_open = true;
+    },
+    closeDay(id: number) {
+      const index = this.dates.findIndex((date) => date.id === id);
+      this.dates[index].is_open = false;
     },
   },
   persist: {

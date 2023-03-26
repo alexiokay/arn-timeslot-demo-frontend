@@ -27,6 +27,6 @@ export const getDates = async () => {
       }
     }
   );
-  console.log(dates);
+
   return dates;
 };

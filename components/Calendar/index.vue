@@ -27,8 +27,10 @@ div.calendar(class="flex flex-col w-full h-auto")
 </template>
 
 <script setup lang="ts">
+import { useMainStore } from "@/stores/Main";
 import { useUserStore } from "@/stores/User";
 const userStore = useUserStore();
+const mainStore = useMainStore();
 const date = new Date();
 let selectedYear = date.getFullYear();
 let selectedMonth = date.getMonth();
@@ -228,11 +230,13 @@ const lockUnlockDate = (day: DateObject) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.message);
+        console.log(data.message + day.date);
         if (data.message === "Day Unlocked.") {
           day.is_open = true;
+          mainStore.openDay(day.id);
         } else if (data.message === "Day locked.") {
           day.is_open = false;
+          mainStore.closeDay(day.id);
         }
       })
       .catch((err) => {
