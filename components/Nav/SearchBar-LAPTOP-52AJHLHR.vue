@@ -1,5 +1,5 @@
 <template lang="pug">
-div#searchbar(@click="focusNavbar"  class="flex items-center justify-start text-xl space-x-3 ")
+div#searchbar(@click="focusNavbar"  class="flex items-center justify-start text-xl space-x-3 " )
     SearchIcon(class="w-8 h-8 text-black")
     input(type="text" class="w-full h-full pl-2 text-gray-500 focus:text-black focus:outline-none focus:ring-0 focus:border-0" placeholder="Search")
 </template>

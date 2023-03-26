@@ -1,5 +1,5 @@
 <template lang="pug">
-div.settings-panel(class="w-full flex flex-col justify-start items-start")
+div.settings-panel(class="w-full flex flex-col justify-start p-2 border-2 border-gray-200 items-start bg-white rounded-lg -mt-[0.3rem] ")
     h2(class="text-xl font-semibold") {{ props.title }}
     p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus auctor ligula, non pulvinar nisi vehicula non.
     p Suspendisse consectetur tincidunt est, id venenatis mi convallis sit amet

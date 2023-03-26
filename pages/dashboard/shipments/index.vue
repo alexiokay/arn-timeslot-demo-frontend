@@ -1,7 +1,7 @@
 <template lang="pug">
 div#shipments(class="text-black w-full h-full px-6 py-[0.4rem] flex flex-row flex-wrap gap-y-[2rem] justify-between items-center")
     
-    Searchbar
+    Searchbar(:datepicker="true" placeholder="Search by tracking number" class="w-full")
     div#shipments-menu(class="w-full flex")
         div(class="flex space-x-2 items-center justify-start ")
             h1(class="text-xl w-auto font-semibold mr-[1.5rem]") Shipments

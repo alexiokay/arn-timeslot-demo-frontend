@@ -1,10 +1,14 @@
 <template lang="pug">
-div.settings(class="w-full h-full flex flex-col space-y-4")
+div.settings(class="w-full h-full flex flex-col px-4")
     NuxtLink(to="/dashboard" class="text-blue-700 hover:underline flex font-semibold  items-center space-x-2") 
-        ArrowIcon(class=" rotate-180")
-        span Back to Dashboard
-    h1(class="text-3xl text-black font-semibold") Settings
-    div#settings-menu(class="max-w-min space-x-2 p-[3px] h-[3rem] border-2 rounded-xl border-gray-200 items-center flex justify-start ")
+      ArrowIcon(class=" rotate-180")
+      span Back to Dashboard
+        
+    h1(class="text-3xl text-black font-semibold mt-4 flex space-x-3 items-center") 
+
+        p Settings
+    hr(class="w-full border-gray-300 my-4 ")
+    div#settings-menu(class="w-full space-x-2  h-[3rem]  items-center flex justify-start ")
         ButtonMenu(v-for="item in menu" :text="item.text"  :is_active='item.is_active' @setActive="setActive(item)")
     SettingsPanel(v-if="menu[0].is_active" :title="menu[0].text" @save="is_modal_open = true")
     SettingsArrow(v-if="menu[menu.length-1].is_active" :title="menu[menu.length-1].text" @save="is_modal_open = true")
