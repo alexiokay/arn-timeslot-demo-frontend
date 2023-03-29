@@ -19,13 +19,13 @@ div
 
         <!-- Modal body -->
         <div class="p-6 space-y-6 overflow-y-auto h-full sm:h-[60vh] justify-center items-center flex flex-col w-[30rem]">
+            div(class="w-full flex")
+              p(class="text-base leading-relaxed text-gray-500 dark:text-gray-400") email: 
+              p(class="text-base leading-relaxed text-gray-500 dark:text-gray-400") {{user? user.email: ''}}
             input( class="w-full rounded-full text-start p-2 px-4 h-[2.8rem] border-[1px] border-gray-300" :value="user? user.username: ''" type="text" placeholder="Imię i nazwisko lub nazwa firmy")
-            input( class="w-full rounded-full text-start p-2 px-4 h-[2.8rem] border-[1px] border-gray-300" type="text" placeholder="Street Address")
-            input( class="w-full rounded-full text-start p-2 px-4 h-[2.8rem] border-[1px] border-gray-300" type="text" placeholder="Zip code")
-            input( class="w-full rounded-full text-start p-2 px-4 h-[2.8rem] border-[1px] border-gray-300" type="text" placeholder="City")
-            input( class="w-full rounded-full text-start p-2 px-4 h-[2.8rem] border-[1px] border-gray-300" type="text" placeholder="Country")
-            input(class="w-full rounded-full text-start p-2 px-4 h-[2.8rem] border-[1px] border-gray-300" type="text" placeholder="Phone number")
-            input( class="w-full rounded-full text-start p-2 px-4 h-[2.8rem] border-[1px] border-gray-300" type="text" placeholder="E-mail")
+            div(class="flex space-x-2 w-full")
+              input( class="w-full rounded-full text-start p-2 px-4 h-[2.8rem] border-[1px] border-gray-300" type="text" placeholder="City")
+              input( class="w-full rounded-full text-start p-2 px-4 h-[2.8rem] border-[1px] border-gray-300" type="text" placeholder="State")
             <p hidden class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                 p(hidden) The European Unions General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
             </p>

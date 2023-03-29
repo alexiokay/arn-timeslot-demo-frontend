@@ -3,7 +3,7 @@ export const getCarriers = async () => {
   const options = {
     method: "GET",
     headers: {
-      Host: `${config.HOST}`,
+      Host: `${config.FETCH_HOST}`,
     },
   } as any;
   const carriers = await useFetch(

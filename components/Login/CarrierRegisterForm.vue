@@ -133,7 +133,7 @@ const registerCarrier = async () => {
     method: "POST",
     headers: {
       "content-Type": "application/json",
-      Host: `${config.HOST}`,
+      Host: `${config.FETCH_HOST}`,
     },
     body: JSON.stringify({
       email: `${email.value}`,

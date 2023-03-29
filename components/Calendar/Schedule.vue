@@ -1,12 +1,12 @@
 <template lang="pug">
 div.schedule(class="flex flex-col w-full h-auto ")
   
-    CalendarScheduleSidebar(:isOpen="isScheduleSidebarOpen" class="" :date="props.date" :timeslots="timeslots")
+    CalendarScheduleSidebar(:isOpen="isScheduleSidebarOpen" class="" :date="props.date" :timeslots="timeslots" :timeslot="selectedTimeslot")
     p.schedule-title(class="flex w-full h-[4rem] justify-between text-center items-start")
         span(class="text-lg text-center rounded-lg flex items-center justify-center") {{props.date}}
     hr(class="w-full h-[2.5px] bg-black")
     div(class="overflow-auto ")
-        div(class="flex  w-auto items-center py-5 " v-for="timeslot in timeslots")
+        div(@click="selectedTimeslot=timeslot" class="flex  w-auto items-center py-5 " v-for="timeslot in timeslots")
             div(class="flex flex-col w-4/5" )
                 p(class="text-3xl font-semibold") {{timeslot?.start_time}} - {{timeslot?.end_time}}
                 p trucks left: {{ timeslot?.trucks_left }}
@@ -35,7 +35,7 @@ const props = defineProps({
 
 const timeslots = computed(() => mainStore.getTimeslotsByDate(props.date));
 console.log(timeslots.value);
-
+const selectedTimeslot = ref();
 const isScheduleSidebarOpen = ref(false);
 
 //TODO! Fetch timeslots for selected date (close? litimed hours?) from arrow's settings

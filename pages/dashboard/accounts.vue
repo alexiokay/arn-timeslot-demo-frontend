@@ -8,6 +8,7 @@ div.settings(class="w-full h-full flex flex-col   px-4")
     h1(class="text-3xl text-black font-semibold mt-4 flex space-x-3 items-center") 
         AccountsIcon
         p Accounts
+    p(class="mt-2 text-gray-800 w-3/4") Find all your carrier and Arrow employee contacts in one place with our convenient 'accounts' page. Stay connected and manage your network with ease. Explore our directory of contacts to simplify communication streamline and add or activate new users .
     hr(class="w-full border-gray-300 my-4 ")
     div#accounts-menu(class="w-full space-x-2  h-[3rem]  items-center flex justify-start ")
         ButtonMenu(v-for="item in menu" :text="item.text"  :is_active='item.is_active' @setActive="setActive(item)")
@@ -20,9 +21,9 @@ div.settings(class="w-full h-full flex flex-col   px-4")
                     option(value="oldest") Oldest
             div#shipments-menu-sorting(class="  px-2 flex items-center justify-center space-x-2 w-auto h-[2.5rem] rounded-lg bg-white text-black")
                 p(class="text-sm") Filter:
-                select#sorting(class="w-auto h-[2.5rem] focus:border-0 focus:outline-none text-black")
-                    option(value="newest") Newest
-                    option(value="oldest") Oldest
+                select#filter(class="w-auto h-[2.5rem] focus:border-0 focus:outline-none text-black" v-model="choosedFilter")
+                    option(value="") All
+                    option(v-for="carrier in filters" :value="carrier.name") {{ carrier.name }}
             Searchbar(class="ml-3 h-[2.5rem] w-1/3" :datepicker="false" placeholder="Search by name or email")
             button(class=" border-2 border-gray-200 h-[2.5rem] rounded-md px-6 py-1 ml-auto font-semibold hover:bg-blue-400 hover:text-white mb-2") Add Account
         div(class="rounded-lg  border-2")
@@ -35,16 +36,20 @@ div.settings(class="w-full h-full flex flex-col   px-4")
                         th(class="px-4 py-2 border-r w-[20%]") is activated
                         th(class="px-4 py-2 w-[10%]") Actions
                 tbody(class="")
-                    tr(v-for="(account, index) in filteredAccounts" :key="account" class="border-t " :id="detectEndOfList(index)")
+                    tr(v-if="filteredAccounts.length <=0" id="end-of-list") 
+                      
+                    tr(v-else v-for="(account, index) in filteredAccounts" :key="account" class="border-t " :id="detectEndOfList(index)")
                         td(class="border-r px-3 py-2 text-center bg-gray-100 ") {{ account.id }}
                             
                         td(class="border-r px-4 py-2 flex space-x-2") 
                             img(class="w-8 h-8 rounded-full" :src="account.avatar")
                             p {{ account.username }}
                         td(class="border-r px-4 py-2") {{ account.email }}
-                        td(class="border-r px-4 py-2") {{ account.is_activated? 'Yes' : 'No'}}
+                        td(class="border-r px-4 py-2") 
+                          button.activate-account(v-if="account.is_activated && canUserActivate(account)" @click="activateAccount(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Deactivate
+                          button.activate-account(v-if=" !account.is_activated && canUserActivate(account)" @click="activateAccount(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Activate
                         td(class=" px-4 py-2 flex justify-center") 
-                            button(@click="editUser(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Edit
+                            button(v-if="canUserEdit(account)" @click="editUser(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Edit
 
     ModalSaving(:isOpen="is_modal_open" @close="is_modal_open = false" )
 </template>
@@ -65,10 +70,26 @@ const editUser = (user: any) => {
 };
 const config = useRuntimeConfig();
 const userStore = useUserStore();
+const canUserEdit = (account: any) => {
+  return (
+    (userStore.accountType === "carrier" && account.is_carrier) ||
+    userStore.accountType === "arrow-employee"
+  );
+};
+
+const canUserActivate = (account: any) => {
+  return (
+    (userStore.accountType === "carrier" &&
+      account.is_carrier &&
+      userStore.role.shortname === "manager") ||
+    userStore.accountType === "arrow-employee"
+  );
+};
+
 const options = {
   method: "GET",
   headers: {
-    Host: `${config.HOST}`,
+    Host: `${config.FETCH_HOST}`,
     Authorization: `Token ${userStore.getToken}`,
   },
 };
@@ -88,17 +109,30 @@ const getAccounts = async () => {
 const accounts = ref(await getAccounts());
 
 const filteredAccounts = computed(() => {
+  let _filteredAccounts: any = null;
   if (menu.value[0].is_active) {
-    return accounts.value;
+    _filteredAccounts = accounts.value;
   } else if (menu.value[1].is_active) {
-    return accounts.value.filter(
-      (account: any) => account.is_ArrowEmployee === false
+    // carriers
+    _filteredAccounts = accounts.value.filter(
+      (account: any) => account.is_carrier === true
     );
+
+    if (choosedFilter.value) {
+      _filteredAccounts = _filteredAccounts.filter(
+        (carrier: any) =>
+          carrier.member.carrier_family.name === choosedFilter.value
+      );
+    }
   } else if (menu.value[2].is_active) {
-    return accounts.value.filter(
+    _filteredAccounts = accounts.value.filter(
       (account: any) => account.is_ArrowEmployee === true
     );
   }
+
+  // filter by filters
+
+  return _filteredAccounts;
 });
 
 interface MenuItem {
@@ -122,7 +156,26 @@ const menu: Ref<MenuItem[]> = ref([
     is_active: false,
   },
 ]);
+const carriers = ref();
+carriers.value = await getCarriers();
 
+const choosedFilter = ref();
+const filters = computed(() => {
+  // all users
+  if (menu.value[0].is_active) {
+    return [];
+  }
+
+  if (menu.value[1].is_active) {
+    // carriers
+    return carriers.value.carriers.filter((carrier: any) => {
+      return carrier.is_activated === true;
+    });
+  } else if (menu.value[2].is_active) {
+    // Arrow
+    return [];
+  }
+});
 if (userStore.getAccountType === "arrow-employee") {
   menu.value.push({
     text: "Arrow",
@@ -148,6 +201,18 @@ onMounted(() => {
       endOfList.value = document.getElementById("end-of-list") as HTMLElement;
       observer.observe(endOfList.value);
       console.log("set new target for observer");
+    }
+  );
+
+  watch(
+    () => (menu.value[0].is_active, menu.value[1].is_active),
+    () => {
+      setTimeout(() => {
+        observer.unobserve(endOfList.value);
+        endOfList.value = document.getElementById("end-of-list") as HTMLElement;
+        observer.observe(endOfList.value);
+        console.log("set new target for observer");
+      }, 200);
     }
   );
 

@@ -6,7 +6,7 @@ export const getNewReservations = async () => {
   const options = {
     method: "GET",
     headers: {
-      Host: `${config.HOST}`,
+      Host: `${config.FETCH_HOST}`,
       Authorization: `Token ${userStore.getToken}`,
     },
   } as any;

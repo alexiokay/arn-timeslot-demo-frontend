@@ -221,7 +221,7 @@ const lockUnlockDate = (day: DateObject) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Host: `${config.HOST}`,
+        Host: `${config.FETCH_HOST}`,
         Authorization: `Token ${userStore.getToken}`,
       },
       body: JSON.stringify({

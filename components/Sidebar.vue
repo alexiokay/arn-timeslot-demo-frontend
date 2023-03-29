@@ -2,7 +2,7 @@
 div#sidebar(class="w-[20rem] fixed top-0 left-0 h-screen max-h-screen bg-white px-2 py-4 rounded-r-xl text-black items-center flex flex-col")
     div#sidebar-header(class="relative w-full px-3 flex flex-col h-auto justify-between items-start")
         nuxt-img(src="images/arrow-logo-2.png" width="150" height="30" format="webp" class="")
-        h1(class="text-lg ") Carrier's  Workspace
+        h1(class="text-lg ") {{ userStore.accountType === 'arrow-employee' ? 'Arrow`s  Workspace' : 'Carrier`s  Workspace' }}
     div#sidebar-toggle(class="absolute top-1 -right-7 p-2 w-11 h-11 rounded-full bg-[#FAF9FC] flex flex-row justify-center items-center")
         div(@click="is_sidebar_open = !is_sidebar_open" class=" hover:cursor-pointer w-full h-full bg-slate-200 rounded-full")
             ArrowIcon(:class="!is_sidebar_open? 'animate-spinOnceBack': 'animate-spinOnce '" class="w-full h-full  ")
@@ -12,9 +12,9 @@ div#sidebar(class="w-[20rem] fixed top-0 left-0 h-screen max-h-screen bg-white p
             ButtonSidebar(to="/dashboard/shipments" text="Shipments" :notifications_count="mainStore.getNewReservations?.length" )
                 template(v-slot:icon)
                     ShippingIcon(class="w-6 h-6")
-            ButtonSidebar(to="/dashboard/notifications" text="Notifications" :notifications_count="1" :is_active="false")
-                template(v-slot:icon)
-                    NotificationIcon(class="w-6 h-6")
+            //- ButtonSidebar(to="/dashboard/notifications" text="Notifications" :notifications_count="1" :is_active="false")
+            //-     template(v-slot:icon)
+            //-         NotificationIcon(class="w-6 h-6")
         hr(class="w-full  border-gray-300 " )
         div(class="w-full h-full scroll-smooth no-scrollbar  flex flex-col px-2  items-start mt-4 space-y-3")
             ButtonSidebar(text="Dashboard" to="/dashboard" :notifications_count="2" )

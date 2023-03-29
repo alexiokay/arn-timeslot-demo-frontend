@@ -89,7 +89,7 @@ const save = async () => {
   await fetch(`${config.API_URL}api/v1/arrows_settings/`, {
     method: "POST",
     headers: {
-      Host: `${config.HOST}`,
+      Host: `${config.FETCH_HOST}`,
       Authorization: `${userStore.token}`,
     },
     body: JSON.stringify({

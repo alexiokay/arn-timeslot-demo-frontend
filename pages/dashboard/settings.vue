@@ -11,7 +11,7 @@ div.settings(class="w-full h-full flex flex-col px-4")
     div#settings-menu(class="w-full space-x-2  h-[3rem]  items-center flex justify-start ")
         ButtonMenu(v-for="item in menu" :text="item.text"  :is_active='item.is_active' @setActive="setActive(item)")
     SettingsPanel(v-if="menu[0].is_active" :title="menu[0].text" @save="is_modal_open = true")
-    SettingsArrow(v-if="menu[menu.length-1].is_active" :title="menu[menu.length-1].text" @save="is_modal_open = true")
+    SettingsArrow(v-if="menu[menu.length-1].is_active && userStore.accountType === 'arrow-employee'" :title="menu[menu.length-1].text" @save="is_modal_open = true")
 
 
     ModalSaving(:isOpen="is_modal_open" @close="is_modal_open = false" )
