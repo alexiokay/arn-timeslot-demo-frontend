@@ -5,7 +5,7 @@ import uniqid from "uniqid";
 import { useStorage } from "@vueuse/core";
 import { Timeslot } from "@/types/timeslot";
 const pinia = createPinia();
-
+import { useUserStore } from "./User";
 export const useMainStore = defineStore("mainStore", {
   state: () => {
     return {
@@ -51,7 +51,7 @@ export const useMainStore = defineStore("mainStore", {
       };
     },
 
-    getTimeslotsByDate: (state) => {
+    getTimeslotsByDate: async (state) => {
       return (date: string) => {
         console.log("getting timeslots by date: " + date);
         const new_date = new Date(date).setHours(0, 0, 0, 0);

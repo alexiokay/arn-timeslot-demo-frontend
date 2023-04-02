@@ -4,60 +4,199 @@ div(class="w-full flex flex-col justify-start items-start")
         NuxtLink(to="/dashboard/shipments" class="text-gray-500")  Shipments / 
             span(class="text-violet-600") {{ shipment_id }}
         div(class="flex items-center space-x-3 h-auto mt-2")
-            h1(class="text-xl  font-semibold") {{ shipment.delivery_address }}
-            p(class="text-gray-500")  {{ shipment.Timeslot.date }}, {{ shipment.Timeslot.start_time }}
+            h1(class="text-xl  font-semibold") {{ shipment?.delivery_address }}
+            p(class="text-gray-500")  {{ shipment?.Timeslot?.date }}, {{ shipment?.Timeslot?.start_time }}
     div#shipment-body(class="w-full flex space-x-4 mt-4")
         div#shipment-body-left(class="flex flex-col w-1/2 h-auto bg-white rounded-lg space-y-4 p-4")
-                p(class="text-xl font-semibold") Shipment Details
+               
+                p(class="text-xl font-semibold w-full") Shipment Details 
+                    
+                div(class="flex")
+                    div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
+                        p(class="text-sm text-gray-500") Shipment ID
+                        p(class="text-lg font-semibold") {{ shipment_id }}
 
-                div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
-                    p(class="text-sm text-gray-500") Shipment ID
-                    p(class="text-lg font-semibold") {{ shipment_id }}
-
-                div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
-                    p(class="text-sm text-gray-500") Shipment type
-                    p(class="text-lg font-semibold") Air
-                div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
-                    p(class="text-sm text-gray-500") Shipment origin
-                    p(class="text-lg font-semibold") {{ shipment_id }}
-                div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
-                    p(class="text-sm text-gray-500") Shipment destination
-                    p(class="text-lg font-semibold") {{ shipment.delivery_address }}
-                div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
-                    p(class="text-sm text-gray-500") Shipment weight
-                    p(class="text-lg font-semibold") {{ shipment.weight }}
-                div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
-                    p(class="text-sm text-gray-500") Pallets count
-                    p(class="text-lg font-semibold") {{ shipment.pallets_count }}
-                div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
-                    p(class="text-sm text-gray-500") Cartoons count
-                    p(class="text-lg font-semibold") {{ shipment.crtoons_count }}
+                    div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
+                        p(class="text-sm text-gray-500") Shipment type
+                        p(class="text-lg font-semibold") Air
+                div(class="flex")
+                   
+                    div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
+                        p(class="text-sm text-gray-500") Shipment destination
+                        p(class="text-lg font-semibold") {{ shipment?.delivery_address }}
+                    div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
+                        p(class="text-sm text-gray-500") Shipment weight
+                        p(class="text-lg font-semibold") {{ shipment?.weight }}
+                div(class="flex")
+                    div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
+                        p(class="text-sm text-gray-500") Pallets count
+                        
+               
+                        p(v-if="!editMode" class="text-lg font-semibold") {{ shipment?.pallets_count }}
+                        input(v-else type="text" v-model="changingValues.pallets_count"  class="w-[90%] h-10 px-4 border border-gray-300 rounded-lg focus:outline-none focus:border-violet-600" )
+                    div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
+                        p(class="text-sm text-gray-500") Cartoons count
+          
+                        p(v-if="!editMode" class="text-lg font-semibold") {{ shipment?.cartons_count}}
+                        input(v-else type="text" v-model="changingValues.cartons_count" class="w-[90%] h-10 px-4 border border-gray-300 rounded-lg focus:outline-none focus:border-violet-600" )
         div#shipment-body-right(class="flex flex-col w-1/2 h-auto  rounded-lg space-y-4")
             div(class="flex flex-col justify-start items-start w-full h-auto space-y-2 p-4 bg-white rounded-lg")
                 p(class="text-xl font-semibold") Status: 
-                    span(class="text-violet-600") {{shipment.status}}
+                    span(class="text-violet-600") {{shipment?.status}}
                 div(class="flex justify-start w-full items-center h-auto space-x-4")
-                    ButtonMenu2(text="Accept" active="true" class="p-5 text-xl")
-                    ButtonMenu2(text="Change" active="true" class="p-5 text-xl bg-yellow-500")
-             
+                    ButtonMenu2(v-if="editMode" @click="saveReservation" text="Save"  class="p-5 text-xl bg-green-500 text-white")
+                    ButtonMenu2(v-if="!editMode" @click="accceptReservation" text="Accept" :active="true" class="p-5 text-xl")
+                    ButtonMenu2(v-if="!editMode" @click="editMode = !editMode" text="Change" :active="true" class="p-5 text-xl bg-yellow-500")
+                    ButtonMenu2(v-else @click="editMode = false" text="Cancel"  class="p-5 text-xl bg-red-500 text-white")
+                    
+            div(class="flex flex-col justify-start items-start w-full h-auto space-y-2 p-4 bg-white rounded-lg")
+                p(class="text-xl font-semibold") Reserved by: 
+                div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
+                    p(class="text-violet-600 hover:cursor-pointer") {{ shipment?.reserved_by}}
+
             div(class="flex flex-col justify-start items-start w-full h-auto space-y-2 p-4 bg-white rounded-lg")
                 p(class="text-xl font-semibold") Suppliers
-                div(v-for="supplier in shipment.suppliers" :key="supplier" class="flex flex-col justify-start items-start w-full h-auto space-y-2")
+                div(v-for="supplier in shipment?.suppliers" :key="supplier" class="flex flex-col justify-start items-start w-full h-auto space-y-2")
                     p(class="text-lg font-semibold") {{ supplier.name }}
+                   
+    <!-- If user is the same which made the reservation and reservation is approved by arrow then show this div -->
+    
+    ModalApproved(:isOpen="isCarrierModalOpenComputed" @accept="accceptReservation" class="w-1/2 h-1/2")
+    p(@click="isCarrierModalOpen = true" class="text-xl font-semibold")  test open modal
 
 </template>
 
 <script setup lang="ts">
 import { useMainStore } from "@/stores/Main";
-
+import { useUserStore } from "@/stores/User";
+const userStore = useUserStore();
 const mainStore = useMainStore();
 const router = useRouter();
 const route = useRoute();
-
+const config = useRuntimeConfig();
 const shipment_id = ref(route.path.split("/")[3]);
-console.log(shipment_id);
 
-const shipment = mainStore.getReservation(Number(shipment_id.value));
+const editMode = ref(false);
+console.log(shipment_id.value);
+
+let shipment: any = null;
+
+const isCarrierModalOpen = ref(true);
+const isCarrierModalOpenComputed = computed(() => {
+  if (
+    userStore.carrier.name === shipment.value.carrier.name &&
+    shipment.value.status === "ARROW_APPROVED"
+  ) {
+    isCarrierModalOpen.value = true;
+    return isCarrierModalOpen.value;
+  } else {
+    return false;
+  }
+});
+
+const fetchShipment = async () => {
+  const options = {
+    method: "GET",
+    headers: {
+      Host: `${config.FETCH_HOST}`,
+      Authorization: `Token ${userStore.getToken}`,
+    },
+  } as any;
+
+  const _shipment = await fetch(
+    `${config.API_URL}api/v1/get_reservation/${shipment_id.value}`,
+    options
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      mainStore.addReservation(data);
+      return data;
+    });
+  return _shipment;
+};
+
+shipment = ref(mainStore.getReservation(Number(shipment_id.value)));
+
+if (!shipment.value) {
+  try {
+    console.log("from api");
+    shipment = await fetchShipment();
+    // set shipment computed to be able to update
+    shipment = computed(() => {
+      return mainStore.reservations.find(
+        (reservation) => reservation.id === Number(shipment_id.value)
+      );
+    });
+  } catch (error) {
+    router.push("/dashboard/shipments");
+    console.log(error);
+  }
+} else {
+  console.log("from store");
+
+  // set shipment computed to be able to update
+  shipment = computed(() => {
+    return mainStore.reservations.find(
+      (reservation) => reservation.id === Number(shipment_id.value)
+    );
+  });
+}
+
+// object needed for v-model to work with web socket
+const changingValues = computed(() => {
+  //setter and getter
+  return {
+    get pallets_count() {
+      return shipment.value.pallets_count;
+    },
+    set pallets_count(value) {
+      shipment.value.pallets_count = value;
+    },
+    get cartons_count() {
+      return shipment.value.cartons_count;
+    },
+    set cartons_count(value) {
+      shipment.value.cartons_count = value;
+    },
+  };
+});
+
+const accceptReservation = () => {
+  //TODO: sending accept to API and it accepts if user is arrowEmployee and status is pending or can be accepted after arrow change by carrier employee
+  console.log("accept");
+  let status = "";
+  if (userStore.accountType === "arrow-employee") {
+    status = "ARROW_APPROVED";
+  } else if (userStore.accountType === "carrier") {
+    status = "CARRIER_APPROVED";
+
+    fetch(
+      `${config.API_URL}api/v1/update_timeslot_reservation/${shipment_id.value}`,
+      useHeaders("PUT", {
+        status: status,
+      })
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+  }
+
+  const saveReservation = () => {
+    fetch(
+      `${config.API_URL}api/v1/update_timeslot_reservation/${shipment_id.value}`,
+      useHeaders("PUT", {
+        pallets_count: changingValues.value.pallets_count,
+        cartons_count: changingValues.value.cartons_count,
+      })
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+    editMode.value = !editMode.value;
+  };
+};
 </script>
 
 <style lang="scss"></style>

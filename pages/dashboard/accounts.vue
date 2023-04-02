@@ -1,5 +1,5 @@
 <template lang="pug">
-div.settings(class="w-full h-full flex flex-col   px-4")
+div.settings(class="w-full h-full flex flex-col  px-4")
     LazyUserEditModal(@close="is_edit_modal = false" :isOpen="is_edit_modal" :user="editingUser")
     NuxtLink(to="/dashboard" class="text-blue-700 hover:underline flex font-semibold  items-center space-x-2") 
         ArrowIcon(class=" rotate-180")
@@ -26,7 +26,7 @@ div.settings(class="w-full h-full flex flex-col   px-4")
                     option(v-for="carrier in filters" :value="carrier.name") {{ carrier.name }}
             Searchbar(class="ml-3 h-[2.5rem] w-1/3" :datepicker="false" placeholder="Search by name or email")
             button(class=" border-2 border-gray-200 h-[2.5rem] rounded-md px-6 py-1 ml-auto font-semibold hover:bg-blue-400 hover:text-white mb-2") Add Account
-        div(class="rounded-lg  border-2")
+        div(class="rounded-lg  border-2 relative")
             table(class=" table-auto w-full") <!--  fixed/auto -->
                 thead(class="border-b-2 border-gray-200")
                     tr  
@@ -50,7 +50,9 @@ div.settings(class="w-full h-full flex flex-col   px-4")
                           button.activate-account(v-if=" !account.is_activated && canUserActivate(account)" @click="activateAccount(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Activate
                         td(class=" px-4 py-2 flex justify-center") 
                             button(v-if="canUserEdit(account)" @click="editUser(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Edit
-
+    div.spinner(v-if="is_fetching_accounts === true" class="absolute bottom-[4rem] z-50 right-[4rem] flex-col  text-lg w-auto h-auto flex items-center justify-center")
+      div(class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-900")
+      p(class="mt-2") Fetching Data ...
     ModalSaving(:isOpen="is_modal_open" @close="is_modal_open = false" )
 </template>
 
@@ -64,6 +66,7 @@ definePageMeta({
 });
 const editingUser = ref();
 const is_edit_modal = ref(false);
+const is_fetching_accounts = ref(false);
 const editUser = (user: any) => {
   is_edit_modal.value = true;
   editingUser.value = user;
@@ -95,6 +98,7 @@ const options = {
 };
 const page = ref(1);
 const getAccounts = async () => {
+  is_fetching_accounts.value = true;
   const accounts = await fetch(
     `${config.API_URL}api/v1/users/?page=${page.value}`,
     options
@@ -103,7 +107,7 @@ const getAccounts = async () => {
     .then((data) => {
       return data.results;
     });
-
+  is_fetching_accounts.value = false;
   return await accounts;
 };
 const accounts = ref(await getAccounts());

@@ -1,5 +1,5 @@
 <template lang="pug">
-div#shipments(class="text-black w-full h-full px-6 py-[0.4rem] flex flex-row flex-wrap gap-y-[2rem] justify-between items-center")
+div#shipments(class="text-black w-full h-full px-6 py-[0.4rem] flex flex-row flex-wrap gap-y-[2rem] space-x-2 justify-start items-center")
     
     Searchbar(:datepicker="true" placeholder="Search by tracking number" class="w-full")
     div#shipments-menu(class="w-full flex")
@@ -9,6 +9,7 @@ div#shipments(class="text-black w-full h-full px-6 py-[0.4rem] flex flex-row fle
             ButtonMenu2(text="Arrival" :active="active_menu == 'arrival'" @click="active_menu = 'arrival'")
             ButtonMenu2(text="Completed" :active="active_menu == 'completed'" @click="active_menu = 'completed'")
             ButtonMenu2(text="Cancelled" :active="active_menu == 'cancelled'" @click="active_menu = 'cancelled'")
+            ButtonMenu2(text="Arrow Changed" :active="active_menu == 'arrow changed'" @click="active_menu = 'arrow changed'")
        
         div#shipments-menu-sorting(class="ml-auto   px-2 flex items-center justify-center space-x-2 w-auto h-[2.5rem] rounded-lg bg-white text-black")
             p(class="text-sm") Sort by:
@@ -16,7 +17,7 @@ div#shipments(class="text-black w-full h-full px-6 py-[0.4rem] flex flex-row fle
                 option(value="newest") Newest
                 option(value="oldest") Oldest
            
-    shipment(@click="router.push({path: `/dashboard/shipments/${reservation.id}`})" class="w-[calc(50%-1rem)]" v-for="reservation in reservations" :key="reservation.id" :reservation="reservation")
+    shipment(@click="router.push({path: `/dashboard/shipments/${reservation.id}`})" class=" w-[calc(50%-1rem)] 2xl:w-[calc(33%-1rem)]" v-for="reservation in reservations" :key="reservation.id" :reservation="reservation")
 
 </template>
 
@@ -40,7 +41,11 @@ const reservations = computed(() => {
         reservation.status == "ARROW_APPROVED" ||
         reservation.status == "CARRIER_APPROVED"
     );
-  else if (active_menu.value == "completed")
+  else if (active_menu.value == "arrow changed") {
+    return mainStore.getReservations.filter(
+      (reservation) => reservation.status == "ARROW_CHANGED"
+    );
+  } else if (active_menu.value == "completed")
     return mainStore.getReservations.filter(
       (reservation) => reservation.status == "Completed"
     );

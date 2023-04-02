@@ -70,7 +70,7 @@ export default defineNuxtConfig({
             " Our logistics management system simplifies your supply chain, allowing you to track shipments, manage carrier accounts, and set up workable times. Arrow's innovative technology optimizes your logistics operations, delivering value and efficiency to your business.",
         },
       ],
-      link: [{ rel: "icon", type: "image/x-icon", href: "images/arrow.ico" }],
+      link: [{ rel: "icon", type: "image/x-icon", href: "/images/arrow.ico" }],
     },
   },
 

@@ -1,21 +1,30 @@
 <template lang="pug">
 div.schedule(class="flex flex-col w-full h-auto ")
   
-    CalendarScheduleSidebar(:isOpen="isScheduleSidebarOpen" class="" :date="props.date" :timeslots="timeslots" :timeslot="selectedTimeslot")
+    CalendarScheduleSidebar(v-if="selectedTimeslot" :isOpen="isScheduleSidebarOpen" class="" :date="props.date" :timeslots="timeslots" :timeslot="selectedTimeslot")
     p.schedule-title(class="flex w-full h-[4rem] justify-between text-center items-start")
         span(class="text-lg text-center rounded-lg flex items-center justify-center") {{props.date}}
     hr(class="w-full h-[2.5px] bg-black")
-    div(class="overflow-auto ")
-        div(@click="selectedTimeslot=timeslot" class="flex  w-auto items-center py-5 " v-for="timeslot in timeslots")
-            div(class="flex flex-col w-4/5" )
+    div(class="overflow-auto relative")
+        div(v-if="is_fetchind_timeslots === false" @click="selectedTimeslot=timeslot" class="flex  w-auto items-center py-5 " v-for="timeslot in timeslots")
+            div(class="flex flex-col w-4/5" ) sda
                 p(class="text-3xl font-semibold") {{timeslot?.start_time}} - {{timeslot?.end_time}}
                 p trucks left: {{ timeslot?.trucks_left }}
             button.book-button(@click="book(timeslot?.id)"  class="w-1/5 h-[3rem] bg-violet-600 text-white rounded-lg") Book
-
+        
+        div(v-else class="")
+          div( class="flex  w-auto items-center py-5 blur-md opacity-0" v-for="i in 24")
+              div(class="flex flex-col w-4/5  " ) sda
+                  p(class="text-3xl font-semibold ") ...
+                  p(class="") trucks left: ...
+              button.book-button(  class="w-1/5 h-[3rem] bg-violet-600 text-white rounded-lg ") Book
+          div.spinner(class="absolute top-[30vh] left-[50%] transform -translate-x-1/2 text-2xl w-full h-auto flex items-center justify-center")
+            div(class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900")
 </template>
 
 <script setup lang="ts">
 import { useMainStore } from "@/stores/Main";
+import { useUserStore } from "@/stores/User";
 import { useSettingsStore } from "@/stores/Settings";
 // import { Timeslot } from "@/types/timeslot";
 import uniqid from "uniqid";
@@ -28,15 +37,70 @@ const props = defineProps({
   },
 });
 
+const is_fetchind_timeslots = ref(false);
+
 // generating empty timeslots for the day in range of workable hours
 
 // timeslots from database
 // const timeslotsData = computed(() => mainStore.getTimeslotsByDate(props.date));
+const userStore = useUserStore();
+const timeslots = ref();
+const get_timeslots = async (date: string) => {
+  is_fetchind_timeslots.value = true;
+  console.log(date);
+  const config = useRuntimeConfig();
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Host: `${config.FETCH_HOST}`,
+      Authorization: `Token ${userStore.getToken}`,
+    },
+    body: JSON.stringify({
+      date: date,
+    }),
+  } as any;
 
-const timeslots = computed(() => mainStore.getTimeslotsByDate(props.date));
-console.log(timeslots.value);
+  const timeslots = await fetch(
+    `${config.API_URL}api/v1/get_date_timeslots`,
+    options
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data.timeslots);
+      return data.timeslots;
+    });
+  return timeslots;
+};
+timeslots.value = await get_timeslots(props.date);
+is_fetchind_timeslots.value = false;
 const selectedTimeslot = ref();
+
+watch(
+  () => props.date,
+  async () => {
+    const new_date = new Date(props.date).toISOString().split("T")[0];
+    console.log(new_date);
+    timeslots.value = await get_timeslots(new_date);
+    is_fetchind_timeslots.value = false;
+  }
+);
+//const timeslots = computed(() => mainStore.getTimeslotsByDate(props.date));
+console.log(timeslots.value);
+
 const isScheduleSidebarOpen = ref(false);
+
+watch(
+  () => isScheduleSidebarOpen.value,
+  (val) => {
+    // block scrolling when sidebar is open
+    if (val) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }
+);
 
 //TODO! Fetch timeslots for selected date (close? litimed hours?) from arrow's settings
 

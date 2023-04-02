@@ -3,7 +3,7 @@ div#timeslot-top-panel(class="flex w-full h-auto")
     
 div(class="flex gap-x-[5rem]")
     
-    div#timeslot-left-panel(class="flex w-2/4 flex-col " :class="{'mt-[0.8rem] pr-[2.9rem] ': editMode}" )
+    div#timeslot-left-panel(class="flex w-2/4 flex-col  " :class="{'mt-[0.8rem] pr-[2.9rem] ': editMode}" )
 
         div(class="flex flex-col space-y-4 sticky top-[2.5rem]")
           div(class="flex items-center relative ")
