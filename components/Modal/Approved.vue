@@ -2,7 +2,7 @@
 div
 
   Transition(name="fade")
-    <div v-show="isOpen" @click="$emit('close')" tabindex="-1" class="fixed top-0 pointer-event-none flex items-center bg-[rgba(0,0,0,0.55)] justify-center left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-screen md:h-full"></div>
+    <div v-show="isOpen" @click="$emit('close')" tabindex="-1" class="backdrop-blur-[2.5px] fixed top-0 pointer-event-none flex items-center  bg-[rgba(0,0,0,0.55)] justify-center left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-screen md:h-full"></div>
   Transition(name="jump")
     div(v-show="isOpen"  class="fixed top-0 pointer-event-none flex items-center  justify-center left-0 right-0 z-50  mx-auto w-[30rem] p-4  md:inset-0 h-screen md:h-full")
       <!-- Modal content -->
@@ -10,7 +10,7 @@ div
         <!-- Modal header -->
         div(class="flex items-center justify-between px-5 py-3 border-b bg-slate-50 rounded-t dark:border-gray-600")
           h3(class="text-xl font-medium text-gray-900 dark:text-white text-center")
-            p Your Shipment Request has been approved by arrow, do you want to make some changes?
+            p Do you really want to save these changes?
 
          
 
@@ -19,8 +19,8 @@ div
         div(class="py-4 px-10 space-y-6 overflow-y-auto h-auto sm:auto w-[40rem]")
           p(class="text-xl font-semibold text-center") 
             .flex.justify-center.w-full.items-center.space-x-3
-                button(@click="$emit('accept')"  class="bg-violet-500 hover:bg-violet-600 text-white px-4 py-2 rounded-lg w-[7rem] text-xl") Accept
-                button(@click="$emit('change')" class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg w-[7rem] text-xl ") Change
+                button.confirm-button(  class="bg-violet-500 hover:bg-violet-600 text-white px-4 py-2 rounded-lg w-[7rem] text-xl") Yes
+                button.cancel-button( class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg w-[7rem] text-xl ") No
                 
           <p hidden class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
             p(hidden) The European Unions General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.

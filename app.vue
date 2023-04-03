@@ -46,6 +46,16 @@ onMounted(() => {
   chatSocket.onclose = function (e: any) {
     console.error("Chat socket closed unexpectedly");
     // interval which try to connect again to the socket
+    let interval: any = null;
+    interval = setInterval(async () => {
+      console.log("Trying to reconnect...");
+      chatSocket = new WebSocket(
+        "ws://127.0.0.1:8001" + "/ws/" + "reservations"
+      );
+      if (chatSocket.readyState === WebSocket.OPEN) {
+        clearInterval(interval);
+      }
+    }, 5000);
   };
 });
 
@@ -53,15 +63,15 @@ AppSetup();
 const locale = useState<string>("locale.setting");
 const app = useAppConfig();
 
-const options = {
-  method: "GET",
-  headers: {
-    Host: `${config.FETCH_HOST}`,
-    Authorization: `Token ${userStore.getToken}`,
-  },
-} as any;
-
 const getSimpleDates = async () => {
+  const options = {
+    method: "GET",
+    headers: {
+      Host: `${config.FETCH_HOST}`,
+      Authorization: `Token ${userStore.getToken}`,
+    },
+  } as any;
+
   return await fetch(`${config.API_URL}api/v1/simple_dates/`, options)
     .then((res) => res.json())
     .then((data) => {
@@ -84,6 +94,22 @@ if (userStore.getIsLogged && route.path !== "/" && route.path !== "/register") {
   const reservations = await getNewReservations();
   mainStore.setReservations(reservations);
 }
+
+watch(
+  () => userStore.getIsLogged,
+  async (val) => {
+    if (val === true) {
+      const dates = await getSimpleDates();
+
+      mainStore.setDates(dates);
+
+      const reservations = await getNewReservations();
+      mainStore.setReservations(reservations);
+
+      console.log("test");
+    }
+  }
+);
 </script>
 
 <style lang="sass">

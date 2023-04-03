@@ -41,7 +41,7 @@ div
               h3(class="text-lg font-semibold text-gray-800 mt-3") Suppliers
               div(class="relative w-full h-auto justify-between space-y-3 overflow-y-scroll max-h-[calc(100vh-35rem)] ")
                
-                  div(v-for="supplier in newReservation.suppliers" :key="supplier.name" class="w-full flex-col h-auto border-[1px] border-gray-700 rounded-lg px-4 py-2 flex gap-x-4")
+                  div(v-for="supplier in newReservation.suppliers" :key="supplier.id" class="w-full flex-col h-auto border-[1px] border-gray-700 rounded-lg px-4 py-2 flex gap-x-4")
                     div(class="flex w-full")
                       p(class="text-lg font-semibold") {{supplier.name}}
                       button.hide(class=" ml-3 w-[2rem] h-[2rem] rounded-full bg-gray-100 flex items-center justify-center")
@@ -58,7 +58,7 @@ div
                  
               div(class="flex items-center space-x-2 mt-4")
                 button(@click="addSupplier" class="min-w-max p-4 flex items-center h-[2.5rem] bg-black text-white ") + Add Supplier
-                select(v-model="newSupplier" class="w-full border-2 h-[2.5rem] p-2 border-black" )
+                select(v-model="newSupplier" class="w-full border-2 h-[2.5rem] p-2 border-black"  )
                   option(v-for="supplier in avalibleSupplierComputed" :value="supplier") {{ supplier.name }}
                  
               div(class="flex  flex-col w-full h-auto justify-start items-start mt-6")
@@ -78,7 +78,7 @@ import { useMainStore } from "@/stores/Main";
 import uniqid from "uniqid";
 const mainStore = useMainStore();
 const userStore = useUserStore();
-const newSupplier = ref();
+
 const avalibleSuppliers = [
   {
     id: uniqid(),
@@ -94,13 +94,6 @@ const avalibleSuppliers = [
   },
 ];
 
-const avalibleSupplierComputed = computed(() => {
-  return avalibleSuppliers.filter((supplier) => {
-    return !newReservation.value.suppliers.find(
-      (supplierInReservation) => supplierInReservation.name === supplier.name
-    );
-  });
-});
 const props = defineProps({
   isOpen: {
     type: Boolean,
@@ -140,8 +133,23 @@ const newReservation = ref({
   comment: "",
 });
 
+const avalibleSupplierComputed = computed(() => {
+  return avalibleSuppliers.filter((supplier) => {
+    return !newReservation.value.suppliers.find(
+      (supplierInReservation) => supplierInReservation.name === supplier.name
+    );
+  });
+});
+const newSupplier = ref(avalibleSupplierComputed.value[0]);
+
 const addSupplier = () => {
-  newReservation.value.suppliers.push(newSupplier.value);
+  const suppliers = newReservation.value.suppliers;
+  if (
+    suppliers.filter((supplier) => supplier.name === newSupplier.value.name)
+      .length > 0
+  )
+    return;
+  else newReservation.value.suppliers.push(newSupplier.value);
 };
 
 const removeSupplier = (supplierId: any) => {

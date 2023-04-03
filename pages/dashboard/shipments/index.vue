@@ -33,13 +33,12 @@ const active_menu = ref("pending");
 const reservations = computed(() => {
   if (active_menu.value == "pending")
     return mainStore.getReservations.filter(
-      (reservation) => reservation.status == "New"
+      (reservation) =>
+        reservation.status == "ARROW_APPROVED" || reservation.status == "New"
     );
   else if (active_menu.value == "arrival")
     return mainStore.getReservations.filter(
-      (reservation) =>
-        reservation.status == "ARROW_APPROVED" ||
-        reservation.status == "CARRIER_APPROVED"
+      (reservation) => reservation.status == "CARRIER_APPROVED"
     );
   else if (active_menu.value == "arrow changed") {
     return mainStore.getReservations.filter(
@@ -47,7 +46,7 @@ const reservations = computed(() => {
     );
   } else if (active_menu.value == "completed")
     return mainStore.getReservations.filter(
-      (reservation) => reservation.status == "Completed"
+      (reservation) => reservation.status == "COMPLETED"
     );
   else if (active_menu.value == "cancelled")
     return mainStore.getReservations.filter(

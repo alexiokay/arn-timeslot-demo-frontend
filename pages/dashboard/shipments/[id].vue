@@ -6,8 +6,9 @@ div(class="w-full flex flex-col justify-start items-start")
         div(class="flex items-center space-x-3 h-auto mt-2")
             h1(class="text-xl  font-semibold") {{ shipment?.delivery_address }}
             p(class="text-gray-500")  {{ shipment?.Timeslot?.date }}, {{ shipment?.Timeslot?.start_time }}
-    div#shipment-body(class="w-full flex space-x-4 mt-4")
-        div#shipment-body-left(class="flex flex-col w-1/2 h-auto bg-white rounded-lg space-y-4 p-4")
+    div#shipment-body(class="w-full flex flex-wrap gap-x-4 mt-4")
+        
+        div#shipment-body-left(class="flex flex-col w-[calc(50%-1rem)] h-auto  bg-white rounded-lg space-y-4 p-4")
                
                 p(class="text-xl font-semibold w-full") Shipment Details 
                     
@@ -39,15 +40,15 @@ div(class="w-full flex flex-col justify-start items-start")
           
                         p(v-if="!editMode" class="text-lg font-semibold") {{ shipment?.cartons_count}}
                         input(v-else type="text" v-model="changingValues.cartons_count" class="w-[90%] h-10 px-4 border border-gray-300 rounded-lg focus:outline-none focus:border-violet-600" )
-        div#shipment-body-right(class="flex flex-col w-1/2 h-auto  rounded-lg space-y-4")
+        div#shipment-body-right(class="flex flex-col w-[calc(50%-1rem)] h-auto  rounded-lg space-y-4")
             div(class="flex flex-col justify-start items-start w-full h-auto space-y-2 p-4 bg-white rounded-lg")
                 p(class="text-xl font-semibold") Status: 
                     span(class="text-violet-600") {{shipment?.status}}
                 div(class="flex justify-start w-full items-center h-auto space-x-4")
                     ButtonMenu2(v-if="editMode" @click="saveReservation" text="Save"  class="p-5 text-xl bg-green-500 text-white")
-                    ButtonMenu2(v-if="!editMode" @click="accceptReservation" text="Accept" :active="true" class="p-5 text-xl")
-                    ButtonMenu2(v-if="!editMode" @click="editMode = !editMode" text="Change" :active="true" class="p-5 text-xl bg-yellow-500")
-                    ButtonMenu2(v-else @click="editMode = false" text="Cancel"  class="p-5 text-xl bg-red-500 text-white")
+                    ButtonMenu2(v-if="!editMode && ((shipment.status === 'ARROW_APPROVED' || shipment.status==='ARROW_CHANGED') && userStore.accountType === 'carrier'  || shipment.status === 'New' && userStore.accountType === 'arrow-employee' )" @click="accceptReservation" text="Accept" :active="true" class="p-5 text-xl")
+                    ButtonMenu2(v-if="!editMode && shipment.status !== 'CARRIER_APPROVED'" @click="editMode = !editMode" text="Change" :active="true" class="p-5 text-xl bg-yellow-500")
+                    ButtonMenu2(v-if="editMode" @click="editMode = false" text="Cancel"  class="p-5 text-xl bg-red-500 text-white")
                     
             div(class="flex flex-col justify-start items-start w-full h-auto space-y-2 p-4 bg-white rounded-lg")
                 p(class="text-xl font-semibold") Reserved by: 
@@ -58,11 +59,15 @@ div(class="w-full flex flex-col justify-start items-start")
                 p(class="text-xl font-semibold") Suppliers
                 div(v-for="supplier in shipment?.suppliers" :key="supplier" class="flex flex-col justify-start items-start w-full h-auto space-y-2")
                     p(class="text-lg font-semibold") {{ supplier.name }}
+        div#shipment-body-s(class="flex flex-col w-full mt-[1rem] h-auto  bg-white rounded-lg space-y-4 p-4")
+          p(class="text-xl font-semibold h-[10rem]") Shipment History
+          p .....
+
                    
     <!-- If user is the same which made the reservation and reservation is approved by arrow then show this div -->
     
-    ModalApproved(:isOpen="isCarrierModalOpenComputed" @accept="accceptReservation" class="w-1/2 h-1/2")
-    p(@click="isCarrierModalOpen = true" class="text-xl font-semibold")  test open modal
+    ModalApproved#confirmationModal(:isOpen="isConfirmationModalOpen" @accept="accceptReservation" class="w-1/2 h-1/2")
+    
 
 </template>
 
@@ -81,18 +86,19 @@ console.log(shipment_id.value);
 
 let shipment: any = null;
 
+const isConfirmationModalOpen = ref(false);
 const isCarrierModalOpen = ref(true);
-const isCarrierModalOpenComputed = computed(() => {
-  if (
-    userStore.carrier.name === shipment.value.carrier.name &&
-    shipment.value.status === "ARROW_APPROVED"
-  ) {
-    isCarrierModalOpen.value = true;
-    return isCarrierModalOpen.value;
-  } else {
-    return false;
-  }
-});
+// const isCarrierModalOpenComputed = computed(() => {
+//   if (
+//     userStore.carrier.name === shipment.value.carrier.name &&
+//     shipment.value.status === "ARROW_APPROVED"
+//   ) {
+//     isCarrierModalOpen.value = true;
+//     return isCarrierModalOpen.value;
+//   } else {
+//     return false;
+//   }
+// });
 
 const fetchShipment = async () => {
   const options = {
@@ -163,13 +169,15 @@ const changingValues = computed(() => {
 
 const accceptReservation = () => {
   //TODO: sending accept to API and it accepts if user is arrowEmployee and status is pending or can be accepted after arrow change by carrier employee
-  console.log("accept");
-  let status = "";
-  if (userStore.accountType === "arrow-employee") {
-    status = "ARROW_APPROVED";
-  } else if (userStore.accountType === "carrier") {
-    status = "CARRIER_APPROVED";
-
+  console.log("accepting");
+  isConfirmationModalOpen.value = true;
+  const confirmationModal = document.getElementById(
+    "confirmationModal"
+  ) as HTMLDivElement;
+  const confirmButton = confirmationModal.querySelector(
+    ".confirm-button"
+  ) as HTMLButtonElement;
+  confirmButton.addEventListener("click", () => {
     fetch(
       `${config.API_URL}api/v1/update_timeslot_reservation/${shipment_id.value}`,
       useHeaders("PUT", {
@@ -179,13 +187,47 @@ const accceptReservation = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        isConfirmationModalOpen.value = false;
       });
+
+    const cancelButton = confirmationModal.querySelector(
+      ".cancel-button"
+    ) as HTMLButtonElement;
+    cancelButton.addEventListener("click", () => {
+      isConfirmationModalOpen.value = false;
+    });
+  });
+
+  let status = "";
+  if (userStore.accountType === "arrow-employee") {
+    status = "ARROW_APPROVED";
+  } else if (userStore.accountType === "carrier") {
+    status = "CARRIER_APPROVED";
+  }
+};
+
+const saveReservation = () => {
+  isConfirmationModalOpen.value = true;
+  let status = "";
+  if (userStore.accountType === "arrow-employee") {
+    status = "ARROW_CHANGED";
+    accceptReservation();
+  } else if (userStore.accountType === "carrier") {
+    status = shipment.value.status;
   }
 
-  const saveReservation = () => {
+  const confirmationModal = document.getElementById(
+    "confirmationModal"
+  ) as HTMLDivElement;
+  const confirmButton = confirmationModal.querySelector(
+    ".confirm-button"
+  ) as HTMLButtonElement;
+
+  confirmButton.addEventListener("click", (e) => {
     fetch(
       `${config.API_URL}api/v1/update_timeslot_reservation/${shipment_id.value}`,
       useHeaders("PUT", {
+        status: status,
         pallets_count: changingValues.value.pallets_count,
         cartons_count: changingValues.value.cartons_count,
       })
@@ -193,9 +235,17 @@ const accceptReservation = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        isConfirmationModalOpen.value = false;
+        editMode.value = false;
       });
-    editMode.value = !editMode.value;
-  };
+  });
+
+  const cancelButton = confirmationModal.querySelector(
+    ".cancel-button"
+  ) as HTMLButtonElement;
+  cancelButton.addEventListener("click", (e) => {
+    isConfirmationModalOpen.value = false;
+  });
 };
 </script>
 
