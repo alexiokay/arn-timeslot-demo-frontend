@@ -31,12 +31,12 @@ SettingsPanel(:title="props.title" @save="save()")
                     input(type="checkbox" v-model="settingsStore.workable_hours.is_saturday_open" class="")
                 div(class="flex  w-full items-center space-x-2")
                     label(data-te-select-label-ref class="w-[3rem]") from:
-                    select(data-te-select-init class="h-[2rem]  w-[4.5rem,] bg-gray-100 p-1" v-model="settingsStore.workable_hours.from")
+                    select(data-te-select-init class="h-[2rem]  w-[4.5rem,] bg-gray-100 p-1" v-model="settingsStore.saturday_workable_hours.from")
                         option(v-for="i in 24" :key="i") {{ i }}:00
                         
                 div(class="flex  w-full items-center justify-start space-x-2")
                     label(data-te-select-label-ref class="w-[3rem]") to:
-                    select(data-te-select-init class="h-[2rem]  w-[4.5rem,] bg-gray-100 p-1" v-model="settingsStore.workable_hours.to")
+                    select(data-te-select-init class="h-[2rem]  w-[4.5rem,] bg-gray-100 p-1" v-model="settingsStore.saturday_workable_hours.to")
                         option(v-for="i in 24" :key="i") {{ i }}:00
             div(class="flex flex-col w-auto  space-y-4  justify-center items-start ")
                 div(class="flex flex-col w-auto  justify-center items-start ")
@@ -47,12 +47,12 @@ SettingsPanel(:title="props.title" @save="save()")
                     input(type="checkbox" v-model="settingsStore.workable_hours.is_sunday_open" class="")
                 div(class="flex  w-full items-center space-x-2")
                     label(data-te-select-label-ref class="w-[3rem]") from:
-                    select(data-te-select-init class="h-[2rem]  w-[4.5rem,] bg-gray-100 p-1" v-model="settingsStore.workable_hours.from")
+                    select(data-te-select-init class="h-[2rem]  w-[4.5rem,] bg-gray-100 p-1" v-model="settingsStore.sunday_workable_hours.from")
                         option(v-for="i in 24" :key="i") {{ i }}:00
                         
                 div(class="flex  w-full items-center justify-start space-x-2")
                     label(data-te-select-label-ref class="w-[3rem]") to:
-                    select(data-te-select-init class="h-[2rem]  w-[4.5rem] bg-gray-100 p-1" v-model="settingsStore.workable_hours.to")
+                    select(data-te-select-init class="h-[2rem]  w-[4.5rem] bg-gray-100 p-1" v-model="settingsStore.sunday_workable_hours.to")
                         option(v-for="i in 24" :key="i") {{ i }}:00
         hr(class="w-full border-gray-200 border-[1px]")
         
@@ -87,10 +87,11 @@ const save = async () => {
   emit("save");
 
   await fetch(`${config.API_URL}api/v1/arrows_settings/`, {
-    method: "POST",
+    method: "PUT",
     headers: {
+      "Content-Type": "application/json",
       Host: `${config.FETCH_HOST}`,
-      Authorization: `${userStore.token}`,
+      Authorization: `Token ${userStore.token}`,
     },
     body: JSON.stringify({
       workable_open_time: settingsStore.workable_hours.from,

@@ -58,8 +58,10 @@ function incrementProgressBar() {
       "js-progress-meter"
     ) as HTMLElement;
     // Visually display that number with CSS inside a empty progress bar
-    progressNumber.innerHTML = currentNumber.toString() + "%";
-    // set InnerHtml with a special classname that triggers inner progress bar movement
+    if (progressNumber) {
+      progressNumber.textContent = currentNumber.toString() + "%";
+      // set InnerHtml with a special classname that triggers inner progress bar movement
+    }
     progressMeter.style.transform =
       "rotate(" + (45 + currentNumber * 1.8) + "deg)";
   }, 2000);

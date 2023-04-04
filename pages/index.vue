@@ -4,7 +4,7 @@ div(class=" w-full md:h-screen  flex flex-col lg:flex-row  ")
     div.login-header(class="w-full h-auto flex space-x-8")
       nuxt-img(src="images/arrow-logo.png" class=" object-cover" width="190" format="webp")
       div.login-header(class="w-auto h-auto flex flex-col  mt-6")
-          h1(class="font-robotolight text-xl  md:text-2xl xl:text-3xl") Arrow's carrier page
+          h1(class="font-robotolight text-xl  md:text-2xl xl:text-3xl") ARN Timeslots 
           p(class="font-robotolight text-base") Login to your account
     div.account-type-select(class="w-full lg:w-5/6 xl:w-3/4 h-auto  md:px-8 mt-12")
    

@@ -68,12 +68,13 @@ const get_timeslots = async (date: string) => {
     .then((res) => res.json())
     .then((data) => {
       console.log(data.timeslots);
+      is_fetchind_timeslots.value = false;
       return data.timeslots;
     });
   return timeslots;
 };
 timeslots.value = await get_timeslots(props.date);
-is_fetchind_timeslots.value = false;
+
 const selectedTimeslot = ref();
 
 watch(
