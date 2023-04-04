@@ -5,7 +5,7 @@ div(class="w-full flex flex-col justify-start items-start")
             span(class="text-violet-600") {{ shipment_id }}
         div(class="flex items-center space-x-3 h-auto mt-2")
             h1(class="text-xl  font-semibold") {{ shipment?.delivery_address }}
-            p(class="text-gray-500")  {{ shipment?.Timeslot?.date }}, {{ shipment?.Timeslot?.start_time }}
+            p(class="text-gray-500 font-semibold text-xl")  {{ shipment?.Timeslot?.date }}, {{ shipment?.Timeslot?.start_time }} - {{ shipment?.Timeslot?.end_time }}
     div#shipment-body(class="w-full flex flex-wrap gap-x-4 mt-4")
         
         div#shipment-body-left(class="flex flex-col w-[calc(50%-1rem)] h-auto  bg-white rounded-lg space-y-4 p-4")
@@ -55,10 +55,14 @@ div(class="w-full flex flex-col justify-start items-start")
                 div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
                     p(class="text-violet-600 hover:cursor-pointer") {{ shipment?.reserved_by}}
 
-            div(class="flex flex-col justify-start items-start w-full h-auto space-y-2 p-4 bg-white rounded-lg")
-                p(class="text-xl font-semibold") Suppliers
-                div(v-for="supplier in shipment?.suppliers" :key="supplier" class="flex flex-col justify-start items-start w-full h-auto space-y-2")
-                    p(class="text-lg font-semibold") {{ supplier.name }}
+            div(class="flex flex-col justify-start items-start w-full h-auto  p-4 bg-white rounded-lg")
+                p(class="text-xl font-semibold mb-3") Suppliers:
+                div(v-for="supplier in shipment?.suppliers.suppliers" :key="supplier" class=" flex flex-col justify-start items-start w-auto h-auto space-y-2 ")
+                    p(class=" font-semibold ") {{ supplier.supplier.name }}
+                    div(class="ml-2 flex justify-start items-center space-x-4")
+                      p pallets count: {{ supplier.pallets_count }}
+                      p cartons count: {{ supplier.cartons_count }}
+                    hr(class="w-full")
         div#shipment-body-s(class="flex flex-col w-full mt-[1rem] h-auto  bg-white rounded-lg space-y-4 p-4")
           p(class="text-xl font-semibold h-[10rem]") Shipment History
           p .....
