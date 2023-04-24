@@ -22,8 +22,9 @@ const mainStore = useMainStore();
 
 let chatSocket: any = null;
 
+let websocketLink: string = config.API_URL.split("//")[1];
 onMounted(() => {
-  chatSocket = new WebSocket("ws://127.0.0.1:8001" + "/ws/" + "reservations");
+  chatSocket = new WebSocket("ws://" + websocketLink + "ws/" + "reservations");
 
   chatSocket.onmessage = function (e: any) {
     const data = JSON.parse(e.data);
