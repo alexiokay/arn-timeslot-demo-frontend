@@ -39,7 +39,9 @@ const reservations = computed(() => {
     );
   else if (active_menu.value == "arrival")
     return mainStore.getReservations.filter(
-      (reservation) => reservation.status == "CARRIER_APPROVED"
+      (reservation) =>
+        reservation.status == "CARRIER_APPROVED" ||
+        reservation.status == "ARROW_APPROVED"
     );
   else if (active_menu.value == "arrow changed") {
     return mainStore.getReservations.filter(

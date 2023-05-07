@@ -46,11 +46,11 @@ div(class="w-full flex flex-col px-2 md:px-0 justify-start items-start")
         div#shipment-body-right(class="flex flex-col w-[calc(50%-0.5rem)] h-auto  rounded-lg space-y-4")
             div(class="flex flex-col justify-start items-start w-full h-auto space-y-2 p-4 bg-white rounded-lg")
                 p(class="text-xl font-semibold") Status: 
-                    span(class="text-violet-600") {{shipment?.status}}
+                    span(class="text-violet-600") {{shipment?.status }} {{ shipment?.status === 'CARRIER_APPROVED' ? '/ ARROW_APPROVED ' : ''}}
                 div(class="flex justify-start w-full items-center h-auto space-x-4")
                     ButtonMenu2(v-if="editMode" @click="saveReservation" text="Save"  class="p-5 text-xl bg-green-500 text-white")
                     ButtonMenu2(v-if="!editMode && ((shipment.status === 'ARROW_APPROVED' || shipment.status==='ARROW_CHANGED') && userStore.accountType === 'carrier'  || shipment.status === 'New' && userStore.accountType === 'arrow-employee' )" @click="accceptReservation" text="Accept" :active="true" class="p-5 text-xl")
-                    ButtonMenu2(v-if="!editMode && shipment.status !== 'CARRIER_APPROVED'" @click="editMode = !editMode" text="Change" :active="true" class="p-5 text-xl bg-yellow-500")
+                    ButtonMenu2(v-if="!editMode && (shipment.status !== 'ARROW_APPROVED' && shipment.status !== 'CARRIER_APPROVED')" @click="editMode = !editMode" text="Change" :active="true" class="p-5 text-xl bg-yellow-500")
                     ButtonMenu2(v-if="editMode" @click="(editMode = false, resetTempSuppliers())" text="Cancel"  class="p-5 text-xl bg-red-500 text-white")
                     
             div(class="flex flex-col justify-start items-start w-full h-auto space-y-2 p-4 bg-white rounded-lg")
@@ -224,7 +224,7 @@ const saveReservation = () => {
   let status = "";
   if (userStore.accountType === "arrow-employee") {
     status = "ARROW_CHANGED";
-    accceptReservation();
+    //accceptReservation();
   } else if (userStore.accountType === "carrier") {
     status = shipment.value.status;
   }
