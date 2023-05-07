@@ -1,14 +1,17 @@
 <template lang="pug">
-div(class="w-full flex flex-col justify-start items-start")
+div(class="w-full flex flex-col px-2 md:px-0 justify-start items-start")
     div#shipment-header(class="w-full flex flex-col")
-        NuxtLink(to="/dashboard/shipments" class="text-gray-500")  Shipments / 
+        NuxtLink(to="/dashboard/shipments" class="text-blue-700 hover:underline flex font-semibold  items-center space-x-2") 
+          ArrowIcon(class=" rotate-180")
+          span Back to Shipments
+        p( class="text-gray-500")  Shipments / 
             span(class="text-violet-600") {{ shipment_id }}
         div(class="flex items-center space-x-3 h-auto mt-2")
             h1(class="text-xl  font-semibold") {{ shipment?.delivery_address }}
             p(class="text-gray-500 font-semibold text-xl")  {{ shipment?.Timeslot?.date }}, {{ shipment?.Timeslot?.start_time }} - {{ shipment?.Timeslot?.end_time }}
     div#shipment-body(class="w-full flex flex-wrap gap-x-4 mt-4")
         
-        div#shipment-body-left(class="flex flex-col w-[calc(50%-1rem)] h-auto  bg-white rounded-lg space-y-4 p-4")
+        div#shipment-body-left(class="flex flex-col w-[calc(50%-0.5rem)] h-auto  bg-white rounded-lg space-y-4 p-4")
                
                 p(class="text-xl font-semibold w-full") Shipment Details 
                     
@@ -33,14 +36,14 @@ div(class="w-full flex flex-col justify-start items-start")
                         p(class="text-sm text-gray-500") Pallets count
                         
                
-                        p(v-if="!editMode" class="text-lg font-semibold") {{ shipment?.pallets_count }}
-                        input(v-else type="text" v-model="changingValues.pallets_count"  class="w-[90%] h-10 px-4 border border-gray-300 rounded-lg focus:outline-none focus:border-violet-600" )
+                        p( class="text-lg font-semibold") {{ shipment?.pallets_count }}
+                        
                     div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
                         p(class="text-sm text-gray-500") Cartoons count
           
-                        p(v-if="!editMode" class="text-lg font-semibold") {{ shipment?.cartons_count}}
-                        input(v-else type="text" v-model="changingValues.cartons_count" class="w-[90%] h-10 px-4 border border-gray-300 rounded-lg focus:outline-none focus:border-violet-600" )
-        div#shipment-body-right(class="flex flex-col w-[calc(50%-1rem)] h-auto  rounded-lg space-y-4")
+                        p( class="text-lg font-semibold") {{ shipment?.cartons_count}}
+                       
+        div#shipment-body-right(class="flex flex-col w-[calc(50%-0.5rem)] h-auto  rounded-lg space-y-4")
             div(class="flex flex-col justify-start items-start w-full h-auto space-y-2 p-4 bg-white rounded-lg")
                 p(class="text-xl font-semibold") Status: 
                     span(class="text-violet-600") {{shipment?.status}}
@@ -48,21 +51,26 @@ div(class="w-full flex flex-col justify-start items-start")
                     ButtonMenu2(v-if="editMode" @click="saveReservation" text="Save"  class="p-5 text-xl bg-green-500 text-white")
                     ButtonMenu2(v-if="!editMode && ((shipment.status === 'ARROW_APPROVED' || shipment.status==='ARROW_CHANGED') && userStore.accountType === 'carrier'  || shipment.status === 'New' && userStore.accountType === 'arrow-employee' )" @click="accceptReservation" text="Accept" :active="true" class="p-5 text-xl")
                     ButtonMenu2(v-if="!editMode && shipment.status !== 'CARRIER_APPROVED'" @click="editMode = !editMode" text="Change" :active="true" class="p-5 text-xl bg-yellow-500")
-                    ButtonMenu2(v-if="editMode" @click="editMode = false" text="Cancel"  class="p-5 text-xl bg-red-500 text-white")
+                    ButtonMenu2(v-if="editMode" @click="(editMode = false, resetTempSuppliers())" text="Cancel"  class="p-5 text-xl bg-red-500 text-white")
                     
             div(class="flex flex-col justify-start items-start w-full h-auto space-y-2 p-4 bg-white rounded-lg")
-                p(class="text-xl font-semibold") Reserved by: 
+                p(class="text-xl font-semibold") Reserved by:  
                 div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
                     p(class="text-violet-600 hover:cursor-pointer") {{ shipment?.reserved_by}}
 
             div(class="flex flex-col justify-start items-start w-full h-auto  p-4 bg-white rounded-lg")
-                p(class="text-xl font-semibold mb-3") Suppliers:
-                div(v-for="supplier in shipment?.suppliers.suppliers" :key="supplier" class=" flex flex-col justify-start items-start w-auto h-auto space-y-2 ")
+                div(class="flex  items-center  justify-center space-x-4")
+                  p(class="text-xl font-semibold mb-3") Suppliers:
+                  button.addSupplier(v-if="editMode" @click="" class="w-auto px-4 sm:h-10 h-12  bg-violet-600 text-white  text-base md:text-xl font-semibold rounded-lg") Add Supplier
+                div(v-for="(supplier, index) in shipment?.suppliers.suppliers" :key="supplier" class=" flex flex-col justify-start items-start w-auto h-auto space-y-2 ")
                     p(class=" font-semibold ") {{ supplier.supplier.name }}
                     div(class="ml-2 flex justify-start items-center space-x-4")
-                      p pallets count: {{ supplier.pallets_count }}
-                      p cartons count: {{ supplier.cartons_count }}
+                      p(v-if="!editMode") pallets count: {{ supplier.pallets_count }}
+                      input(v-else type="text" v-model="TempSupplierData[index].pallets_count" class="w-[90%] h-10 px-4 border border-gray-300 rounded-lg focus:outline-none focus:border-violet-600" )
+                      p(v-if="!editMode") cartons count: {{ supplier.cartons_count }}
+                      input(v-else type="text" v-model="TempSupplierData[index].cartons_count" class="w-[90%] h-10 px-4 border border-gray-300 rounded-lg focus:outline-none focus:border-violet-600" )
                     hr(class="w-full")
+                
         div#shipment-body-s(class="flex flex-col w-full mt-[1rem] h-auto  bg-white rounded-lg space-y-4 p-4")
           p(class="text-xl font-semibold h-[10rem]") Shipment History
           p .....
@@ -76,6 +84,7 @@ div(class="w-full flex flex-col justify-start items-start")
 </template>
 
 <script setup lang="ts">
+import ArrowIcon from "~icons/material-symbols/arrow-right-alt-rounded";
 import { useMainStore } from "@/stores/Main";
 import { useUserStore } from "@/stores/User";
 const userStore = useUserStore();
@@ -227,6 +236,7 @@ const saveReservation = () => {
     ".confirm-button"
   ) as HTMLButtonElement;
 
+  // TODO: save each supplier data from TempSupplierData
   confirmButton.addEventListener("click", (e) => {
     fetch(
       `${config.API_URL}api/v1/update_timeslot_reservation/${shipment_id.value}`,
@@ -250,6 +260,26 @@ const saveReservation = () => {
   cancelButton.addEventListener("click", (e) => {
     isConfirmationModalOpen.value = false;
   });
+};
+
+const TempSupplierData = ref(
+  shipment.value.suppliers.suppliers.map((supplier: any) => {
+    return {
+      ...supplier,
+      supplier: supplier.supplier.name,
+    };
+  })
+);
+
+const resetTempSuppliers = () => {
+  TempSupplierData.value = shipment.value.suppliers.suppliers.map(
+    (supplier: any) => {
+      return {
+        ...supplier,
+        supplier: supplier.supplier.name,
+      };
+    }
+  );
 };
 </script>
 

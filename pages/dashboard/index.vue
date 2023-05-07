@@ -7,16 +7,16 @@ div#content(class="text-black w-full h-full px-6 py-[0.4rem] flex flex-col justi
     div(class='w-full h-auto')
       p(class="text-2xl font-semibold") Overview
     
-      div(class="h-[7rem] w-full flex mt-2 justify-between")
+      div(class="h-[7rem] w-full flex  mt-2 justify-between")
         DashboardQuickMenuItem(text="New Packages" value="0")
           template(v-slot:icon)
             PackageIcon(class="w-12 h-12  text-violet-500 ")
         DashboardQuickMenuItem(text="Ready for Shippping" value="0")
         DashboardQuickMenuItem(text="In transit" value="0")
         DashboardQuickMenuItem(text="Delivered" value="0")
-    div(class="flex w-full justify-between h-[20rem]")
-      DashboardDelayedDelivery(class="")
-      DashboardDailyPlan(class="")
+    div(class="flex w-full md:flex-row flex-col justify-between h-auto")
+      DashboardDelayedDelivery(class="md:w-[calc(50%-1rem)] w-full")
+      DashboardDailyPlan(class="md:w-[calc(50%-1rem)] w-full")
       
         
 </template>
@@ -33,6 +33,23 @@ definePageMeta({
 });
 
 const config = useRuntimeConfig();
+
+const todayShipments = ref(0);
+const todayDelivered = ref(0);
+const todayInTransit = ref(0);
+const todayDelayed = ref(0);
+const delayedDeliveries = ref(0);
+
+const getTodayShipments = async () => {
+  const res = await fetch(`${config.apiURL}/api/shipments/today`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${userStore.getToken}`,
+    },
+  });
+  const data = await res.json();
+  todayShipments.value = data.length;
+};
 </script>
 
 <style lang="scss"></style>

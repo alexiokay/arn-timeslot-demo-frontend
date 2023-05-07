@@ -18,7 +18,7 @@ div.request(class=" h-auto bg-white rounded-lg  flex flex-col justify-start px-4
                 p(class="text-base  text-gray-800") pallets count
                 p(class="text-lg font-semibold") {{ props.reservation.pallets_count }}
         div(class="relative flex w-[70%] h-[60%] xl:w-[60%] xl:h-[80%] select-none")
-            nuxt-img(src="/images/truck3.png" format="webp"  class="w-full pointer-events-none ")
+            nuxt-img(src="/images/truck3.png" format="webp"  class="w-full pointer-events-none  ")
             div.truck-loading(:style="'width:'+CalculateTruckFillingPercent(props.reservation)*0.6+'%'" :class="{ 'bg-[#45C070]': isLowCap(), 'bg-[#F7B500]': isMediumCap() , 'bg-[#D84E5F]':isHighCap()}" class=" absolute  z-20 top-[4.8%] left-[37.3%]  h-[61.5%] overflow-hidden")
                 
             div(class="absolute top-[4.8%] left-[37.3%] w-[60%] h-[61.5%] overflow-hidden bg-white")

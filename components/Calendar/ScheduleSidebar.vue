@@ -177,14 +177,23 @@ const book = async () => {
     }),
   } as any;
 
-  await fetch(`${config.API_URL}api/v1/reserve_timeslot`, options)
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-      return data;
-    });
+  const response = await fetch(
+    `${config.API_URL}api/v1/reserve_timeslot`,
+    options
+  );
+
   is_booking.value = false;
+  const data = await response.json();
+  let status = response.status;
+
+  if (status === 200) {
+    emit("closeSidebar");
+  } else {
+    alert(data.message);
+  }
 };
+
+const emit = defineEmits(["closeSidebar"]);
 </script>
 
 <style lang="scss" scoped>

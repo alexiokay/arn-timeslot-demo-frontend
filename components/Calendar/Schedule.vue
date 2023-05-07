@@ -1,20 +1,20 @@
 <template lang="pug">
 div.schedule(class="flex flex-col w-full h-auto ")
   
-    CalendarScheduleSidebar(v-if="selectedTimeslot" :isOpen="isScheduleSidebarOpen" class="" :date="props.date" :timeslots="timeslots" :timeslot="selectedTimeslot")
+    CalendarScheduleSidebar(v-if="selectedTimeslot" :isOpen="isScheduleSidebarOpen" @closeSidebar="isScheduleSidebarOpen = !isScheduleSidebarOpen" class="" :date="props.date" :timeslots="timeslots" :timeslot="selectedTimeslot")
     p.schedule-title(class="flex w-full h-[4rem] justify-between text-center items-start")
         span(class="text-lg text-center rounded-lg flex items-center justify-center") {{props.date}}
     hr(class="w-full h-[2.5px] bg-black")
     div(class="overflow-auto relative")
         div(v-if="is_fetchind_timeslots === false" @click="selectedTimeslot=timeslot" class="flex  w-auto items-center py-5 " v-for="timeslot in timeslots")
-            div(class="flex flex-col w-4/5" ) sda
+            div(class="flex flex-col w-4/5" ) 
                 p(class="text-3xl font-semibold") {{timeslot?.start_time}} - {{timeslot?.end_time}}
                 p trucks left: {{ timeslot?.trucks_left }}
             button.book-button(@click="book(timeslot?.id)"  class="w-1/5 h-[3rem] bg-violet-600 text-white rounded-lg") Book
         
         div(v-else class="")
           div( class="flex  w-auto items-center py-5 blur-md opacity-0" v-for="i in 24")
-              div(class="flex flex-col w-4/5  " ) sda
+              div(class="flex flex-col w-4/5  " ) 
                   p(class="text-3xl font-semibold ") ...
                   p(class="") trucks left: ...
               button.book-button(  class="w-1/5 h-[3rem] bg-violet-600 text-white rounded-lg ") Book
@@ -45,6 +45,7 @@ const is_fetchind_timeslots = ref(false);
 // const timeslotsData = computed(() => mainStore.getTimeslotsByDate(props.date));
 const userStore = useUserStore();
 const timeslots = ref();
+
 const get_timeslots = async (date: string) => {
   is_fetchind_timeslots.value = true;
   console.log(date);
@@ -73,7 +74,10 @@ const get_timeslots = async (date: string) => {
     });
   return timeslots;
 };
-timeslots.value = await get_timeslots(props.date);
+
+onMounted(async () => {
+  timeslots.value = await get_timeslots(props.date);
+});
 
 const selectedTimeslot = ref();
 

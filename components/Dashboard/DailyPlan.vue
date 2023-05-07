@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="w-[calc(50%-1rem)] py-4 px-6  bg-white rounded-xl flex items-center ")
+div(class="w-full py-4 px-6  bg-white rounded-xl flex items-center ")
     div(class="w-2/5 flex flex-col h-full items-between justify-between ")
         div(class="flex space-x-2 items-end  ")
             p(class="  font-semibold text-2xl") Daily Plan

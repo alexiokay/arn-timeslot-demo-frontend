@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="w-[calc(50%-1rem)] py-4 px-6  bg-white rounded-xl flex items-center ")
+div(class="w-full py-4 px-6  bg-white rounded-xl flex items-center ")
     div(class="w-full flex flex-col h-full items-between justify-start space-y-3  ")
         div(class="flex space-x-2 items-end justify-between ")
             p(class="  font-semibold text-2xl") Delayed delivery
