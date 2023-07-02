@@ -1,10 +1,10 @@
-export const getSettings = async () => {
+export const getSettings = async (token) => {
   const config = useRuntimeConfig();
   const options = {
     method: "GET",
     headers: {
       Host: `${config.FETCH_HOST}`,
-      Authorization: `${config.API_TOKEN}`,
+      Authorization: `Token ${token}`,
     },
   } as any;
   const data = await useFetch(

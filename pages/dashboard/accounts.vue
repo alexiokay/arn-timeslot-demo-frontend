@@ -42,14 +42,15 @@ div.settings(class="w-full h-full flex flex-col  px-4")
                         td(class="border-r px-3 py-2 text-center bg-gray-100 ") {{ account.id }}
                             
                         td(class="border-r px-4 py-2 flex space-x-2") 
-                            img(class="w-8 h-8 rounded-full" :src="account.avatar")
+                            img(class="w-12 h-12  rounded-full object-cover" :src="account.avatar")
                             p {{ account.first_name }}
                             p {{ account.last_name }}
                         td(class="border-r px-4 py-2") {{ account.email }}
                         td(class="border-r px-4 py-2") 
                           button.activate-account(v-if="account.is_activated && canUserActivate(account)" @click="_activateAccount(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Deactivate
                           button.activate-account(v-if=" !account.is_activated && canUserActivate(account)" @click="_activateAccount(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Activate
-                        td(class=" px-4 py-2 flex justify-center gap-x-2") 
+                        td(class=" px-4 py-2   gap-x-2") 
+                          div(class="flex  ")
                             button(v-if="canUserEdit(account)" @click="editUser(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Edit
                             button.message( class="border-2 ml-auto border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Message
     div.spinner(v-if="is_fetching_accounts === true" class="absolute bottom-[4rem] z-50 right-[4rem] flex-col  text-lg w-auto h-auto flex items-center justify-center")

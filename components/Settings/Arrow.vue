@@ -12,7 +12,7 @@ SettingsPanel(:title="props.title" @save="save()")
                     hr(class="w-full border-gray-200 border-[1px]")
                 div(class="flex w-auto space-x-2")
                     label(class="flex items-center space-x-2")  open:
-                    input(type="checkbox" v-model="settingsStore.workable_hours.is_open" class="")
+                    input(type="checkbox" v-model="settingsStore.is_open" class="")
                 div(class="flex  w-full items-center space-x-2")
                     label(data-te-select-label-ref class="w-[3rem]") from:
                     select(data-te-select-init class="h-[2rem]  w-[4.5rem,] bg-gray-100 p-1" v-model="settingsStore.workable_hours.from")
@@ -28,7 +28,7 @@ SettingsPanel(:title="props.title" @save="save()")
                     hr(class="w-full border-gray-200 border-[1px]")
                 div(class="flex w-auto space-x-2")
                     label(class="flex items-center space-x-2") open:
-                    input(type="checkbox" v-model="settingsStore.workable_hours.is_saturday_open" class="")
+                    input(type="checkbox" v-model="settingsStore.is_saturday_open" class="")
                 div(class="flex  w-full items-center space-x-2")
                     label(data-te-select-label-ref class="w-[3rem]") from:
                     select(data-te-select-init class="h-[2rem]  w-[4.5rem,] bg-gray-100 p-1" v-model="settingsStore.saturday_workable_hours.from")
@@ -44,7 +44,7 @@ SettingsPanel(:title="props.title" @save="save()")
                     hr(class="w-full border-gray-200 border-[1px]")
                 div(class="flex w-auto space-x-2")
                     label(class="flex items-center space-x-2") open:
-                    input(type="checkbox" v-model="settingsStore.workable_hours.is_sunday_open" class="")
+                    input(type="checkbox" v-model="settingsStore.is_sunday_open" class="")
                 div(class="flex  w-full items-center space-x-2")
                     label(data-te-select-label-ref class="w-[3rem]") from:
                     select(data-te-select-init class="h-[2rem]  w-[4.5rem,] bg-gray-100 p-1" v-model="settingsStore.sunday_workable_hours.from")
@@ -78,9 +78,18 @@ const props = defineProps({
     required: true,
   },
 });
+
 const userStore = useUserStore();
 const config = useRuntimeConfig();
 const emit = defineEmits(["save"]);
+
+const setSettings = async () => {
+  const settings = await getSettings(userStore.getToken);
+  console.log(settings);
+  settingsStore.setSettings(settings);
+};
+
+setSettings();
 
 // saving into the database
 const save = async () => {

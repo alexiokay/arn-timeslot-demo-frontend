@@ -1,7 +1,7 @@
 <template lang="pug">
-div(@click="selectDate" :class="{'bg-gray-800 text-white': props.is_selected, ' hover:cursor-pointer  opacity-100': props.is_open, 'text-gray-400': props.is_actual_month, 'hover:bg-gray-800': props.is_selected}" class="group rounded-full relative  hover:text-white hover:bg-gray-500 hover:cursor-pointer")
+div(@click="selectDate" :class="{'bg-gray-800 text-white': props.is_selected, 'group hover:cursor-pointer  opacity-100': props.is_open, 'text-gray-400': props.is_actual_month, 'hover:bg-gray-800': props.is_selected}" class="rounded-full relative  hover:text-white hover:bg-gray-500 hover:cursor-pointer")
   p(class="w-[3rem] h-[3rem]  text-xl font-semibold text-center rounded-lg flex items-center justify-center") {{ props.day }}
-  LockedIcon(v-if="!props.is_open"  class="absolute top-[1.7rem]   z-50 font-semibold left-[1.7rem]  text-red-600 group-hover:text-red-400 flex items-center justify-start flex-wrap gap-x-1 w-[1.1rem] ")
+  LockedIcon(v-if="!props.is_open"  class="absolute top-[1.7rem]   z-50 font-semibold left-[1.7rem] flex items-center justify-start flex-wrap gap-x-1 w-[0.9rem] ")
 
 </template>
 
