@@ -48,7 +48,9 @@ div.settings(class="w-full h-full flex flex-col  px-4")
                         td(class="border-r px-4 py-2") 
                           button.activate-account(v-if="account.is_activated && canUserActivate(account)" @click="_activateCarrier(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Deactivate
                           button.activate-account(v-if=" !account.is_activated && canUserActivate(account)" @click="_activateCarrier(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Activate
-                        td(class=" px-4 py-2 flex justify-center") 
+                        td(class=" px-4 py-2   gap-x-2") 
+                          div(class="flex  ")
+                           
                             button(v-if="canUserEdit(account)" @click="editUser(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Edit
     div.spinner(v-if="is_fetching_accounts === true" class="absolute bottom-[4rem] z-50 right-[4rem] flex-col  text-lg w-auto h-auto flex items-center justify-center")
       div(class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-900")
