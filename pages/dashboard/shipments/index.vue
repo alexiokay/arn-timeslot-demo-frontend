@@ -5,7 +5,9 @@ div#shipments(class="text-black w-full h-full px-6 py-[0.4rem] flex flex-row fle
     div.shipments(class="w-full gap-y-2 flex flex-col")
       div(v-show="isHintOpen === true" class="bg-blue-200 py-2 px-4 rounded-lg max-w-max flex gap-x-4")
         HintIcon(class="w-6 h-6 ")
-        p(class="") You can search by supplier name, carrier or status
+        p(class="") 
+          span(class="font-semibold") Hint: 
+          span() You can search by supplier name, carrier or status
         CloseIcon(class="w-6 h-6 cursor-pointer" @click="isHintOpen = false" )
       Searchbar(:datepicker="true" placeholder="Search by tracking number" class="w-full h-[5rem]"  @keypress="searchQuery = $event.target.value")
     div#shipments-menu(class="w-full flex lg:flex-row flex-col ")
