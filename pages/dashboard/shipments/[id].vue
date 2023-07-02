@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="w-full flex flex-col px-2 md:px-0 justify-start items-start")
+div(class="w-full flex flex-col px-3 md:px-4 lg:px-0 justify-start items-start")
     div#shipment-header(class="w-full flex flex-col")
         NuxtLink(to="/dashboard/shipments" class="text-blue-700 hover:underline flex font-semibold  items-center space-x-2") 
           ArrowIcon(class=" rotate-180")

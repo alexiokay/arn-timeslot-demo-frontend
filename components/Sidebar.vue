@@ -30,6 +30,9 @@ div#sidebar(class=" fixed w-[20rem] top-0 left-0 z-50  h-screen max-h-screen bg-
             ButtonSidebar(text="Accounts" to="/dashboard/accounts" @click="is_sidebar_open = !is_sidebar_open" )
                 template(v-slot:icon)
                     AccountsIcon(class="w-6 h-6")
+            ButtonSidebar(text="Carriers" to="/dashboard/carriers" @click="is_sidebar_open = !is_sidebar_open" v-if="userStore.accountType === 'arrow-employee'")
+                template(v-slot:icon)
+                    TruckIcon(class="w-6 h-6")
             ButtonSidebar( text="Settings" to="/dashboard/settings" @click="is_sidebar_open = !is_sidebar_open" )
                 template(v-slot:icon)
                     SettingsIcon(class="w-6 h-6")
@@ -50,6 +53,7 @@ import NotificationIcon from "~icons/basil/notification-outline";
 import ArrowIcon from "~icons/material-symbols/chevron-left-rounded";
 import DashboardIcon from "~icons/ant-design/home-outlined";
 import SettingsIcon from "~icons/material-symbols/settings";
+import TruckIcon from "~icons/ph/truck";
 
 import { useMainStore } from "@/stores/Main";
 import { useUserStore } from "@/stores/User";

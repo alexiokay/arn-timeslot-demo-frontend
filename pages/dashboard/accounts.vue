@@ -46,8 +46,8 @@ div.settings(class="w-full h-full flex flex-col  px-4")
                             p {{ account.username }}
                         td(class="border-r px-4 py-2") {{ account.email }}
                         td(class="border-r px-4 py-2") 
-                          button.activate-account(v-if="account.is_activated && canUserActivate(account)" @click="activateAccount(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Deactivate
-                          button.activate-account(v-if=" !account.is_activated && canUserActivate(account)" @click="activateAccount(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Activate
+                          button.activate-account(v-if="account.is_activated && canUserActivate(account)" @click="_activateAccount(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Deactivate
+                          button.activate-account(v-if=" !account.is_activated && canUserActivate(account)" @click="_activateAccount(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Activate
                         td(class=" px-4 py-2 flex justify-center") 
                             button(v-if="canUserEdit(account)" @click="editUser(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Edit
     div.spinner(v-if="is_fetching_accounts === true" class="absolute bottom-[4rem] z-50 right-[4rem] flex-col  text-lg w-auto h-auto flex items-center justify-center")
@@ -191,6 +191,22 @@ const detectEndOfList = (index: number) => {
   if (index === filteredAccounts.value.length - 1) {
     return "end-of-list";
   }
+};
+
+const _activateAccount = async (account: any) => {
+  console.log(userStore.getToken);
+  const response = await activateAccount(account.email, userStore.getToken);
+
+  if (response) {
+    if (response.status === "user activated") {
+      account.is_activated = true;
+    } else if (response.status === "user deactivated") {
+      account.is_activated = false;
+      console.log(response);
+    }
+  }
+
+  console.log(response);
 };
 
 const is_modal_open = ref(false);
