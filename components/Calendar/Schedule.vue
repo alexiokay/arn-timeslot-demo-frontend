@@ -1,7 +1,7 @@
 <template lang="pug">
 div.schedule(class="flex flex-col w-full h-auto ")
   
-    CalendarScheduleSidebar( :isOpen="isScheduleSidebarOpen" @closeSidebar="isScheduleSidebarOpen = !isScheduleSidebarOpen" class="" :date="props.date" :timeslots="timeslots" :timeslot="selectedTimeslot")
+    CalendarScheduleSidebar( :isOpen="isScheduleSidebarOpen" @close="closeSidebar" class="" :date="props.date" :timeslots="timeslots" :timeslot="selectedTimeslot")
     p.schedule-title(class="flex w-full h-[4rem] justify-between text-center items-start")
         span(class="text-lg text-center rounded-lg flex items-center justify-center") {{props.date}}
     hr(class="w-full h-[2.5px] bg-black")
@@ -111,7 +111,17 @@ watch(
 
 const book = (timeslotId: number) => {
   isScheduleSidebarOpen.value = !isScheduleSidebarOpen.value;
+
+  // dont hide scrollbar when sidebar is open
+  const scrollbarWidth = window.innerWidth - document.body.clientWidth;
+  document.body.style.paddingRight = `${scrollbarWidth}px`;
 };
+
+const closeSidebar = () => {
+  document.body.style.paddingRight = `0px`;
+  isScheduleSidebarOpen.value = false;
+};
+
 onMounted(() => {
   document.addEventListener("mousedown", (e: any) => {
     if (

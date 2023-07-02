@@ -1,7 +1,7 @@
 <template lang="pug">
 div
   Transition(name="fade")
-    <div v-show="props.isOpen" @click="$emit('close')" tabindex="-1" class="backdrop-blur-[2.5px] fixed top-0 pointer-event-none flex items-center bg-[rgba(0,0,0,0.55)] justify-center left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-screen md:h-full"></div>
+    <div v-show="props.isOpen" @mousedown="$emit('close')" tabindex="-1" class="backdrop-blur-[2.5px] fixed top-0 pointer-event-none flex items-center bg-[rgba(0,0,0,0.55)] justify-center left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-screen md:h-full"></div>
 
   Transition(name="slide")
       div#schedule-sidebar(v-show="props.isOpen" class="w-full md:w-[30%] z-50  h-screen max-h-screen fixed top-0 right-0 bg-white rounded-l-xl px-4 py-4")

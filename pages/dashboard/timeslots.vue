@@ -26,6 +26,9 @@ div(class="flex gap-x-[5rem]")
     div#timeslot-right-panel(v-show="!editMode" class="flex w-2/4 flex-col mt-[6rem]")
         CalendarScheduleSidebar(:class="isScheduleSidebarOpen? '': 'hidden'" class="mt-8")
         CalendarSchedule( :selectedTimeslot="formatedScheduleDate" class="mt-8" :date="formatUTCDate(selectedDate)")
+
+    
+
 </template>
 
 <script setup lang="ts">

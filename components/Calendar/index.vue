@@ -10,19 +10,20 @@ div.calendar(class="flex flex-col w-full h-auto")
         CalendarDayTitle(title="SUN")
     hr(class="w-full h-[2px] bg-black")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@click="lockUnlockDate(day)" @selectDate="selectDate(day)" v-for="day in firstWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched  &&  editMode ),}" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open" :editMode="editMode" :is_actual_month='day.day > 10? true: false')
+      CalendarDay(@click="openModal(day)" @selectDate="selectDate(day)" v-for="day in firstWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched  &&  editMode ),}" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open" :editMode="editMode" :is_actual_month='day.day > 10? true: false')
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@click="lockUnlockDate(day)"  @selectDate="selectDate(day)" v-for="day in secondWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched  &&   editMode ),}" :day="day.day.toString()" :is_selected="checkDate(day.date)" :is_open="day.is_open " :editMode="editMode")
+      CalendarDay(@click="openModal(day)"  @selectDate="selectDate(day)" v-for="day in secondWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched  &&   editMode ),}" :day="day.day.toString()" :is_selected="checkDate(day.date)" :is_open="day.is_open" :editMode="editMode")
         
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@click="lockUnlockDate(day)" @selectDate="selectDate(day)" v-for="day in thirdWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched && editMode),}" :day="day.day.toString()" :is_selected="checkDate(day.date)" :is_open="day.is_open " :editMode="editMode")
+      CalendarDay(@click="openModal(day)" @selectDate="selectDate(day)" v-for="day in thirdWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched && editMode),}" :day="day.day.toString()" :is_selected="checkDate(day.date)" :is_open="day.is_open" :editMode="editMode")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@click="lockUnlockDate(day)" @selectDate="selectDate(day)" v-for="day in fourthWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched  && editMode),}" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open " :editMode="editMode")
+      CalendarDay(@click="openModal(day)" @selectDate="selectDate(day)" v-for="day in fourthWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched  && editMode),}" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open" :editMode="editMode")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@click="lockUnlockDate(day)" @selectDate="selectDate(day)" v-for="day in fifthWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched   && editMode ),}" :day="day.day.toString()"  :is_selected="checkDate(day.date)"  :is_open="day.is_open " :editMode="editMode"  :is_actual_month='day.day < 22? true: false')
+      CalendarDay(@click="openModal(day)" @selectDate="selectDate(day)" v-for="day in fifthWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched   && editMode ),}" :day="day.day.toString()"  :is_selected="checkDate(day.date)"  :is_open="day.is_open" :editMode="editMode"  :is_actual_month='day.day < 22? true: false')
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
-      CalendarDay(@click="lockUnlockDate(day)" @selectDate="selectDate(day)" v-for="day in sixthWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched  &&  editMode ),}" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open " :editMode="editMode" :is_actual_month='day.day < 22? true: false')
+      CalendarDay(@click="openModal(day)" @selectDate="selectDate(day)" v-for="day in sixthWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched  &&  editMode ),}" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open" :editMode="editMode" :is_actual_month='day.day < 22? true: false')
 
+ModalApproved2step(:isOpen="is_modal_open" @close="is_modal_open = false" @yes="confirmModal()" @no="cancelModal()" :isDateOpen="unlockingDate? unlockingDate.is_open: false")
 
 </template>
 
@@ -54,8 +55,12 @@ const daysInMonth = (iMonth: any, iYear: any) => {
   return 32 - new Date(iYear, iMonth, 32).getDate();
 };
 
+const unlockingDate: any = ref(null);
 console.log(firstDay.value);
 console.log(daysInMonth(selectedMonth, selectedYear));
+
+const is_modal_open = ref(false);
+const is_changes_confirmed = ref(false);
 
 interface DateObject {
   day: number;
@@ -214,7 +219,24 @@ const selectDate = (day: DateObject) => {
   }
 };
 
-const lockUnlockDate = (day: DateObject) => {
+const confirmModal = async () => {
+  is_modal_open.value = true;
+  const date = unlockingDate.value;
+  lockUnlockDate(date);
+  is_modal_open.value = false;
+};
+const cancelModal = async () => {
+  is_modal_open.value = false;
+};
+
+const openModal = (day: DateObject) => {
+  if (props.editMode) {
+    unlockingDate.value = day;
+    is_modal_open.value = true;
+  }
+};
+
+const lockUnlockDate = async (day: DateObject) => {
   if (props.editMode === true) {
     // allow for selection only if edit mode is true
     fetch(`${config.API_URL}api/v1/lock_unlock_day`, {

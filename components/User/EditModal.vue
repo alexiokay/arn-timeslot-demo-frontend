@@ -18,7 +18,7 @@ div
 
 
         <!-- Modal body -->
-        <div class="p-6 space-y-6 overflow-y-auto h-full sm:h-[60vh] justify-center items-center flex flex-col w-[30rem]">
+        <div class="p-6 space-y-6 overflow-y-auto justify-start items-center flex flex-col h-full sm:h-full w-[100vw] sm:w-[39rem] md:w-[53rem] ">
             div(class="w-full flex")
               p(class="text-base leading-relaxed text-gray-500 dark:text-gray-400") email: 
               p(class="text-base leading-relaxed text-gray-500 dark:text-gray-400") {{user? user.email: ''}}
