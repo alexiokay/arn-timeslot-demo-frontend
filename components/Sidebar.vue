@@ -21,7 +21,7 @@ div#sidebar(class=" fixed w-[20rem] top-0 left-0 z-50  h-screen max-h-screen bg-
             //-         NotificationIcon(class="w-6 h-6")
         hr(class="w-full  border-gray-300 " )
         div(class="w-full h-full scroll-smooth no-scrollbar  flex flex-col px-2  items-start mt-4 space-y-3")
-            ButtonSidebar(text="Dashboard" to="/dashboard" :notifications_count="2" @click="is_sidebar_open = !is_sidebar_open")
+            ButtonSidebar(text="Dashboard" to="/dashboard" :notifications_count="0" @click="is_sidebar_open = !is_sidebar_open")
                 template(v-slot:icon)
                     DashboardIcon(class="w-6 h-6")
             ButtonSidebar(text="Timeslots" to="/dashboard/timeslots" @click="is_sidebar_open = !is_sidebar_open" )
