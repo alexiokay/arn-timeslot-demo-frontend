@@ -39,7 +39,7 @@ onMounted(() => {
     // if (data.reservation_id) console.log(data.reservation_id);
 
     // check signal type  and chosee proper action
-    if (data.updated) mainStore.updateReservation(reservation);
+    if (data.updated) mainStore.updateReservation(reservation); //runSoundEffect
     if (data.deleted) mainStore.removeReservation(reservation);
     if (data.added) mainStore.addReservation(reservation);
   };
