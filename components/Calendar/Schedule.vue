@@ -1,7 +1,7 @@
 <template lang="pug">
 div.schedule(class="flex flex-col w-full h-auto ")
   
-    CalendarScheduleSidebar(v-if="selectedTimeslot" :isOpen="isScheduleSidebarOpen" @closeSidebar="isScheduleSidebarOpen = !isScheduleSidebarOpen" class="" :date="props.date" :timeslots="timeslots" :timeslot="selectedTimeslot")
+    CalendarScheduleSidebar( :isOpen="isScheduleSidebarOpen" @closeSidebar="isScheduleSidebarOpen = !isScheduleSidebarOpen" class="" :date="props.date" :timeslots="timeslots" :timeslot="selectedTimeslot")
     p.schedule-title(class="flex w-full h-[4rem] justify-between text-center items-start")
         span(class="text-lg text-center rounded-lg flex items-center justify-center") {{props.date}}
     hr(class="w-full h-[2.5px] bg-black")

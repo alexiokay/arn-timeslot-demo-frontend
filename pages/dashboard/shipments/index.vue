@@ -1,7 +1,13 @@
 <template lang="pug">
 div#shipments(class="text-black w-full h-full px-6 py-[0.4rem] flex flex-row flex-wrap gap-y-[2rem] space-x-2 justify-start items-center")
     
-    Searchbar(:datepicker="true" placeholder="Search by tracking number" class="w-full")
+    
+    div.shipments(class="w-full gap-y-2 flex flex-col")
+      div(v-show="isHintOpen === true" class="bg-blue-200 py-2 px-4 rounded-lg max-w-max flex gap-x-4")
+        HintIcon(class="w-6 h-6 ")
+        p(class="") You can search by supplier name, carrier or status
+        CloseIcon(class="w-6 h-6 cursor-pointer" @click="isHintOpen = false" )
+      Searchbar(:datepicker="true" placeholder="Search by tracking number" class="w-full h-[5rem]"  @keypress="searchQuery = $event.target.value")
     div#shipments-menu(class="w-full flex lg:flex-row flex-col ")
         div(class="flex lg:flex-row flex-col items-start space-y-2 lg:space-y-0 lg:items-center justify-start overflow-auto w-full no-scrollbar ")
             h1(class="text-xl w-auto font-semibold mr-[1.5rem]") Shipments
@@ -25,36 +31,52 @@ div#shipments(class="text-black w-full h-full px-6 py-[0.4rem] flex flex-row fle
 <script setup lang="ts">
 import { useUserStore } from "@/stores/User";
 import { useMainStore } from "@/stores/Main";
+import HintIcon from "~icons/flat-color-icons/idea";
+import CloseIcon from "~icons/ic/outline-close";
+
 const userStore = useUserStore();
 const mainStore = useMainStore();
 const router = useRouter();
+const isHintOpen = ref(true);
 
 const active_menu = ref("pending");
 
+const searchQuery = ref("");
 const reservations = computed(() => {
-  if (active_menu.value == "pending")
-    return mainStore.getReservations.filter(
-      (reservation) =>
-        reservation.status == "ARROW_APPROVED" || reservation.status == "New"
-    );
-  else if (active_menu.value == "arrival")
-    return mainStore.getReservations.filter(
-      (reservation) =>
-        reservation.status == "CARRIER_APPROVED" ||
-        reservation.status == "ARROW_APPROVED"
-    );
-  else if (active_menu.value == "arrow changed") {
-    return mainStore.getReservations.filter(
-      (reservation) => reservation.status == "ARROW_CHANGED"
-    );
-  } else if (active_menu.value == "completed")
-    return mainStore.getReservations.filter(
-      (reservation) => reservation.status == "COMPLETED"
-    );
-  else if (active_menu.value == "cancelled")
-    return mainStore.getReservations.filter(
-      (reservation) => reservation.status == "Cancelled"
-    );
+  let filteredReservations = mainStore.getReservations.filter(
+    (reservation) =>
+      reservation.status == "ARROW_APPROVED" ||
+      (reservation.status == "New" && active_menu.value == "pending") ||
+      reservation.status == "CARRIER_APPROVED" ||
+      (reservation.status == "ARROW_APPROVED" &&
+        active_menu.value == "arrival") ||
+      (reservation.status == "ARROW_CHANGED" &&
+        active_menu.value == "arrow changed") ||
+      (reservation.status == "COMPLETED" && active_menu.value == "completed") ||
+      (reservation.status == "Cancelled" && active_menu.value == "cancelled")
+  );
+
+  console.log(searchQuery.value);
+
+  let keywords = searchQuery.value.toLowerCase().split(" ");
+
+  filteredReservations = filteredReservations.filter((reservation) =>
+    keywords.every(
+      (keyword) =>
+        // (reservation.tracking_number &&
+        //   reservation.tracking_number.toLowerCase().includes(keyword)) ||
+        (reservation.status &&
+          reservation.status.toLowerCase().includes(keyword)) ||
+        (reservation.carrier.name &&
+          reservation.carrier.name.toLowerCase().includes(keyword)) ||
+        (reservation.suppliers.suppliers &&
+          reservation.suppliers.suppliers.some((item) =>
+            item.supplier.name.toLowerCase().includes(keyword)
+          ))
+    )
+  );
+
+  return filteredReservations;
 });
 
 definePageMeta({

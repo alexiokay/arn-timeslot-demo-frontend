@@ -23,25 +23,25 @@ div
               div(class="w-full flex gap-x-6")
                 div(class="flex relative w-1/2 h-auto justify-between ")
                   div(class="absolute -top-3 left-2 bg-white px-1 h-[1.2rem]  text-black") Delivery Addr.
-                  select(class="w-full border-2 h-[2.5rem] p-2 border-black" v-model="newReservation.delivery_address")
+                  select(class="w-full border-[0.1rem] rounded-md h-[2.5rem] p-2 border-black" v-model="newReservation.delivery_address")
                     option(value="1") MV
-                    option(value="2") 2
-                    option(value="3") 3
-                    option(value="4") 4
-                    option(value="5") 5
+                    option(value="2") example
+                    option(value="3") example
+                    option(value="4") example
+                    option(value="5") example
                 div(class="flex relative w-1/2 h-auto justify-between ")
                   div(class="absolute -top-3 left-2 bg-white px-1 h-[1.2rem]  text-black") Supplier Classification
-                  select(class="w-full border-2 h-[2.5rem] p-2 border-black" v-model="newReservation.supplier_classification")
+                  select(class="w-full border-[0.1rem] h-[2.5rem] rounded-md p-2 border-black" v-model="newReservation.supplier_classification")
                     option(value="1") EXPRESS
                     option(value="2") NORMAL
               div(class="flex relative w-full h-auto justify-between ")
                   div(class="absolute -top-3 left-2 bg-white px-1 h-[1.2rem]  text-black") Sub Contract
-                  input(class="w-full border-2 h-[2.5rem] p-2 border-black" v-model="newReservation.sub_contract")
+                  input(class="w-full border-[0.1rem] h-[2.5rem] rounded-md p-2 border-black" v-model="newReservation.sub_contract")
                 
               h3(class="text-lg font-semibold text-gray-800 mt-3") Suppliers
               div(class="relative w-full h-auto justify-between space-y-3 overflow-y-scroll max-h-[calc(100vh-35rem)] ")
                
-                  div(v-for="supplier in newReservation.suppliers" :key="supplier.id" class="w-full flex-col h-auto border-[1px] border-gray-700 rounded-lg px-4 py-2 flex gap-x-4")
+                  div(v-for="supplier in newReservation.suppliers" :key="supplier.id" class="w-full flex-col h-auto border-[1px] border-gray-900 rounded-lg px-4 py-2 flex gap-x-4")
                     div(class="flex w-full")
                       p(class="text-lg font-semibold") {{supplier.name}}
                       button.hide(class=" ml-3 w-[2rem] h-[2rem] rounded-full bg-gray-100 flex items-center justify-center")
@@ -51,19 +51,26 @@ div
                     div(class=" flex w-full mt-4 space-x-4")
                       div(class="flex relative w-1/2 h-auto justify-between ")
                         div(class="absolute -top-3 left-2 bg-white px-1 h-[1.2rem]  text-black") Pallets count
-                        input(class=" border-2  w-full h-[2.5rem] p-2 border-gray-600" v-model="supplier.pallets_count")
+                        input(class=" border-[0.1rem]  w-full h-[2.5rem] p-2 border-gray-600" v-model="supplier.pallets_count"  @keypress="onlyNumeric($event)")
                       div(class="flex relative w-1/2  h-auto justify-between ")
                         div(class="absolute -top-3 left-2 bg-white px-1 h-[1.2rem]  text-black") Cartoons count
-                        input(class="border-2 w-full h-[2.5rem] p-2 border-gray-600"  v-model="supplier.cartons_count")
+                        input(class="border-[0.1rem] w-full h-[2.5rem] p-2 border-gray-600"  v-model="supplier.cartons_count" @keypress="onlyNumeric($event)")
                  
               div(class="flex items-center space-x-2 mt-4")
                 button(@click="addSupplier" class="min-w-max p-4 flex items-center h-[2.5rem] bg-black text-white ") + Add Supplier
-                select(v-model="newSupplier" class="w-full border-2 h-[2.5rem] p-2 border-black"  )
-                  option(v-for="supplier in avalibleSupplierComputed" :value="supplier") {{ supplier.name }}
+             
+
+                v-select(
+                  v-model="newSupplier"
+                  :options="avalibleSupplierComputed"
+                  
+                  class="w-full h-full"
+                  label="name")
+                  <!-- OPTIONALS: :reduce="(supplier) => supplier.id" @option:selected="(supplier)" @option:deselected="(supplier)" -->
                  
               div(class="flex  flex-col w-full h-auto justify-start items-start mt-6")
                   p comment
-                  textarea(class="w-full  h-[4rem] border-2 border-black" v-model="newReservation.comment")
+                  textarea(class="w-full  h-[4rem] border-2 border-black p-3" v-model="newReservation.comment")
               button(@click="book" class="w-full h-[2.5rem] bg-black text-white mt-auto") Book
 </template>
 
@@ -76,8 +83,19 @@ import ClockIcon from "~icons/material-symbols/nest-clock-farsight-analog-outlin
 import CalendarIcon from "~icons/mdi/calendar-week";
 import { useMainStore } from "@/stores/Main";
 import uniqid from "uniqid";
+import { VueSelect as vSelect } from "vue-select";
+import "vue-select/dist/vue-select.css";
+
 const mainStore = useMainStore();
 const userStore = useUserStore();
+
+const onlyNumeric = ($event) => {
+  let keyCode = $event.keyCode ? $event.keyCode : $event.which;
+  if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
+    // 46 is the keyCode for decimal point
+    $event.preventDefault();
+  }
+};
 
 const avalibleSuppliers = [
   {
@@ -89,6 +107,30 @@ const avalibleSuppliers = [
   {
     id: uniqid(),
     name: "Microchip",
+    palletsCount: "",
+    cartoonsCount: "",
+  },
+  {
+    id: uniqid(),
+    name: "Texas Instruments",
+    palletsCount: "",
+    cartoonsCount: "",
+  },
+  {
+    id: uniqid(),
+    name: "Vishay",
+    palletsCount: "",
+    cartoonsCount: "",
+  },
+  {
+    id: uniqid(),
+    name: "STMicroelectronics",
+    palletsCount: "",
+    cartoonsCount: "",
+  },
+  {
+    id: uniqid(),
+    name: "NXP Semiconductors",
     palletsCount: "",
     cartoonsCount: "",
   },
@@ -164,6 +206,24 @@ const is_booking = ref(false);
 const book = async () => {
   is_booking.value = true;
 
+  // check if all suppliers have cartons count and pallets count
+  const suppliers = newReservation.value.suppliers;
+  let suppliersWithErrors = [];
+  suppliers.forEach((supplier) => {
+    if (supplier.cartons_count === "" || supplier.pallets_count === "") {
+      suppliersWithErrors.push(supplier.name);
+    }
+  });
+  if (suppliersWithErrors.length > 0) {
+    alert(
+      `Please fill in the cartons count and pallets count for the following suppliers: ${suppliersWithErrors.join(
+        ", "
+      )}`
+    );
+    is_booking.value = false;
+    return;
+  }
+
   const config = useRuntimeConfig();
   const options = {
     method: "POST",
@@ -188,6 +248,25 @@ const book = async () => {
 
   if (status === 200) {
     emit("closeSidebar");
+    // clear form
+    newReservation.value = {
+      date: props.date,
+      carrier: userStore.carrier.name,
+      timeslot: props.timeslot,
+      delivery_address: "",
+      supplier_classification: "",
+      sub_contract: "",
+      weight: "",
+      suppliers: [
+        {
+          id: uniqid(),
+          name: "Infineon",
+          pallets_count: "",
+          cartons_count: "",
+        },
+      ],
+      comment: "",
+    };
   } else {
     alert(data.message);
   }
@@ -196,6 +275,11 @@ const book = async () => {
 const emit = defineEmits(["closeSidebar"]);
 </script>
 
+<style lang="scss">
+.vs--searchable .vs__dropdown-toggle {
+  height: 2.7rem;
+}
+</style>
 <style lang="scss" scoped>
 .slide-enter-active {
   animation: slide-in 0.3s;

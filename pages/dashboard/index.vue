@@ -3,7 +3,7 @@
 
                     
 div#content(class="text-black w-full h-full px-6 py-[0.4rem] flex flex-col justify-start items-start space-y-6")
-    Searchbar(:datepicker="true" placeholder="Search by tracking number" class="w-full h-[5rem]")
+    
     div(class='w-full h-auto')
       p(class="text-2xl font-semibold") Overview
     
