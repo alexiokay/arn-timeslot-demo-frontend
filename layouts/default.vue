@@ -6,7 +6,7 @@ div(id="default" style="" class=" h-auto flex flex-row bg-[#FAF9FC] justify-cent
       div(class="flex lg:hidden w-full h-[4rem] bg-white shadow-sm fixed top-0 z-10")
       Sidebar(class="z-50 ")
     
-    div(class=" w-full h-auto min-h-screen mt-[3rem] lg:mt-0 " :class="route.path!=='/'  && route.path!=='/signup/carrier' && route.path!=='/signup/arrow' ? 'lg:px-8 py-7 lg:ml-[20rem]' : ''")
+    div(class=" w-full  h-auto min-h-screen mt-[3rem] lg:mt-0 " :class="route.path!=='/'  && route.path!=='/signup/carrier' && route.path!=='/signup/arrow' ? 'lg:px-8 py-7 lg:ml-[20rem]' : ''")
       <slot class="" />
     Footer(v-if="route.path!=='/' && route.path!=='/signup'" class="mt-12")
 div(class="cursor cursor--small")

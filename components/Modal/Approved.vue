@@ -4,7 +4,7 @@ div
   Transition(name="fade")
     <div v-show="isOpen" @click="$emit('close')" tabindex="-1" class="backdrop-blur-[2.5px] fixed top-0 pointer-event-none flex items-center  bg-[rgba(0,0,0,0.55)] justify-center left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-screen md:h-full"></div>
   Transition(name="jump")
-    div(v-show="isOpen"  class="fixed top-0 pointer-event-none flex items-center  justify-center left-0 right-0 z-50  mx-auto w-[30rem] p-4  md:inset-0 h-screen md:h-full")
+    div(v-show="isOpen"  class="fixed top-0 pointer-event-none flex items-center  justify-center left-0 right-0 z-50  mx-auto w-[30rem] p-4  md:inset-0 h-screen md:h-min my-auto")
       <!-- Modal content -->
       div( class="relative bg-white rounded-lg shadow dark:bg-gray-700 h-auto" @click.stop="$emit('null')")
         <!-- Modal header -->
@@ -17,14 +17,13 @@ div
 
         <!-- Modal body -->
         div(class="py-4 px-10 space-y-6 overflow-y-auto h-auto sm:auto w-[40rem]")
-          div.sms-auth(class="flex w-full h-auto")
-              input(type="text" class="w-full h-full text-xl border-2 border-gray-300 rounded-lg focus:outline-none px-4 py-2" placeholder="Enter your sms code")
+        
 
           p(class="text-xl font-semibold text-center") 
            
             
             .flex.justify-center.w-full.items-center.space-x-3
-                button.confirm-button(@click="$emit('yes')"  class="bg-violet-500 hover:bg-violet-600 text-white px-4 py-2 rounded-lg w-[7rem] text-xl") Yes
+                button.confirm-button(@click="mode === 'update'? $emit('update'): $emit('confirm')"  class="bg-violet-500 hover:bg-violet-600 text-white px-4 py-2 rounded-lg w-[7rem] text-xl") Yes
                 button.cancel-button(@click="$emit('no')" class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg w-[7rem] text-xl ") No
                 
           <p hidden class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
@@ -38,6 +37,7 @@ div
 <script setup lang="ts">
 defineProps<{
   isOpen: boolean;
+  mode: string;
 }>();
 </script>
 

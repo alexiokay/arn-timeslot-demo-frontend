@@ -38,14 +38,14 @@ div.settings(class="w-full h-full flex flex-col  px-4")
                 tbody(class="")
                     tr(v-if="filteredAccounts.length <=0" id="end-of-list") 
                       
-                    tr(v-else v-for="(account, index) in filteredAccounts" :key="account" class="border-t " :id="detectEndOfList(index)")
+                    tr(v-else v-for="(account, index) in filteredAccounts" :key="account" class="border-t  " :id="detectEndOfList(index)")
                         td(class="border-r px-3 py-2 text-center bg-gray-100 ") {{ account.id }}
                             
-                        td(class="border-r px-4 py-2 flex space-x-2") 
+                        td(class="border-r px-4 py-2 flex space-x-4 items-center text-lg ") 
                             img(class="w-12 h-12  rounded-full object-cover" :src="account.avatar")
-                            p {{ account.first_name }}
-                            p {{ account.last_name }}
-                        td(class="border-r px-4 py-2") {{ account.email }}
+                            p {{ account.first_name }} 
+                              span {{ account.last_name }}
+                        td(class="border-r px-4 py-2 text-lg") {{ account.email }}
                         td(class="border-r px-4 py-2") 
                           button.activate-account(v-if="account.is_activated && canUserActivate(account)" @click="_activateAccount(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Deactivate
                           button.activate-account(v-if=" !account.is_activated && canUserActivate(account)" @click="_activateAccount(account)" class="border-2 border-gray-200 rounded-md px-6 py-1 font-semibold hover:bg-blue-400 hover:text-white") Activate

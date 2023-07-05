@@ -1,7 +1,7 @@
 <template lang="pug">
 
 Transition(name="fade")
-    <div v-show="!is_sidebar_open" @click="$emit('close')" tabindex="-1" class="fixed lg:hidden top-0 pointer-event-none flex items-center bg-[rgba(0,0,0,0.55)] justify-center left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-screen md:h-full"></div>
+    <div v-show="!is_sidebar_open" @click="$emit('close')" tabindex="-1" class="fixed  lg:hidden top-0 pointer-event-none flex items-center bg-[rgba(0,0,0,0.55)] justify-center left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-screen md:h-full"></div>
 
 div#sidebar(class=" fixed w-[20rem] top-0 left-0 z-50  h-screen max-h-screen bg-white px-2 py-4 rounded-r-xl text-black items-center flex flex-col" :class="is_sidebar_open? 'hide-left  ': 'show-right'")
     div#sidebar-header(class="relative w-full px-3 flex flex-col h-auto justify-between items-start")
@@ -38,7 +38,7 @@ div#sidebar(class=" fixed w-[20rem] top-0 left-0 z-50  h-screen max-h-screen bg-
                     SettingsIcon(class="w-6 h-6")
         
         button(class="w-full h-[3.3rem] px-4 py-2 bg-violet-600 text-white rounded-md hover:bg-violet-700")
-            p + Reserve Timeslot
+            NuxtLink(to="/dashboard/timeslots") + Reserve Timeslot
         hr(class="w-full border-gray-300 " )
         UserInfo
             

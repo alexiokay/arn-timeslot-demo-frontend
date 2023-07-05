@@ -1,9 +1,9 @@
 <template lang="pug">
 div#timeslot-top-panel(class="flex w-full h-auto")
     
-div(class="flex gap-x-[5rem]")
+div(class="flex gap-x-[5rem] px-8 md:px-0 flex-wrap md:flex-nowrap ")
     
-    div#timeslot-left-panel(class="flex w-2/4 flex-col  " :class="{'mt-[0.8rem] pr-[2.9rem] ': editMode}" )
+    div#timeslot-left-panel(class="flex w-full md:w-2/4 flex-col  " :class="{'mt-[0.8rem] pr-[2.9rem] ': editMode}" )
 
         div(class="flex flex-col space-y-4 sticky top-[2.5rem]")
           div(class="flex items-center relative ")
@@ -22,8 +22,8 @@ div(class="flex gap-x-[5rem]")
                 hr(class="absolute top-[1.7rem] right-0 w-[1.3rem] h-[0.5px] border-gray-300 border-[1px]")
           p(v-if="editMode" class="text-gray-500 w-full") Here you can edit your timeslots. You can open or close timeslots for a specific date.
           p(v-if="!editMode" class="text-gray-500 w-full") Here all your planned timeslots. You will find information for each timeslot as well you can planned new one
-          Calendar(ref="calendar" class="mt-8 " @selectDate="selectDate" :dates="date_objs" :editMode="editMode")
-    div#timeslot-right-panel(v-show="!editMode" class="flex w-2/4 flex-col mt-[6rem]")
+          Calendar(ref="calendar" class="mt-8  " @selectDate="selectDate" :dates="date_objs" :editMode="editMode" )
+    div#timeslot-right-panel(v-show="!editMode" class="flex w-full md:w-2/4 flex-col md:mt-[6rem] ")
         CalendarScheduleSidebar(:class="isScheduleSidebarOpen? '': 'hidden'" class="mt-8")
         CalendarSchedule( :selectedTimeslot="formatedScheduleDate" class="mt-8" :date="formatUTCDate(selectedDate)")
 

@@ -48,9 +48,9 @@ div(class="w-full flex flex-col px-3 md:px-4 lg:px-0 justify-start items-start")
                 p(class="text-xl font-semibold") Status: 
                     span(class="text-violet-600") {{shipment?.status }} {{ shipment?.status === 'CARRIER_APPROVED' ? '/ ARROW_APPROVED ' : ''}}
                 div(class="flex justify-start w-full items-center h-auto space-x-4")
-                    ButtonMenu2(v-if="editMode" @click="saveReservation" text="Save"  class="p-5 text-xl bg-green-500 text-white")
-                    ButtonMenu2(v-if="!editMode && ((shipment.status === 'ARROW_APPROVED' || shipment.status==='ARROW_CHANGED') && userStore.accountType === 'carrier'  || shipment.status === 'New' && userStore.accountType === 'arrow-employee' )" @click="accceptReservation" text="Accept" :active="true" class="p-5 text-xl")
-                    ButtonMenu2(v-if="!editMode && (shipment.status !== 'ARROW_APPROVED' && shipment.status !== 'CARRIER_APPROVED')" @click="editMode = !editMode" text="Change" :active="true" class="p-5 text-xl bg-yellow-500")
+                    ButtonMenu2(v-if="editMode" @click="isConfirmationModalOpen = true;" text="Save"  class="p-5 text-xl bg-green-500 text-white")
+                    ButtonMenu2(v-if="!editMode && ((shipment.status === 'ARROW_APPROVED' || shipment.status==='ARROW_CHANGED') && userStore.accountType === 'carrier'  || shipment.status === 'New' && userStore.accountType === 'arrow-employee' )" @click="isConfirmationModalOpen = true, modalMode='status'" text="Accept" :active="true" class="p-5 text-xl")
+                    ButtonMenu2(v-if="!editMode && (shipment.status !== 'ARROW_APPROVED' && shipment.status !== 'CARRIER_APPROVED')" @click="editMode = !editMode, modalMode='update'" text="Change" :active="true" class="p-5 text-xl bg-yellow-500")
                     ButtonMenu2(v-if="editMode" @click="(editMode = false, resetTempSuppliers())" text="Cancel"  class="p-5 text-xl bg-red-500 text-white")
                     
             div(class="flex flex-col justify-start items-start w-full h-auto space-y-2 p-4 bg-white rounded-lg")
@@ -78,7 +78,7 @@ div(class="w-full flex flex-col px-3 md:px-4 lg:px-0 justify-start items-start")
                    
     <!-- If user is the same which made the reservation and reservation is approved by arrow then show this div -->
     
-    ModalApproved#confirmationModal(:isOpen="isConfirmationModalOpen" @accept="accceptReservation" class="w-1/2 h-1/2")
+    ModalApproved#confirmationModal(:isOpen="isConfirmationModalOpen" @close="isConfirmationModalOpen = false" @update="saveReservation" @confirm="accceptReservation" :mode="compModalMode" class="w-1/2 h-1/2")
     
 
 </template>
@@ -95,10 +95,15 @@ const config = useRuntimeConfig();
 const shipment_id = ref(route.path.split("/")[3]);
 
 const editMode = ref(false);
+
 console.log(shipment_id.value);
 
 let shipment: any = null;
 
+const modalMode = ref("status");
+const compModalMode = computed(() => {
+  return modalMode.value;
+});
 const isConfirmationModalOpen = ref(false);
 const isCarrierModalOpen = ref(true);
 // const isCarrierModalOpenComputed = computed(() => {
@@ -179,37 +184,8 @@ const changingValues = computed(() => {
     },
   };
 });
-
 const accceptReservation = () => {
-  //TODO: sending accept to API and it accepts if user is arrowEmployee and status is pending or can be accepted after arrow change by carrier employee
   console.log("accepting");
-  isConfirmationModalOpen.value = true;
-  const confirmationModal = document.getElementById(
-    "confirmationModal"
-  ) as HTMLDivElement;
-  const confirmButton = confirmationModal.querySelector(
-    ".confirm-button"
-  ) as HTMLButtonElement;
-  confirmButton.addEventListener("click", () => {
-    fetch(
-      `${config.API_URL}api/v1/update_timeslot_reservation/${shipment_id.value}`,
-      useHeaders("PUT", {
-        status: status,
-      })
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        isConfirmationModalOpen.value = false;
-      });
-
-    const cancelButton = confirmationModal.querySelector(
-      ".cancel-button"
-    ) as HTMLButtonElement;
-    cancelButton.addEventListener("click", () => {
-      isConfirmationModalOpen.value = false;
-    });
-  });
 
   let status = "";
   if (userStore.accountType === "arrow-employee") {
@@ -217,49 +193,38 @@ const accceptReservation = () => {
   } else if (userStore.accountType === "carrier") {
     status = "CARRIER_APPROVED";
   }
+
+  fetch(
+    `${config.API_URL}api/v1/accept_timeslot_reservation/${shipment_id.value}`,
+    useHeaders("PUT", {
+      status: status,
+    })
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      isConfirmationModalOpen.value = false;
+    });
 };
-
 const saveReservation = () => {
-  isConfirmationModalOpen.value = true;
-  let status = "";
-  if (userStore.accountType === "arrow-employee") {
-    status = "ARROW_CHANGED";
-    //accceptReservation();
-  } else if (userStore.accountType === "carrier") {
-    status = shipment.value.status;
-  }
+  let supplierData = JSON.parse(JSON.stringify(TempSupplierData.value));
 
-  const confirmationModal = document.getElementById(
-    "confirmationModal"
-  ) as HTMLDivElement;
-  const confirmButton = confirmationModal.querySelector(
-    ".confirm-button"
-  ) as HTMLButtonElement;
+  fetch(
+    `${config.API_URL}api/v1/update_timeslot_reservation/${shipment_id.value}`,
+    useHeaders("PUT", {
+      suppliers: supplierData,
+    })
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      isConfirmationModalOpen.value = false;
+      editMode.value = false;
+    });
 
   // TODO: save each supplier data from TempSupplierData
-  confirmButton.addEventListener("click", (e) => {
-    fetch(
-      `${config.API_URL}api/v1/update_timeslot_reservation/${shipment_id.value}`,
-      useHeaders("PUT", {
-        status: status,
-        pallets_count: changingValues.value.pallets_count,
-        cartons_count: changingValues.value.cartons_count,
-      })
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        isConfirmationModalOpen.value = false;
-        editMode.value = false;
-      });
-  });
 
-  const cancelButton = confirmationModal.querySelector(
-    ".cancel-button"
-  ) as HTMLButtonElement;
-  cancelButton.addEventListener("click", (e) => {
-    isConfirmationModalOpen.value = false;
-  });
+  console.log(supplierData);
 };
 
 const TempSupplierData = ref(

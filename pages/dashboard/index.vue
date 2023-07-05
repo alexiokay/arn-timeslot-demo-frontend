@@ -8,7 +8,7 @@ div#content(class="text-black w-full h-full px-6 py-[0.4rem] flex flex-col justi
       p(class="text-2xl font-semibold") Overview
     
       div(class="h-[7rem] w-full flex  mt-2 justify-between")
-        DashboardQuickMenuItem(text="New Packages" value="0")
+        DashboardQuickMenuItem(text="New Shipments" :value="todayShipments")
           template(v-slot:icon)
             PackageIcon(class="w-12 h-12  text-violet-500 ")
         DashboardQuickMenuItem(text="Ready for Shippping" value="0")
@@ -17,6 +17,12 @@ div#content(class="text-black w-full h-full px-6 py-[0.4rem] flex flex-col justi
     div(class="flex w-full md:flex-row flex-col justify-between h-auto")
       DashboardDelayedDelivery(class="md:w-[calc(50%-1rem)] w-full")
       DashboardDailyPlan(class="md:w-[calc(50%-1rem)] w-full")
+      
+    div(class="flex w-full md:flex-row flex-col justify-between h-auto")
+      DashboardTodo(class="md:w-[calc(50%-1rem)] w-full min-h-[30rem]")
+     
+   
+
       
         
 </template>
@@ -34,7 +40,7 @@ definePageMeta({
 
 const config = useRuntimeConfig();
 
-const todayShipments = ref(0);
+const todayShipments = ref(mainStore.getNewReservations.length.toString());
 const todayDelivered = ref(0);
 const todayInTransit = ref(0);
 const todayDelayed = ref(0);

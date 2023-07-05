@@ -23,7 +23,7 @@ div.calendar(class="flex flex-col w-full h-auto")
     .calendar-days(class="flex w-full h-[4rem] justify-between items-center text-center")
       CalendarDay(@click="openModal(day)" @selectDate="selectDate(day)" v-for="day in sixthWeek" :class="{'opacity-0 pointer-events-none': day.is_open === false && !editMode || (!day.is_fetched  &&  editMode ),}" :day="day.day.toString()"  :is_selected="checkDate(day.date)" :is_open="day.is_open" :editMode="editMode" :is_actual_month='day.day < 22? true: false')
 
-ModalApproved2step(:isOpen="is_modal_open" @close="is_modal_open = false" @yes="confirmModal()" @no="cancelModal()" :isDateOpen="unlockingDate? unlockingDate.is_open: false")
+ModalApproved2step(:isOpen="is_modal_open" @close="is_modal_open = false" @yes="confirmModal()" @no="cancelModal()" :isDateOpen="unlockingDate? unlockingDate.is_open: false" )
 
 </template>
 

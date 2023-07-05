@@ -4,7 +4,7 @@ div
   Transition(name="fade")
     <div v-show="isOpen" @click="$emit('close')" tabindex="-1" class="backdrop-blur-[2.5px] fixed top-0 pointer-event-none flex items-center  bg-[rgba(0,0,0,0.55)] justify-center left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-screen md:h-full"></div>
   Transition(name="jump")
-    div(v-show="isOpen"  class="fixed top-0 pointer-event-none flex items-center  justify-center left-0 right-0 z-50  mx-auto w-[30rem] p-4  md:inset-0 h-screen md:h-full")
+    div(v-show="isOpen"  class="fixed top-0 pointer-event-none flex items-center  justify-center left-0 right-0 z-50  mx-auto lg:mx-0 lg:ml-[calc(45.5vw)] w-[30rem] p-4 my-auto  md:inset-0 h-screen md:h-min")
       <!-- Modal content -->
       div( class="relative bg-white rounded-lg shadow dark:bg-gray-700 h-auto" @click.stop="$emit('null')")
         <!-- Modal header -->

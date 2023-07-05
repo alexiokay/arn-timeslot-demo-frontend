@@ -12,15 +12,15 @@ div(class="w-full py-4 px-6  bg-white rounded-xl flex items-center ")
                     th.py-3.px-4.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider
                         | Destination
                     th.py-3.px-4.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider
-                        | Truck
+                        | Gate
                     th.py-3.px-4.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider
                         | Timeslot
                     th.py-3.px-4.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider
                         | Time delay
-                tbody.bg-white
+                tbody.bg-white(class="")
                     
-                        tr(v-for="(index, item) in 3" :key="item" :class="index<3? 'border-b border-gray-200': ''")
-                            td.py-4.px-4.whitespace-nowrap 2
+                        tr(v-for="(index, item) in 3" :key="item" :class="index<3? 'border-b border-gray-200': ''" class="hover:bg-slate-50   hover:cursor-pointer")
+                            td.py-4.px-4.whitespace-nowrap(class="w-1/5") 2
                             
                             
                             td.py-4.px-4.whitespace-nowrap 2
