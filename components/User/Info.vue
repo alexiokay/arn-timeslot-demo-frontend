@@ -1,6 +1,6 @@
 <template lang="pug">
 div#user-info(class="w-full px-2 relative h-auto flex justify-between items-center ")
-            nuxt-img(src="images/arrow-logo-2.png" width="150" height="30" format="webp" class="w-12 h-12 rounded-full")
+            nuxt-img(:src="userStore.avatar? `${userStore.avatar}` : 'images/arrow-logo-2.png'" width="150" height="30" format="webp" class="w-12 h-12 rounded-full")
             div(class="flex flex-col h-full justify-around w-full ml-4")
                 p(class="font-semibold") {{ userStore.username }}
                 p(class="text-xs font-semibold text-gray-500") {{ userStore.getFamily }} - {{userStore.getRole}}

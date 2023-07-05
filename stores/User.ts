@@ -26,6 +26,7 @@ export const useUserStore = defineStore("User", {
       firstName: "",
       lastName: "",
       email: "",
+      avatar: "",
       token: "",
       isLogged: false,
       is_activated: false,
@@ -105,6 +106,7 @@ export const useUserStore = defineStore("User", {
       this.accountType = "";
       this.role = null;
       this.carrier = {} as Carrier;
+      this.avatar = "";
     },
 
     setUser(data: any) {
@@ -133,6 +135,7 @@ export const useUserStore = defineStore("User", {
       this.isLogged = true;
       this.is_activated = user.is_activated;
       this.activated_by = user.activated_by;
+      this.avatar = user.avatar;
     },
   },
 
