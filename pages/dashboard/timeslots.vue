@@ -141,6 +141,7 @@ const selectDate = (date: Date) => {
   console.log(date);
   selectedDate.value = date;
   formatedScheduleDate.value = formatScheduleDate(date);
+  console.log(formatedScheduleDate.value);
 };
 </script>
 
