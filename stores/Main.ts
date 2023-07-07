@@ -14,12 +14,17 @@ export const useMainStore = defineStore("mainStore", {
       isMobileNavbarOpen: useStorage("isMobileNavbarOpen", false),
       isLocaleSet: useStorage("isLocaleSet", false),
       isOverlaying: useStorage("isOverlaying", false),
+      active_menu: useStorage("active_menu", "pending"),
 
       dates: useStorage("dates", [] as any[]),
       reservations: [] as any[],
     };
   },
   getters: {
+    getActiveMenu(state) {
+      return state.active_menu;
+    },
+
     getReservations(state) {
       return state.reservations;
     },
@@ -68,6 +73,9 @@ export const useMainStore = defineStore("mainStore", {
     initialize() {
       // this is called when the store is initialized
       this.initialized = true;
+    },
+    setActiveMenu(menu: string) {
+      this.active_menu = menu;
     },
     hideMobileNavbar() {
       this.isMobileNavbarOpen = false;

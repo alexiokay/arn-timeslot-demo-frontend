@@ -14,11 +14,11 @@ div#shipments(class="text-black w-full h-full px-6 py-[0.4rem] flex flex-row fle
         div(class="flex lg:flex-row flex-col items-start space-y-2 lg:space-y-0 lg:items-center justify-start overflow-auto w-full no-scrollbar ")
             h1(class="text-xl w-auto font-semibold mr-[1.5rem]") Shipments
             div(class="flex  space-x-2 items-center justify-start overflow-auto no-scrollbar ")
-              ButtonMenu2(text="Pending" :active="active_menu == 'pending'" @click="active_menu = 'pending'" )
-              ButtonMenu2(text="Arrival" :active="active_menu == 'arrival'" @click="active_menu = 'arrival'")
-              ButtonMenu2(text="Completed" :active="active_menu == 'completed'" @click="active_menu = 'completed'")
-              ButtonMenu2(text="Cancelled" :active="active_menu == 'cancelled'" @click="active_menu = 'cancelled'")
-              ButtonMenu2(text="Arrow Changed" :active="active_menu == 'arrow changed'" @click="active_menu = 'arrow changed'")
+              ButtonMenu2(text="Pending" :active="active_menu == 'pending'" @click="mainStore.setActiveMenu('pending')" )
+              ButtonMenu2(text="Arrival" :active="active_menu == 'arrival'" @click="mainStore.setActiveMenu('arrival')")
+              ButtonMenu2(text="Completed" :active="active_menu == 'completed'" @click="mainStore.setActiveMenu('completed')")
+              ButtonMenu2(text="Cancelled" :active="active_menu == 'cancelled'" @click="mainStore.setActiveMenu('cancelled')")
+              ButtonMenu2(text="Arrow Changed" :active="active_menu == 'arrow changed'" @click="mainStore.setActiveMenu('arrow changed')")
        
         div#shipments-menu-sorting(class="ml-auto   px-2 flex items-center justify-center space-x-2 w-auto h-[2.5rem] rounded-lg bg-white text-black")
             p(class="text-sm") Sort by:
@@ -41,22 +41,40 @@ const mainStore = useMainStore();
 const router = useRouter();
 const isHintOpen = ref(true);
 
-const active_menu = ref("pending");
+const active_menu = computed(() => {
+  return mainStore.getActiveMenu;
+});
 
 const searchQuery = ref("");
 const reservations = computed(() => {
-  let filteredReservations = mainStore.getReservations.filter(
-    (reservation) =>
-      reservation.status == "ARROW_APPROVED" ||
-      (reservation.status == "New" && active_menu.value == "pending") ||
-      reservation.status == "CARRIER_APPROVED" ||
-      (reservation.status == "ARROW_APPROVED" &&
-        active_menu.value == "arrival") ||
-      (reservation.status == "ARROW_CHANGED" &&
-        active_menu.value == "arrow changed") ||
-      (reservation.status == "COMPLETED" && active_menu.value == "completed") ||
-      (reservation.status == "Cancelled" && active_menu.value == "cancelled")
-  );
+  let filteredReservations = mainStore.getReservations.filter((reservation) => {
+    if (
+      (reservation.status === "ARROW_APPROVED" &&
+        active_menu.value === "arrival") ||
+      (reservation.status === "ARROW_CHANGED" &&
+        active_menu.value === "arrow changed")
+    ) {
+      return true;
+    }
+
+    if (
+      (reservation.status === "New" && active_menu.value === "pending") ||
+      (reservation.status === "COMPLETED" &&
+        active_menu.value === "completed") ||
+      (reservation.status === "Cancelled" && active_menu.value === "cancelled")
+    ) {
+      return true;
+    }
+
+    if (
+      reservation.status === "CARRIER_APPROVED" &&
+      active_menu.value === "arrival" // Replace "specific_menu" with the desired menu where "CARRIER_APPROVED" should be visible
+    ) {
+      return true;
+    }
+
+    return false;
+  });
 
   console.log(searchQuery.value);
 

@@ -49,7 +49,7 @@ div(class="w-full flex flex-col px-3 md:px-4 lg:px-0 justify-start items-start")
                     span(class="text-violet-600") {{shipment?.status }} {{ shipment?.status === 'CARRIER_APPROVED' ? '/ ARROW_APPROVED ' : ''}}
                 div(class="flex justify-start w-full items-center h-auto space-x-4")
                     ButtonMenu2(v-if="editMode" @click="isConfirmationModalOpen = true;" text="Save"  class="p-5 text-xl bg-green-500 text-white")
-                    ButtonMenu2(v-if="!editMode && ((shipment.status === 'ARROW_APPROVED' || shipment.status==='ARROW_CHANGED') && userStore.accountType === 'carrier'  || shipment.status === 'New' && userStore.accountType === 'arrow-employee' )" @click="isConfirmationModalOpen = true, modalMode='status'" text="Accept" :active="true" class="p-5 text-xl")
+                    ButtonMenu2(v-if="!editMode && (shipment.status==='ARROW_CHANGED' && userStore.accountType === 'carrier'  || shipment.status === 'New' && userStore.accountType === 'arrow-employee' )" @click="isConfirmationModalOpen = true, modalMode='status'" text="Accept" :active="true" class="p-5 text-xl")
                     ButtonMenu2(v-if="!editMode && (shipment.status !== 'ARROW_APPROVED' && shipment.status !== 'CARRIER_APPROVED')" @click="editMode = !editMode, modalMode='update'" text="Change" :active="true" class="p-5 text-xl bg-yellow-500")
                     ButtonMenu2(v-if="editMode" @click="(editMode = false, resetTempSuppliers())" text="Cancel"  class="p-5 text-xl bg-red-500 text-white")
                     
