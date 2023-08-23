@@ -3,11 +3,11 @@ export const getCarriers = async () => {
   const options = {
     method: "GET",
     headers: {
-      Host: `${config.FETCH_HOST}`,
+      Host: `${config.public.FETCH_HOST}`,
     },
   } as any;
   const carriers = await useFetch(
-    `${config.API_URL}api/v1/get_carriers`,
+    `${config.public.API_URL}api/v1/get_carriers`,
     options
   ).then((res) => {
     const data: any = res.data.value;

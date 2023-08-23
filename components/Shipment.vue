@@ -1,21 +1,21 @@
 <template lang="pug">
-div.request(class=" h-auto bg-white rounded-lg  flex flex-col justify-start px-4 py-2 hover:cursor-pointer")
+div.request(class=" h-auto bg-themeBackground2 rounded-lg  flex flex-col justify-start px-4 py-2 hover:cursor-pointer" )
     div.request-header(class="w-full flex h-auto items-start justify-between")
         div.request-title(class="h-auto flex items-center space-x-3 ")
             p(class="text-xl font-bold ") {{ props.reservation.carrier.name}}
-            p(class="text-base text-gray-500") {{ props.reservation.Timeslot.date}}, {{ props.reservation.Timeslot.start_time }}
+            p(class="text-base text-themeText2") {{ props.reservation.Timeslot.date}}, {{ props.reservation.Timeslot.start_time }}
         p.request-truck-filled(class="text-2xl text-blue-600") {{ CalculateTruckFillingPercent(props.reservation) }}%
     div.request-body(class="w-full flex h-full items-center justify-between ")
         div.request-body-left(class="w-1/4 flex flex-col h-full space-y-2 items-start justify-center")
         
             div.request-reservation-parameter(class="w-full  items-start justify-start flex flex-col")
-                p(class="text-base  text-gray-800") Avalible, kg
+                p(class="text-base  text-themeText2") Avalible, kg
                 p(class="text-lg font-semibold") 20/200
             div.request-reservation-parameter(class="w-full  items-start justify-start flex flex-col")
-                p(class="text-base  text-gray-800") boxes count
+                p(class="text-base  text-themeText2") boxes count
                 p(class="text-lg font-semibold") {{ props.reservation.cartons_count }}
             div.request-reservation-parameter(class="w-full  items-start justify-start flex flex-col")
-                p(class="text-base  text-gray-800") pallets count
+                p(class="text-base  text-themeText2") pallets count
                 p(class="text-lg font-semibold") {{ props.reservation.pallets_count }}
         div(class="relative flex w-[70%] h-[60%] xl:w-[60%] xl:h-[80%] select-none")
             nuxt-img(src="/images/truck3.png" format="webp"  class="w-full pointer-events-none  ")

@@ -239,11 +239,11 @@ const openModal = (day: DateObject) => {
 const lockUnlockDate = async (day: DateObject) => {
   if (props.editMode === true) {
     // allow for selection only if edit mode is true
-    fetch(`${config.API_URL}api/v1/lock_unlock_day`, {
+    fetch(`${config.public.API_URL}api/v1/lock_unlock_day`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Host: `${config.FETCH_HOST}`,
+        Host: `${config.public.FETCH_HOST}`,
         Authorization: `Token ${userStore.getToken}`,
       },
       body: JSON.stringify({

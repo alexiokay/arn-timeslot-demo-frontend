@@ -1,9 +1,9 @@
 <template lang="pug">
-NuxtLink.menu-button(:to="props.to" :class="isActive? 'bg-slate-100': ''" class="relative whitespace-nowrap text-ellipsis flex w-full group justify-between rounded-md  hover:bg-slate-100 h-[1.9rem] md:h-[2.7rem] px-4 py-2 items-center hover:cursor-pointer")
+NuxtLink.menu-button(:to="props.to" :class="isActive? 'bg-themeBackground': ''" class="relative whitespace-nowrap text-ellipsis flex w-full group justify-between rounded-md  hover:bg-themeBackground h-[1.9rem] md:h-[2.7rem] px-4 py-2 items-center hover:cursor-pointer")
     div(class="flex space-x-2")
         slot(name="icon")
         p {{ props.text }}
-    div(v-if="props.notifications_count >= 0" :class="props.notifications_count > 0? 'moving-flag-bg': 'bg-slate-50'" class="h-full w-[2rem]  flex items-center justify-center rounded-md")
+    div(v-if="props.notifications_count >= 0" :class="props.notifications_count > 0? 'moving-flag-bg': 'bg-themeBackground'" class="h-full w-[2rem]  flex items-center justify-center rounded-md")
         p() {{props.notifications_count}}
     .active-pointer(v-if="isActive" class="absolute -left-[0.6rem]  w-[0.65rem] h-11 bg-violet-600 rounded-r-md")
 
@@ -58,7 +58,7 @@ const isActive = computed(() => {
 
 @keyframes colorChange {
   0% {
-    background: rgb(241 245 249);
+    background: var(background2);
   }
   10% {
     background: #7c3aed;
@@ -69,10 +69,10 @@ const isActive = computed(() => {
     color: white;
   }
   40% {
-    background: rgb(241 245 249);
+    background: var(background2);
   }
   100% {
-    background: rgb(241 245 249);
+    background: var(background2);
   }
 }
 </style>

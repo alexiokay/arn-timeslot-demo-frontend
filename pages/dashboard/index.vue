@@ -2,7 +2,7 @@
 
 
                     
-div#content(class="text-black w-full h-full px-6 py-[0.4rem] flex flex-col justify-start items-start space-y-6")
+div#content(class="text-themeText w-full h-full px-6 py-[0.4rem] flex flex-col justify-start items-start space-y-6")
     
     div(class='w-full h-auto')
       p(class="text-2xl font-semibold") Overview
@@ -47,7 +47,7 @@ const todayDelayed = ref(0);
 const delayedDeliveries = ref(0);
 
 const getTodayShipments = async () => {
-  const res = await fetch(`${config.apiURL}/api/shipments/today`, {
+  const res = await fetch(`${config.public.apiURL}/api/shipments/today`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${userStore.getToken}`,

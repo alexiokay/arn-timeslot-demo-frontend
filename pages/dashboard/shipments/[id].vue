@@ -122,13 +122,13 @@ const fetchShipment = async () => {
   const options = {
     method: "GET",
     headers: {
-      Host: `${config.FETCH_HOST}`,
+      Host: `${config.public.FETCH_HOST}`,
       Authorization: `Token ${userStore.getToken}`,
     },
   } as any;
 
   const _shipment = await fetch(
-    `${config.API_URL}api/v1/get_reservation/${shipment_id.value}`,
+    `${config.public.API_URL}api/v1/get_reservation/${shipment_id.value}`,
     options
   )
     .then((res) => res.json())
@@ -195,7 +195,7 @@ const accceptReservation = () => {
   }
 
   fetch(
-    `${config.API_URL}api/v1/accept_timeslot_reservation/${shipment_id.value}`,
+    `${config.public.API_URL}api/v1/accept_timeslot_reservation/${shipment_id.value}`,
     useHeaders("PUT", {
       status: status,
     })
@@ -210,7 +210,7 @@ const saveReservation = () => {
   let supplierData = JSON.parse(JSON.stringify(TempSupplierData.value));
 
   fetch(
-    `${config.API_URL}api/v1/update_timeslot_reservation/${shipment_id.value}`,
+    `${config.public.API_URL}api/v1/update_timeslot_reservation/${shipment_id.value}`,
     useHeaders("PUT", {
       suppliers: supplierData,
     })

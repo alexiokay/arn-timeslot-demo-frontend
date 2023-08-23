@@ -1,21 +1,21 @@
 <template lang="pug">
-div(class="w-full py-4 px-6  bg-white rounded-xl flex items-center ")
+div(class="w-full py-4 px-6  bg-themeBackground2 rounded-xl flex items-center ")
     div(class="w-2/5 flex flex-col h-full items-between justify-between ")
         div(class="flex space-x-2 items-end  ")
             p(class="  font-semibold text-2xl") Daily Plan
             p(class=" ") 16 jan 23
-        div(class="flex flex-col  text-gray-600 space-y-1 ")
+        div(class="flex flex-col  text-themeText2 space-y-1 ")
             p Shipment procedeed
-            p(class="text-black font-semibold") 145
-                span(class="text-gray-600") /240
-        div(class="flex flex-col  text-gray-600  space-y-1")
+            p(class="text-themeText font-semibold") 145
+                span(class="text-themeText2") /240
+        div(class="flex flex-col  text-themeText2  space-y-1")
             p Orders procedeed
-            p(class="text-black font-semibold") 145
-                span(class="text-gray-600") /240
-        div(class="flex flex-col  text-gray-600  space-y-1 ")
+            p(class="text-themeText font-semibold") 145
+                span(class="text-themeText2") /240
+        div(class="flex flex-col  text-themeText2  space-y-1 ")
             p Requests procedeed
-            p(class="text-black font-semibold") 145
-                span(class="text-gray-600") /240
+            p(class="text-themeText font-semibold") 145
+                span(class="text-themeText2") /240
         slot(name="icon" class="")
     div(class="w-3/5")
         div(class="wrapper")

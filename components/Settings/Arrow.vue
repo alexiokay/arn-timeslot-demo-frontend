@@ -95,11 +95,11 @@ setSettings();
 const save = async () => {
   emit("save");
 
-  await fetch(`${config.API_URL}api/v1/arrows_settings/`, {
+  await fetch(`${config.public.API_URL}api/v1/arrows_settings/`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      Host: `${config.FETCH_HOST}`,
+      Host: `${config.public.FETCH_HOST}`,
       Authorization: `Token ${userStore.token}`,
     },
     body: JSON.stringify({

@@ -94,13 +94,13 @@ const login = async () => {
       };
 
   const url = isArrowEmployee.value
-    ? `${config.API_URL}auth/login/arrow`
-    : `${config.API_URL}auth/login/carrier`;
+    ? `${config.public.API_URL}auth/login/arrow`
+    : `${config.public.API_URL}auth/login/carrier`;
   await fetch(url, {
     method: "POST",
     headers: {
       "content-Type": "application/json",
-      Host: `${config.FETCH_HOST}`,
+      Host: `${config.public.FETCH_HOST}`,
     },
     body: JSON.stringify(body),
   })

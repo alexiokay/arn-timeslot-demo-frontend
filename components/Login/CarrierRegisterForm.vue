@@ -129,11 +129,11 @@ const setAllChecked = () => {
 };
 
 const registerCarrier = async () => {
-  await fetch(`${config.API_URL}auth/registration/carrier`, {
+  await fetch(`${config.public.API_URL}auth/registration/carrier`, {
     method: "POST",
     headers: {
       "content-Type": "application/json",
-      Host: `${config.FETCH_HOST}`,
+      Host: `${config.public.FETCH_HOST}`,
     },
     body: JSON.stringify({
       email: `${email.value}`,

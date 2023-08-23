@@ -86,7 +86,7 @@ import ClockIcon from "~icons/material-symbols/nest-clock-farsight-analog-outlin
 import CalendarIcon from "~icons/mdi/calendar-week";
 import { useMainStore } from "@/stores/Main";
 import uniqid from "uniqid";
-import { VueSelect as vSelect } from "vue-select";
+import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 
 const mainStore = useMainStore();
@@ -239,7 +239,7 @@ const book = async () => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Host: `${config.FETCH_HOST}`,
+      Host: `${config.public.FETCH_HOST}`,
       Authorization: `Token ${userStore.getToken}`,
     },
     body: JSON.stringify({
@@ -248,7 +248,7 @@ const book = async () => {
   } as any;
 
   const response = await fetch(
-    `${config.API_URL}api/v1/reserve_timeslot`,
+    `${config.public.API_URL}api/v1/reserve_timeslot`,
     options
   );
 

@@ -4,8 +4,8 @@ export const useGeolocation2 = async (latitude: number, longitude: number) => {
   const options = {
     method: "POST",
     headers: {
-      Host: `${config.FETCH_HOST}`,
-      Authorization: `${config.API_TOKEN}`,
+      Host: `${config.public.FETCH_HOST}`,
+      Authorization: `${config.public.API_TOKEN}`,
     },
     body: JSON.stringify({
       latitude: latitude,
@@ -16,7 +16,7 @@ export const useGeolocation2 = async (latitude: number, longitude: number) => {
   console.log(options);
 
   const response = await useFetch(
-    `${config.API_URL}api/v1/get_geolocation/`,
+    `${config.public.API_URL}api/v1/get_geolocation/`,
     options
   ).then((res) => {
     const data: any = res.data.value;

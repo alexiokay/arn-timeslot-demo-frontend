@@ -1,18 +1,18 @@
 <template lang="pug">
-div#shipments(class="text-black w-full h-full px-6 py-[0.4rem] flex flex-row flex-wrap gap-y-[2rem] space-x-2 justify-start items-center")
+div#shipments(class=" w-full h-full px-6 py-[0.4rem] flex flex-row flex-wrap gap-y-[2rem] space-x-2 justify-start items-center")
     
     
     div.shipments(class="w-full gap-y-2 flex flex-col")
-      div(v-show="isHintOpen === true" class="bg-blue-200 py-2 px-4 rounded-lg max-w-max flex gap-x-4")
+      div(v-show="isHintOpen === true" class="bg-themeHint py-2 px-4 rounded-lg max-w-max flex gap-x-4")
         HintIcon(class="w-6 h-6 ")
         p(class="") 
-          span(class="font-semibold") Hint: 
+          span(class="font-semibold  ") Hint: 
           span() You can search by supplier name, carrier or status
         CloseIcon(class="w-6 h-6 cursor-pointer" @click="isHintOpen = false" )
       Searchbar(:datepicker="true" placeholder="Search by tracking number" class="w-full h-[5rem]"  @keypress="searchQuery = $event.target.value")
     div#shipments-menu(class="w-full flex lg:flex-row flex-col ")
         div(class="flex lg:flex-row flex-col items-start space-y-2 lg:space-y-0 lg:items-center justify-start overflow-auto w-full no-scrollbar ")
-            h1(class="text-xl w-auto font-semibold mr-[1.5rem]") Shipments
+            h1(class="text-xl text-themeText w-auto font-semibold mr-[1.5rem]") Shipments
             div(class="flex  space-x-2 items-center justify-start overflow-auto no-scrollbar ")
               ButtonMenu2(text="Pending" :active="active_menu == 'pending'" @click="mainStore.setActiveMenu('pending')" )
               ButtonMenu2(text="Arrival" :active="active_menu == 'arrival'" @click="mainStore.setActiveMenu('arrival')")

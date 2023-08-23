@@ -4,12 +4,12 @@ export const getDates = async () => {
   const options = {
     method: "GET",
     headers: {
-      Host: `${config.FETCH_HOST}`,
-      Authorization: `${config.API_TOKEN}`,
+      Host: `${config.public.FETCH_HOST}`,
+      Authorization: `${config.public.API_TOKEN}`,
     },
   } as any;
   const dates = await useFetch(
-    `${config.API_URL}api/v1/simple_dates/`,
+    `${config.public.API_URL}api/v1/simple_dates/`,
     options
   ).then((res) => {
     const data: any = res.data.value;

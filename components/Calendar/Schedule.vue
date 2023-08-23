@@ -54,7 +54,7 @@ const get_timeslots = async (date: string) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Host: `${config.FETCH_HOST}`,
+      Host: `${config.public.FETCH_HOST}`,
       Authorization: `Token ${userStore.getToken}`,
     },
     body: JSON.stringify({
@@ -63,7 +63,7 @@ const get_timeslots = async (date: string) => {
   } as any;
 
   const timeslots = await fetch(
-    `${config.API_URL}api/v1/get_date_timeslots`,
+    `${config.public.API_URL}api/v1/get_date_timeslots`,
     options
   )
     .then((res) => res.json())

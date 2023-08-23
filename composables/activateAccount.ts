@@ -4,13 +4,13 @@ export const activateAccount = async (email: string, token: string) => {
   const options = {
     method: "POST",
     headers: {
-      Host: `${config.FETCH_HOST}`,
+      Host: `${config.public.FETCH_HOST}`,
       Authorization: `Token ${token}`,
     },
     body: JSON.stringify({ email: email }),
   } as any;
   const response = await useFetch(
-    `${config.API_URL}api/v1/activate_user`,
+    `${config.public.API_URL}api/v1/activate_user`,
     options
   ).then((res) => {
     const data: any = res.data.value;

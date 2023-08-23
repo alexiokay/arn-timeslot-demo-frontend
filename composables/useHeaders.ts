@@ -8,7 +8,7 @@ export const useHeaders = (type: Type, body: Object) => {
     method: type,
     headers: {
       "Content-Type": "application/json",
-      Host: `${config.FETCH_HOST}`,
+      Host: `${config.public.FETCH_HOST}`,
       Authorization: `Token ${userStore.getToken}`,
     },
     body: JSON.stringify(body),

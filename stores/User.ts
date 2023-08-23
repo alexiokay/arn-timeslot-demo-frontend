@@ -31,7 +31,8 @@ export const useUserStore = defineStore("User", {
       isLogged: false,
       is_activated: false,
       activated_by: null,
-      accountType: "arrow-employee", //arrow_employee, carrier
+      accountType: "", //arrow_employee, carrier
+      theme: "arrow-dark",
       role: {
         id: null,
         shortname: null,
@@ -84,8 +85,17 @@ export const useUserStore = defineStore("User", {
       if (state.role === null) return "null";
       else return state.role.shortname;
     },
+    getTheme(state) {
+      return state.theme;
+    },
   },
   actions: {
+    setDark() {
+      if (this.theme === "arrow-dark") this.theme = "arrow-light";
+      else if (this.theme === "arrow-light") this.theme = "arrow-dark";
+      else if (this.theme === "carrier-dark") this.theme = "carrier-light";
+      else if (this.theme === "carrier-light") this.theme = "carrier-dark";
+    },
     setUsername(username: string) {
       this.username = username;
     },
@@ -107,6 +117,11 @@ export const useUserStore = defineStore("User", {
       this.role = null;
       this.carrier = {} as Carrier;
       this.avatar = "";
+      this.is_activated = false;
+      this.activated_by = null;
+      this.theme = "arrow-light";
+      this.firstName = "";
+      this.lastName = "";
     },
 
     setUser(data: any) {
@@ -124,6 +139,7 @@ export const useUserStore = defineStore("User", {
         this.carrier.city = carrier.city;
         this.carrier.icon_url = carrier.icon_url;
         this.carrier.is_activated = carrier.is_activated;
+        this.theme = "carrier-light";
       }
       this.firstName = user.first_name;
       this.lastName = user.last_name;

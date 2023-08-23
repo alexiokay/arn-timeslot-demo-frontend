@@ -4,13 +4,13 @@ export const activateCarrier = async (id: number, token: string) => {
   const options = {
     method: "POST",
     headers: {
-      Host: `${config.FETCH_HOST}`,
+      Host: `${config.public.FETCH_HOST}`,
       Authorization: `Token ${token}`,
     },
     body: JSON.stringify({ carrier_id: id }),
   } as any;
   const response = await useFetch(
-    `${config.API_URL}api/v1/activate_carrier`,
+    `${config.public.API_URL}api/v1/activate_carrier`,
     options
   ).then((res) => {
     const data: any = res.data.value;

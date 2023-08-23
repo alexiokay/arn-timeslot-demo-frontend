@@ -3,12 +3,12 @@ export const getSettings = async (token) => {
   const options = {
     method: "GET",
     headers: {
-      Host: `${config.FETCH_HOST}`,
+      Host: `${config.public.FETCH_HOST}`,
       Authorization: `Token ${token}`,
     },
   } as any;
   const data = await useFetch(
-    `${config.API_URL}api/v1/arrows_settings/`,
+    `${config.public.API_URL}api/v1/arrows_settings/`,
     options
   ).then((res) => {
     const data: any = res.data.value;

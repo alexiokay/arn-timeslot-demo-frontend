@@ -95,7 +95,7 @@ const canUserActivate = (account: any) => {
 const options = {
   method: "GET",
   headers: {
-    Host: `${config.FETCH_HOST}`,
+    Host: `${config.public.FETCH_HOST}`,
     Authorization: `Token ${userStore.getToken}`,
   },
 };
@@ -103,7 +103,7 @@ const page = ref(1);
 const getAccounts = async () => {
   is_fetching_accounts.value = true;
   const accounts = await fetch(
-    `${config.API_URL}api/v1/users/?page=${page.value}`,
+    `${config.public.API_URL}api/v1/users/?page=${page.value}`,
     options
   )
     .then((res) => res.json())

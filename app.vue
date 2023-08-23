@@ -21,8 +21,7 @@ const mainStore = useMainStore();
 // TODO: if dates alraedy exists in mainStore, dont fetch them again (data must be se)
 
 let chatSocket: any = null;
-
-let websocketLink: string = config.API_URL.split("//")[1];
+let websocketLink: string = config.public.API_URL.split("//")[1];
 onMounted(() => {
   chatSocket = new WebSocket("ws://" + websocketLink + "ws/" + "reservations");
 
@@ -68,12 +67,12 @@ const getSimpleDates = async () => {
   const options = {
     method: "GET",
     headers: {
-      Host: `${config.FETCH_HOST}`,
+      Host: `${config.public.FETCH_HOST}`,
       Authorization: `Token ${userStore.getToken}`,
     },
   } as any;
 
-  return await fetch(`${config.API_URL}api/v1/simple_dates/`, options)
+  return await fetch(`${config.public.API_URL}api/v1/simple_dates/`, options)
     .then((res) => res.json())
     .then((data) => {
       const mappedData = data.map((obj: any) => ({
@@ -113,13 +112,14 @@ watch(
 );
 </script>
 
-<style lang="sass">
+<style lang="scss">
 .page-enter-active,
-.page-leave-active
-  transition: all 0.4s
-
+.page-leave-active {
+  transition: all 0.4s;
+}
 .page-enter-from,
-.page-leave-to
-  opacity: 0
-  filter: blur(1rem)
+.page-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
+}
 </style>
