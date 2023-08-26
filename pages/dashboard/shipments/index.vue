@@ -20,9 +20,9 @@ div#shipments(class=" w-full h-full px-6 py-[0.4rem] flex flex-row flex-wrap gap
               ButtonMenu2(text="Cancelled" :active="active_menu == 'cancelled'" @click="mainStore.setActiveMenu('cancelled')")
               ButtonMenu2(text="Arrow Changed" :active="active_menu == 'arrow changed'" @click="mainStore.setActiveMenu('arrow changed')")
        
-        div#shipments-menu-sorting(class="ml-auto   px-2 flex items-center justify-center space-x-2 w-auto h-[2.5rem] rounded-lg bg-white text-black")
-            p(class="text-sm") Sort by:
-            select#sorting(class="w-auto h-[2.5rem] focus:border-0 focus:outline-none text-black")
+        div#shipments-menu-sorting(class="ml-auto text-themeText  px-2 flex items-center justify-center space-x-2 w-auto h-[2.5rem] rounded-lg bg-themeBackground3 ")
+            p(class="text-sm ") Sort by:
+            select#sorting(class="w-auto bg-themeBackground3 h-[2.5rem] focus:border-0 focus:outline-none " )
                 option(value="newest") Newest
                 option(value="oldest") Oldest
            

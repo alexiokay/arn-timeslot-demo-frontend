@@ -19,7 +19,7 @@ div(class="w-full py-4 px-6  bg-themeBackground2 rounded-xl flex items-center ")
                         | Time delay
                 tbody.bg-themeBackground2(class="")
                     
-                        tr(v-for="(index, item) in 3" :key="item" :class="index<3? 'border-b border-gray-200': ''" class="hover:bg-slate-50   hover:cursor-pointer")
+                        tr(v-for="(index, item) in 3" :key="item" :class="index<3? 'border-b border-gray-200': ''" class="hover:bg-themeBackground   hover:cursor-pointer")
                             td.py-4.px-4.whitespace-nowrap(class="w-1/5") 2
                             
                             

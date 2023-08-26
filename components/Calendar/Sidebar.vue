@@ -4,10 +4,10 @@ div
     <div v-show="props.isOpen" @mousedown="$emit('close')" tabindex="-1" class="backdrop-blur-[2.5px] fixed top-0 pointer-event-none flex items-center bg-[rgba(0,0,0,0.55)] justify-center left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-screen md:h-full"></div>
 
   Transition(name="slide")
-      div#schedule-sidebar(v-show="props.isOpen" class="w-full lg:w-[30%] z-50  h-screen max-h-screen fixed top-0 right-0 bg-white rounded-l-xl px-4 py-4")
+      div#schedule-sidebar(v-show="props.isOpen" class="w-full lg:w-[30%] z-50   h-screen max-h-screen fixed top-0 right-0 bg-white rounded-l-xl px-4 py-4")
           div(class="flex w-full h-auto justify-between items-center")
             
-            p(class="text-5xl font-bold w-full text-start") New
+            p(class="text-5xl font-bold w-full text-start text-black ") New
               p Reservation
             button.close-button(@click="$emit('close')" class="w-[4rem] h-[4rem] aspect-square  rounded-full border-2 border-violet-400 flex items-center justify-center")
                 CloseIcon(class="w-full h-full  aspect-square text-gray-600")
@@ -44,7 +44,7 @@ div
               h3(class="text-5xl font-bold text-gray-800 mt-12") Suppliers
               div(class="relative w-full h-auto justify-between space-y-3 overflow-y-scroll md:max-h-[calc(100vh-53rem)] max-h-[calc(60vh-20em)]")
                
-                  div(v-for="supplier in newReservation.suppliers" :key="supplier.id"  class="w-full  h-auto border-[2px] border-violet-400 rounded-lg px-4 pb-3 pt-2  gap-x-4" )
+                  div(v-for="supplier in newReservation.suppliers" :key="supplier.id"  class="w-full text-black  h-auto border-[2px] border-violet-400 rounded-lg px-4 pb-3 pt-2  gap-x-4" )
                     div(class="flex w-full")
                       p(class="text-lg font-semibold") {{supplier.name}}
                       button.hide(@click="supplier.isVisible = !supplier.isVisible" class=" ml-3 w-[2rem] h-[2rem] rounded-full  flex items-center justify-center")
@@ -67,13 +67,13 @@ div
                   v-model="newSupplier"
                   :options="avalibleSupplierComputed"
                   
-                  class="w-full h-full"
+                  class="w-full h-full text-black"
                   label="name")
                   <!-- OPTIONALS: :reduce="(supplier) => supplier.id" @option:selected="(supplier)" @option:deselected="(supplier)" -->
                  
               div(class="flex  flex-col w-full gap-y-3 h-auto justify-start items-start mt-12 ")
                 h3(class="text-5xl font-bold text-gray-800 ") Comment
-                textarea(class="w-full  h-[4rem] border-[2px] border-violet-400 outline-0 p-3" v-model="newReservation.comment")
+                textarea(class="w-full  h-[4rem] border-[2px] border-violet-400 outline-0 p-3 text-black" v-model="newReservation.comment")
               button(@click="book" class="w-full text-xl h-[3rem] bg-black text-white mt-auto") Book
 </template>
 

@@ -5,10 +5,10 @@ Transition(name="fade")
 
 div#sidebar(class=" fixed w-[20rem] top-0 left-0 z-50  h-screen max-h-screen bg-themeBackground2 px-2 py-4 rounded-r-xl text-themeText items-center flex flex-col" :class="is_sidebar_open? 'hide-left  ': 'show-right'")
     div#sidebar-header(class="relative w-full px-3 flex flex-col h-auto justify-between items-start")
-        nuxt-img(src="images/arrow-logo-2.png" width="150" height="30" format="webp" class="")
+        nuxt-img(src="images/arrow-logo-2.png" width="150" height="30" format="webp" :class="{'invert': dataTheme.split('-')[1] === 'dark'} " )
         h1(class="text-lg ") {{ userStore.accountType === 'arrow-employee' ? 'Arrow`s  Workspace' : 'Carrier`s  Workspace' }}
-    div#sidebar-toggle(class="absolute top-1 -right-7 p-2 w-11 h-11 rounded-full bg-[#FAF9FC] flex flex-row justify-center items-center")
-        div(@click="is_sidebar_open = !is_sidebar_open" class=" hover:cursor-pointer w-full h-full bg-slate-200 rounded-full")
+    div#sidebar-toggle(class="absolute top-1 -right-7 p-2 w-11 h-11 rounded-full bg-themeBackground flex flex-row justify-center items-center")
+        div(@click="is_sidebar_open = !is_sidebar_open" class=" hover:cursor-pointer w-full h-full bg-themeBackground2 rounded-full")
             ArrowIcon(:class="!is_sidebar_open? 'animate-spinOnceBack': 'animate-spinOnce '" class="w-full h-full  ")
     div#sidebar-content(class="relative w-full h-full flex flex-col justify-between items-start mt-4 space-y-5 rounded-md ")
         
@@ -60,7 +60,9 @@ import { useUserStore } from "@/stores/User";
 const userStore = useUserStore();
 const mainStore = useMainStore();
 
-const dataTheme = userStore.getTheme;
+const dataTheme = computed(() => {
+  return userStore.getTheme;
+});
 // ------ is's ------ //
 const is_sidebar_open = ref(false);
 </script>

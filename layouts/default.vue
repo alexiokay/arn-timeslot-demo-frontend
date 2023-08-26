@@ -55,18 +55,22 @@ onMounted(() => {});
   --hint: #bfdbfe;
   --text: #313131;
   --text2: #bababa;
+  --border: #eaeaea;
+  --border2: #dedede;
 }
 
 .theme-arrow-dark {
-  --background: #313131;
+  --background: rgb(21, 21, 21);
   --background2: #1d1d1d;
-  --background3: rgb(21, 21, 21);
+  --background3: #313131;
   --button: #8b5cf6;
   --buttonHover: #8b5cf6;
   --secondary: #f8f8f8;
-  --hint: #000000;
+  --hint: #313131;
   --text: #f8f8f8;
   --text2: #bababa;
+  --border: #525252;
+  --border2: #656565;
 }
 
 .theme-carrier-dark {
