@@ -20,7 +20,8 @@ div#content(class="text-themeText w-full h-full px-6 py-[0.4rem] flex flex-col j
       
     div(class="flex w-full md:flex-row flex-col justify-between h-auto")
       DashboardTodo(class="md:w-[calc(50%-1rem)] w-full min-h-[30rem]")
-     
+      DashboardYourActivity(class="md:w-[calc(50%-1rem)] w-full min-h-[30rem]")
+
    
 
       

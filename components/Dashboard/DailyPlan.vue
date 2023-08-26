@@ -17,17 +17,18 @@ div(class="w-full py-4 px-6  bg-themeBackground2 rounded-xl flex items-center ")
             p(class="text-themeText font-semibold") 145
                 span(class="text-themeText2") /240
         slot(name="icon" class="")
-    div(class="w-3/5")
-        div(class="wrapper")
-            div(class="progress-bar")
+    div(class="w-3/5 ")
+        div(class="wrapper ")
+            div(class="progress-bar relative")
                 div(class="progress-bar__inner" id="js-progress-meter")
+                  div(class="rounded-full p-1 pb-4 pt-2 bg-gray-100 w-auto h-auto absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2")
+                      IconThumbUp(class="w-8 h-8  mx-2  text-green-500")
+           
             div(class="flex justify-between w-[21rem] mx-auto font-semibold  items-center")
                 p 0%
                 p(class="progress-bar__number text-green-500 text-3xl " id="js-progress-number") 0%
                 p 100%
-            div(class="rounded-full p-1 pb-4 pt-2 bg-gray-100 w-auto h-auto flex items-center justify-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2")
-                IconThumbUp(class="w-8 h-8  mx-2  text-green-500")
-           
+                
 </template>
 
 <script setup lang="ts">
@@ -62,8 +63,6 @@ function incrementProgressBar() {
       progressNumber.textContent = currentNumber.toString() + "%";
       // set InnerHtml with a special classname that triggers inner progress bar movement
     }
-    progressMeter.style.transform =
-      "rotate(" + (45 + currentNumber * 1.8) + "deg)";
   }, 2000);
 }
 onMounted(() => {
@@ -89,7 +88,7 @@ onMounted(() => {
   margin: 0 auto;
   overflow: hidden;
   position: relative;
-  width: 20rem;
+  width: 100%;
 }
 
 .progress-bar__inner {
@@ -103,7 +102,7 @@ onMounted(() => {
   position: absolute;
   top: 0;
   transition: transform 0.2s ease-in;
-  width: 20rem;
-  transform: rotate(45deg);
+  width: 100%;
+  max-width: 20rem;
 }
 </style>

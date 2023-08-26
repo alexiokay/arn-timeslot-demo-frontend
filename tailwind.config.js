@@ -29,7 +29,6 @@ module.exports = {
         themeButton: "var(--button)",
         themeButtonHover: "var(--button-hover)",
         themeBorder: "var(--border)",
-        themeBorder2: "var(--border2)",
       },
       keyframes: {
         showUp: {

@@ -57,6 +57,7 @@ onMounted(() => {});
   --text2: #bababa;
   --border: #eaeaea;
   --border2: #dedede;
+  --invert: invert(0);
 }
 
 .theme-arrow-dark {
@@ -71,6 +72,7 @@ onMounted(() => {});
   --text2: #bababa;
   --border: #525252;
   --border2: #656565;
+  --invert: invert(1);
 }
 
 .theme-carrier-dark {
@@ -84,6 +86,7 @@ onMounted(() => {});
   --text2: #bababa;
   --border: #eaeaea;
   --border2: #dedede;
+  --invert: invert(0);
 }
 
 .theme-carrier-light {
@@ -98,6 +101,7 @@ onMounted(() => {});
   --text2: #bababa;
   --border: #525252;
   --border2: #656565;
+  --invert: invert(1);
 }
 </style>
 

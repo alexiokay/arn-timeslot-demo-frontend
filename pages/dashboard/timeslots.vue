@@ -16,12 +16,12 @@ div(class="flex gap-x-[5rem] px-8 md:px-0 flex-wrap md:flex-nowrap ")
                   ArrowIcon(@click="nextMonth()" class="rotate-180 h-7 w-7 text-gray-600")
               div(class="absolute flex w-auto right-0 items-center justify-end ")
                 CalendarIcon(class="hover:cursor-pointer")
-                hr(class="absolute top-[1.7rem] right-0 w-[1.3rem] h-[0.5px] border-gray-300 border-[1px]")
+                hr(class="absolute top-[1.7rem] right-0 w-[1.3rem] h-[0.5px] border-themeBorder border-[1px]")
               div(@click="editMode = !editMode" v-if="userStore.getAccountType === 'arrow-employee'" :class="{'text-blue-600': editMode}" class="absolute flex w-auto right-8 items-center justify-end ")
                 EditIcon(class="hover:cursor-pointer")
-                hr(class="absolute top-[1.7rem] right-0 w-[1.3rem] h-[0.5px] border-gray-300 border-[1px]")
-          p(v-if="editMode" class="text-themeText2 w-full") Here you can edit your timeslots. You can open or close timeslots for a specific date.
-          p(v-if="!editMode" class="text-themeText2 w-full") Here all your planned timeslots. You will find information for each timeslot as well you can planned new one
+                hr(class="absolute top-[1.7rem] right-0 w-[1.3rem] h-[0.5px] border-themeBorder border-[1px]")
+          p(v-if="editMode" class="text-themeText w-full") Here you can edit your timeslots. You can open or close timeslots for a specific date.
+          p(v-if="!editMode" class="text-themeText w-full") Here all your planned timeslots. You will find information for each timeslot as well you can planned new one
           Calendar(ref="calendar" class="mt-8  " @selectDate="selectDate" :dates="date_objs" :editMode="editMode" )
     div#timeslot-right-panel(v-show="!editMode" class="flex w-full md:w-2/4 flex-col md:mt-[6rem] ")
         CalendarScheduleSidebar(:class="isScheduleSidebarOpen? '': 'hidden'" class="mt-8")

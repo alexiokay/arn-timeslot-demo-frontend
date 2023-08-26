@@ -12,7 +12,7 @@ div.settings(class="w-full h-full flex flex-col  px-4 ")
     hr(class="w-full border-themeBorder2 my-4 ")
     div#accounts-menu(class="w-full space-x-2  h-[3rem]  items-center flex justify-start ")
         ButtonMenu(v-for="item in menu" :text="item.text"  :is_active='item.is_active' @setActive="setActive(item)")
-    div(class="bg-themeBackground2 w-full rounded-lg h-full p-3 border-themeBackground2 border-2 -mt-[0.3rem] ")
+    div(class="bg-themeBackground2 w-full rounded-lg h-full p-3 border-themeBorder border-2 -mt-[0.3rem] ")
         div(class="w-full flex gap-x-2  ")
             div#shipments-menu-sorting(class=" text-themeText px-2 flex items-center justify-center space-x-2 w-auto h-[2.5rem] rounded-lg bg-themeBackground2 text-black")
                 p(class="text-sm") Sort by:
