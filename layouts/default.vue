@@ -74,19 +74,30 @@ onMounted(() => {});
 }
 
 .theme-carrier-dark {
-  --background: #f8f8f8;
-  --background2: #f8f8f8;
-  --background3: #ffffff;
+  --background: #f9f9fb;
+  --background2: #ffffff;
+  --background3: #f1f4f5;
   --button: #8b5cf6;
+  --secondary: #f8f8f8;
+  --hint: #bfdbfe;
   --text: #313131;
+  --text2: #bababa;
+  --border: #eaeaea;
+  --border2: #dedede;
 }
 
 .theme-carrier-light {
-  --background: #f8f8f8;
-  --background2: #f8f8f8;
-  --background3: #ffffff;
+  --background: rgb(21, 21, 21);
+  --background2: #1d1d1d;
+  --background3: #313131;
   --button: #8b5cf6;
-  --text: #313131;
+  --buttonHover: #8b5cf6;
+  --secondary: #f8f8f8;
+  --hint: #313131;
+  --text: #f8f8f8;
+  --text2: #bababa;
+  --border: #525252;
+  --border2: #656565;
 }
 </style>
 
