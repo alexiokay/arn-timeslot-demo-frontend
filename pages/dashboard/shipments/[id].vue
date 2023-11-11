@@ -4,47 +4,47 @@ div(class="w-full flex flex-col px-3 md:px-4 lg:px-0 justify-start items-start")
         NuxtLink(to="/dashboard/shipments" class="text-blue-700 hover:underline flex font-semibold  items-center space-x-2") 
           ArrowIcon(class=" rotate-180")
           span Back to Shipments
-        p( class="text-gray-500")  Shipments / 
+        p( class="text-themeText")  Shipments / 
             span(class="text-violet-600") {{ shipment_id }}
         div(class="flex items-center space-x-3 h-auto mt-2")
             h1(class="text-xl  font-semibold") {{ shipment?.delivery_address }}
-            p(class="text-gray-500 font-semibold text-xl")  {{ shipment?.Timeslot?.date }}, {{ shipment?.Timeslot?.start_time }} - {{ shipment?.Timeslot?.end_time }}
+            p(class="text-themeText font-semibold text-xl")  {{ shipment?.Timeslot?.date }}, {{ shipment?.Timeslot?.start_time }} - {{ shipment?.Timeslot?.end_time }}
     div#shipment-body(class="w-full flex flex-wrap gap-x-4 mt-4")
         
-        div#shipment-body-left(class="flex flex-col w-[calc(50%-0.5rem)] h-auto  bg-white rounded-lg space-y-4 p-4")
+        div#shipment-body-left(class="flex flex-col w-[calc(50%-0.5rem)] h-auto  bg-themeBackground2 rounded-lg space-y-4 p-4")
                
                 p(class="text-xl font-semibold w-full") Shipment Details 
                     
                 div(class="flex")
                     div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
-                        p(class="text-sm text-gray-500") Shipment ID
+                        p(class="text-sm text-themeText") Shipment ID
                         p(class="text-lg font-semibold") {{ shipment_id }}
 
                     div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
-                        p(class="text-sm text-gray-500") Shipment type
+                        p(class="text-sm text-themeText") Shipment type
                         p(class="text-lg font-semibold") Air
                 div(class="flex")
                    
                     div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
-                        p(class="text-sm text-gray-500") Shipment destination
+                        p(class="text-sm text-themeText") Shipment destination
                         p(class="text-lg font-semibold") {{ shipment?.delivery_address }}
                     div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
-                        p(class="text-sm text-gray-500") Shipment weight
+                        p(class="text-sm text-themeText") Shipment weight
                         p(class="text-lg font-semibold") {{ shipment?.weight }}
                 div(class="flex")
                     div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
-                        p(class="text-sm text-gray-500") Pallets count
+                        p(class="text-sm text-themeText") Pallets count
                         
                
                         p( class="text-lg font-semibold") {{ shipment?.pallets_count }}
                         
                     div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
-                        p(class="text-sm text-gray-500") Cartoons count
+                        p(class="text-sm text-themeText") Cartoons count
           
                         p( class="text-lg font-semibold") {{ shipment?.cartons_count}}
                        
         div#shipment-body-right(class="flex flex-col w-[calc(50%-0.5rem)] h-auto  rounded-lg space-y-4")
-            div(class="flex flex-col justify-start items-start w-full h-auto space-y-2 p-4 bg-white rounded-lg")
+            div(class="flex flex-col justify-start items-start w-full h-auto space-y-2 p-4 bg-themeBackground rounded-lg")
                 p(class="text-xl font-semibold") Status: 
                     span(class="text-violet-600") {{shipment?.status }} {{ shipment?.status === 'CARRIER_APPROVED' ? '/ ARROW_APPROVED ' : ''}}
                 div(class="flex justify-start w-full items-center h-auto space-x-4")
@@ -53,25 +53,25 @@ div(class="w-full flex flex-col px-3 md:px-4 lg:px-0 justify-start items-start")
                     ButtonMenu2(v-if="!editMode && (shipment.status !== 'ARROW_APPROVED' && shipment.status !== 'CARRIER_APPROVED')" @click="editMode = !editMode, modalMode='update'" text="Change" :active="true" class="p-5 text-xl bg-yellow-500")
                     ButtonMenu2(v-if="editMode" @click="(editMode = false, resetTempSuppliers())" text="Cancel"  class="p-5 text-xl bg-red-500 text-white")
                     
-            div(class="flex flex-col justify-start items-start w-full h-auto space-y-2 p-4 bg-white rounded-lg")
+            div(class="flex flex-col justify-start items-start w-full h-auto space-y-2 p-4 bg-themeBackground2 rounded-lg")
                 p(class="text-xl font-semibold") Reserved by:  
                 div(class="flex flex-col justify-start items-start w-full h-auto space-y-2")
                     p(class="text-violet-600 hover:cursor-pointer") {{ shipment?.reserved_by}}
 
-            div(class="flex flex-col justify-start items-start w-full h-auto  p-4 bg-white rounded-lg")
+            div(class="flex flex-col justify-start items-start w-full h-auto  p-4 bg-themeBackground2 rounded-lg")
                 div(class="flex  items-center  justify-center space-x-4")
                   p(class="text-xl font-semibold mb-3") Suppliers:
-                  button.addSupplier(v-if="editMode" @click="" class="w-auto px-4 sm:h-10 h-12  bg-violet-600 text-white  text-base md:text-xl font-semibold rounded-lg") Add Supplier
+                  button.addSupplier(v-if="editMode" @click="" class="w-auto px-4 sm:h-10 h-12  bg-violet-600 bg-themeBackground2  text-base md:text-xl font-semibold rounded-lg") Add Supplier
                 div(v-for="(supplier, index) in shipment?.suppliers.suppliers" :key="supplier" class=" flex flex-col justify-start items-start w-auto h-auto space-y-2 ")
                     p(class=" font-semibold ") {{ supplier.supplier.name }}
                     div(class="ml-2 flex justify-start items-center space-x-4")
                       p(v-if="!editMode") pallets count: {{ supplier.pallets_count }}
-                      input(v-else type="text" v-model="TempSupplierData[index].pallets_count" class="w-[90%] h-10 px-4 border border-gray-300 rounded-lg focus:outline-none focus:border-violet-600" )
+                      input(v-else type="text" v-model="TempSupplierData[index].pallets_count" class="w-[90%] h-10 px-4 bg-themeBackground border border-themeBorder rounded-lg focus:outline-none text-themeText focus:border-violet-600" )
                       p(v-if="!editMode") cartons count: {{ supplier.cartons_count }}
-                      input(v-else type="text" v-model="TempSupplierData[index].cartons_count" class="w-[90%] h-10 px-4 border border-gray-300 rounded-lg focus:outline-none focus:border-violet-600" )
+                      input(v-else type="text" v-model="TempSupplierData[index].cartons_count" class="w-[90%] h-10 px-4 bg-themeBackground  border border-themeBorder rounded-lg focus:outline-none focus:border-violet-600" )
                     hr(class="w-full")
                 
-        div#shipment-body-s(class="flex flex-col w-full mt-[1rem] h-auto  bg-white rounded-lg space-y-4 p-4")
+        div#shipment-body-s(class="flex flex-col w-full mt-[1rem] h-auto  bg-themeBackground2 rounded-lg space-y-4 p-4")
           p(class="text-xl font-semibold h-[10rem]") Shipment History
           p .....
 

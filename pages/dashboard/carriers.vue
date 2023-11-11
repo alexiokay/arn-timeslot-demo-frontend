@@ -42,7 +42,7 @@ div.settings(class="w-full h-full flex flex-col  px-4")
                         td(class="border-r border-themeBorder px-3 py-2 text-center bg-themeBackground3 ") {{ account.id }}
                             
                         td(class="border-r border-themeBorder px-4 py-2 flex space-x-2") 
-                            img(class="w-8 h-8 rounded-full" :src="account.avatar")
+                            img(class="w-8 h-8 rounded-full" :src="account.icon_url")
                             p {{ account.name }}
                         td(class="border-r border-themeBorder px-4 py-2") {{ account.email }}
                         td(class="border-r border-themeBorder px-4 py-2") 

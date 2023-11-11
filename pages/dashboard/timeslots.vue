@@ -1,11 +1,11 @@
 <template lang="pug">
 div#timeslot-top-panel(class="flex w-full h-auto")
     
-div(class="flex gap-x-[5rem] px-8 md:px-0 flex-wrap md:flex-nowrap ")
+div(class="flex gap-x-[5rem] px-8 md:px-4 lg:px-0 flex-wrap md:flex-nowrap ")
     
-    div#timeslot-left-panel(class="flex w-full md:w-2/4 flex-col  " :class="{'mt-[0.8rem] pr-[2.9rem] ': editMode}" )
+    div#timeslot-left-panel(class="flex w-full md:w-2/4 flex-col  " :class="{'mt-[0.8rem]  ': editMode}" )
 
-        div(class="flex flex-col space-y-4 sticky top-[2.5rem]")
+        div(class="flex flex-col space-y-4 sticky top-[5rem] lg:top-[2.5rem]")
           div(class="flex items-center relative ")
               h1(class="text-3xl font-bold mr-6 w-[10rem]") {{formatedCalendarDate}}
               div(class="p-[2px] rounded-full hover:bg-gray-100 hover:cursor-pointer")
@@ -26,6 +26,7 @@ div(class="flex gap-x-[5rem] px-8 md:px-0 flex-wrap md:flex-nowrap ")
     div#timeslot-right-panel(v-show="!editMode" class="flex w-full md:w-2/4 flex-col md:mt-[6rem] ")
         CalendarScheduleSidebar(:class="isScheduleSidebarOpen? '': 'hidden'" class="mt-8")
         CalendarSchedule( :selectedTimeslot="formatedScheduleDate" class="mt-8" :date="formatUTCDate(selectedDate)")
+    div#timeslot-right-panel(v-show="editMode" class="flex w-full md:w-2/4 flex-col md:mt-[6rem] ")
 
     
 
